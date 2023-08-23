@@ -21,7 +21,6 @@ const tienda2 = Object.keys(objetos[1]);
 const tienda = [...tienda1, ...tienda2];
 
 const productos = new Set(tienda);
-
 const productosTienda = [...productos];
 
 
@@ -31,4 +30,4 @@ const values = [...values1, ...values2]
 console.log(values)
 
 const totalVendidos = values.reduce((acc, value) => acc += value, 0)
-console.log('total vendidos' + totalVendidos)
+console.log('Total vendidos: ' + totalVendidos)
