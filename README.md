@@ -1,4 +1,13 @@
-# ORGANIZACION DE LAS CARPETAS
+# Curso de Backend -- CoderHouse
 
-en la carpeta 'DESAFIOS-HANDS_ON_LABS' se encuentra todos los desafíos extras de las clases, los cuales NO son entregables, pero los dejo acá por si quieren darle un tipo de feedback
-los desafios entregables se encuentran, por ahora, libres dentro del repositorio
+_Éste es mi repositorio personal del curso de Backend en CoderHouse, donde voy a estar subiendo todos mis desafíos extras, pre-entregas y el proyecto final del curso._
+
+Mi comisión es la #47305 con el profe Fredy Alexander Chaparro Castro.
+
+## Organización de las carpetas
+
+Las carpetas se ordenarán de la siguiente manera:
+
+- **DESAFIOS-HANDS_ON_LABS:** Acá se guardarán todos los desafíos extras de las diapositivas de las clases, lo dejo por si el tutor encargado quisera dar algún tipo de feedback sobre ellas.
+- **DESAFIOS_ENTREGABLES:** Acá van a estar todos los desafíos semanales y entregables de las clases.
+- **PRE_ENTREGAS:** Acá estarán todas las Pre-Entregas del proyecto final.
