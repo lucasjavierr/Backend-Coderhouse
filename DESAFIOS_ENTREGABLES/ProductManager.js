@@ -73,7 +73,7 @@ class ProductManager {
       );
       console.log("Producto creado correctamente");
     } catch (error) {
-      console.log(error.message);
+      throw error;
     }
   }
 
@@ -104,7 +104,7 @@ class ProductManager {
       );
       console.log("Producto actualizado correctamente");
     } catch (error) {
-      console.log(error.message);
+      throw error;
     }
   }
 
@@ -129,7 +129,7 @@ class ProductManager {
       );
       console.log("Producto eliminado correctamente");
     } catch (error) {
-      console.log(error.message);
+      throw error;
     }
   }
 }
