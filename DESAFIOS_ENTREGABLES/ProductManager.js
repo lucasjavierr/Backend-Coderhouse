@@ -18,15 +18,15 @@ class ProductManager {
     return productosJSON;
   }
 
-  getProductById(id) {
+  getProductById(idProduct) {
     if (!this.#fileExist()) {
       throw new Error("El archivo no existe");
     }
     const productos = fs.readFileSync(this.path, "utf-8");
     const productosJSON = JSON.parse(productos);
     const product =
-      productosJSON.find((prod) => prod.id === id) ||
-      "El producto no se ha encontrado";
+      productosJSON.find((prod) => prod.id === idProduct) ||
+      `El producto con el ID "${idProduct} no existe"`;
     return product;
   }
 
@@ -42,13 +42,11 @@ class ProductManager {
       const { title, description, price, thumbnail, code, stock } = productInfo;
 
       if (!title || !description || !price || !thumbnail || !code || !stock) {
-        return console.log("Todos los campos deben estar completos");
+        throw new Error("Todos los campos deben estar completos");
       }
 
       if (productosJSON.some((prod) => prod.code === code)) {
-        return console.log(
-          "No se puede crear el producto porque ya existe un producto con el mismo 'code'"
-        );
+        throw new Error(`Ya existe un producto con el código "${code}"`);
       }
 
       let newId;
@@ -89,10 +87,14 @@ class ProductManager {
 
       const prodToUpdate = productosJSON.find((prod) => prod.id === idProduct);
 
+      if (!prodToUpdate) {
+        throw new Error(`El producto con el ID "${idProduct}" no existe`);
+      }
+
       const propertyExists = prodToUpdate.hasOwnProperty(fieldsToUpdate);
 
       if (!propertyExists) {
-        return console.log("La propiedad ingresada no existe");
+        throw new Error(`La propiedad ${fieldsToUpdate} no existe`);
       }
       prodToUpdate[fieldsToUpdate] = newValue;
 
@@ -113,6 +115,10 @@ class ProductManager {
       }
       const productos = await fs.promises.readFile(this.path, "utf-8");
       const productosJSON = JSON.parse(productos);
+
+      if (!productosJSON.some((prod) => prod.id === idProduct)) {
+        throw new Error(`El producto con el ID "${idProduct}" no existe`);
+      }
 
       const productsUpdated = productosJSON.filter(
         (prod) => prod.id !== idProduct
