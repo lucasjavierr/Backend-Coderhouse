@@ -88,6 +88,12 @@ class ProductManager {
       const productosJSON = JSON.parse(productos);
 
       const prodToUpdate = productosJSON.find((prod) => prod.id === idProduct);
+
+      const propertyExists = prodToUpdate.hasOwnProperty(fieldsToUpdate);
+
+      if (!propertyExists) {
+        return console.log("La propiedad ingresada no existe");
+      }
       prodToUpdate[fieldsToUpdate] = newValue;
 
       await fs.promises.writeFile(
