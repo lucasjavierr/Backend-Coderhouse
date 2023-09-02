@@ -1,0 +1,29 @@
+[
+  {
+    "title": "AMD Ryzen 9 7950X 3D-V Cache",
+    "description": "Procesador",
+    "price": 700,
+    "thumbnail": "sin foto",
+    "code": "abc123",
+    "stock": 160,
+    "id": 1
+  },
+  {
+    "title": "Intel Core i9-13900K",
+    "description": "Procesador",
+    "price": 850,
+    "thumbnail": "sin foto",
+    "code": "abc132",
+    "stock": 200,
+    "id": 2
+  },
+  {
+    "title": "Asus ROG Strix NVIDIA Geforce RTX 4090",
+    "description": "Tarjeta gráfica",
+    "price": 1500,
+    "thumbnail": "sin foto",
+    "code": "abc456",
+    "stock": 100,
+    "id": 3
+  }
+]
