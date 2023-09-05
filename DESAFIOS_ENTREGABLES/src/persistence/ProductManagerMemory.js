@@ -1,25 +1,25 @@
 export class ProductManagerMemory {
-  constructor() {
+  constructor () {
     this.products = [];
   }
 
-  getProducts() {
+  getProducts () {
     return this.products;
   }
 
-  addProduct(title, description, price, thumbnail, code, stock) {
+  addProduct (title, description, price, thumbnail, code, stock) {
     if (!title || !description || !price || !thumbnail || !code || !stock) {
-      console.log("Todos los campos deben estar completos");
+      console.log('Todos los campos deben estar completos');
       return;
     }
 
     if (this.products.some((elm) => elm.code === code)) {
-      console.log("No se puede crear el producto porque este código ya existe");
+      console.log('No se puede crear el producto porque este código ya existe');
       return;
     }
 
     let newId;
-    if (this.products == 0) {
+    if (this.products === 0) {
       newId = 1;
     } else {
       newId = this.products[this.products.length - 1].id + 1;
@@ -32,36 +32,36 @@ export class ProductManagerMemory {
       thumbnail,
       code,
       stock,
-      id: newId,
+      id: newId
     };
 
     this.products.push(newProduct);
-    console.log("Producto creado correctamente");
+    console.log('Producto creado correctamente');
   }
 
-  getProductById(id) {
+  getProductById (id) {
     const product = this.products.find((elm) => elm.id === id);
     if (!product) {
-      throw new Error("El producto ingresado no existe");
+      throw new Error('El producto ingresado no existe');
     }
     return product;
   }
 
-  updateProduct(idProduct, fieldsToUpdate, newValue) {
+  updateProduct (idProduct, fieldsToUpdate, newValue) {
     const productToUpdate = this.products.find((prod) => prod.id === idProduct);
     if (!productToUpdate) {
       throw new Error(`El producto con el ID ${idProduct} no existe`);
     }
     productToUpdate[fieldsToUpdate] = newValue;
-    console.log("Producto actualizado");
+    console.log('Producto actualizado');
   }
 
-  deleteProduct(idProduct) {
+  deleteProduct (idProduct) {
     const productsUpdated = this.products.filter(
       (prod) => prod.id !== idProduct
     );
     this.products = productsUpdated;
-    console.log("Producto eliminado correctamente");
+    console.log('Producto eliminado correctamente');
   }
 }
 

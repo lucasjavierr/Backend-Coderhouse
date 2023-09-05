@@ -19,6 +19,7 @@ module.exports = {
     "arrow-parens": ["error", "always"],
     "arrow-spacing": ["error", { "before": true, "after": true }],
     "space-before-function-paren": ["error", "always"],
+    "no-useless-catch": "off",
   },
   overrides: [
     {

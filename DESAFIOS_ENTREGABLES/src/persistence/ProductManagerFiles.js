@@ -1,27 +1,27 @@
-import fs from "fs";
+import fs from 'fs';
 
 export class ProductManagerFiles {
-  constructor(filePath) {
+  constructor (filePath) {
     this.path = filePath;
   }
 
   // metodo para verificar si el archivo existe
-  #fileExist() {
+  #fileExist () {
     return fs.existsSync(this.path);
   }
 
   // metodo para obtener TODOS los archivos
-  async getProducts() {
+  async getProducts () {
     try {
       // verifico si el archivo existe
       if (!this.#fileExist()) {
-        throw new Error("No se pudieron obtener los productos");
+        throw new Error('No se pudieron obtener los productos');
       }
       // leo el archivo de forma síncrona porque sino devuelve una promesa en <pending>
-      const productos = await fs.promises.readFile(this.path, "utf-8");
+      const productos = await fs.promises.readFile(this.path, 'utf-8');
       if (!productos) {
         throw new Error(
-          "No se pudo leer el archivo porque no existe o está vacío"
+          'No se pudo leer el archivo porque no existe o está vacío'
         );
       }
       // y lo convierto a JSON
@@ -34,13 +34,13 @@ export class ProductManagerFiles {
   }
 
   // obtener un producto por ID
-  async getProductById(idProduct) {
+  async getProductById (idProduct) {
     try {
       // verifico si el archivo existe, leo el archivo y lo convierto a JSON
       if (!this.#fileExist()) {
-        throw new Error("No se pudieron obtener los productos");
+        throw new Error('No se pudieron obtener los productos');
       }
-      const productos = await fs.promises.readFile(this.path, "utf-8");
+      const productos = await fs.promises.readFile(this.path, 'utf-8');
       const productosJSON = JSON.parse(productos);
 
       // busco en el array un producto que coincida con el ID ingresado por parámetros
@@ -58,19 +58,19 @@ export class ProductManagerFiles {
   }
 
   // metodo para añadir un producto
-  async addProduct(productInfo) {
+  async addProduct (productInfo) {
     try {
       // verifico si el archivo existe, leo el archivo y lo convierto a JSON
       if (!this.#fileExist()) {
-        throw new Error("No se pudieron obtener los productos");
+        throw new Error('No se pudieron obtener los productos');
       }
-      const productos = await fs.promises.readFile(this.path, "utf-8");
+      const productos = await fs.promises.readFile(this.path, 'utf-8');
       const productosJSON = JSON.parse(productos);
 
       // desestructuro y verifico si existen todos los campos del objeto ingresado
       const { title, description, price, thumbnail, code, stock } = productInfo;
       if (!title || !description || !price || !thumbnail || !code || !stock) {
-        throw new Error("Todos los campos deben estar completos");
+        throw new Error('Todos los campos deben estar completos');
       }
 
       // verifico si ya existe un producto con el mismo code
@@ -81,7 +81,7 @@ export class ProductManagerFiles {
       // id incrementable, si el array no tiene ningun producto, el ID es 1
       // si ya tiene productos, busca el ID del ultimo elemento y le suma 1
       let newId;
-      if (productosJSON == 0) {
+      if (productosJSON.length === 0) {
         newId = 1;
       } else {
         newId = productosJSON[productosJSON.length - 1].id + 1;
@@ -95,29 +95,29 @@ export class ProductManagerFiles {
         thumbnail,
         code,
         stock,
-        id: newId,
+        id: newId
       };
       productosJSON.push(newProduct);
 
       // reemplazo el array antiiguo con el nuevo, que ya contiene el nuevo producto
       await fs.promises.writeFile(
         this.path,
-        JSON.stringify(productosJSON, null, "\t")
+        JSON.stringify(productosJSON, null, '\t')
       );
-      console.log("Producto creado correctamente");
+      console.log('Producto creado correctamente');
     } catch (error) {
       throw error;
     }
   }
 
   // actualizar un producto a traves de un ID
-  async updateProduct(idProduct, fieldsToUpdate, newValue) {
+  async updateProduct (idProduct, fieldsToUpdate, newValue) {
     try {
       // verifico si el archivo existe, leo el archivo y lo convierto a JSON
       if (!this.#fileExist()) {
-        throw new Error("No se pudieron obtener los productos");
+        throw new Error('No se pudieron obtener los productos');
       }
-      const productos = await fs.promises.readFile(this.path, "utf-8");
+      const productos = await fs.promises.readFile(this.path, 'utf-8');
       const productosJSON = JSON.parse(productos);
 
       // busco un producto que coincida con el ID ingresado
@@ -129,7 +129,7 @@ export class ProductManagerFiles {
 
       // verifico si la propiedad ingresada para actualizar existe
       // si no existe, retorno un error
-      const propertyExists = prodToUpdate.hasOwnProperty(fieldsToUpdate);
+      const propertyExists = Object.prototype.hasOwnProperty.call(prodToUpdate, fieldsToUpdate);
       if (!propertyExists) {
         throw new Error(`La propiedad ${fieldsToUpdate} no existe`);
       }
@@ -139,22 +139,22 @@ export class ProductManagerFiles {
       // reescribo el array con el objeto actualizado
       await fs.promises.writeFile(
         this.path,
-        JSON.stringify(productosJSON, null, "\t")
+        JSON.stringify(productosJSON, null, '\t')
       );
-      console.log("Producto actualizado correctamente");
+      console.log('Producto actualizado correctamente');
     } catch (error) {
       throw error;
     }
   }
 
   // eliminar un producto por ID
-  async deleteProduct(idProduct) {
+  async deleteProduct (idProduct) {
     try {
       // verifico si el archivo existe, leo el archivo y lo convierto a JSON
       if (!this.#fileExist()) {
-        throw new Error("No se pudieron obtener los productos");
+        throw new Error('No se pudieron obtener los productos');
       }
-      const productos = await fs.promises.readFile(this.path, "utf-8");
+      const productos = await fs.promises.readFile(this.path, 'utf-8');
       const productosJSON = JSON.parse(productos);
 
       // verifico si existe un producto con el ID ingresado pro parámetros
@@ -171,45 +171,45 @@ export class ProductManagerFiles {
       // reescribo el array original con el actualizado
       await fs.promises.writeFile(
         this.path,
-        JSON.stringify(productsUpdated, null, "\t")
+        JSON.stringify(productsUpdated, null, '\t')
       );
-      console.log("Producto eliminado correctamente");
+      console.log('Producto eliminado correctamente');
     } catch (error) {
       throw error;
     }
   }
 }
 
-const prod1 = {
-  title: "Ryzen 9",
-  description: "Procesador",
+/* const prod1 = {
+  title: 'Ryzen 9',
+  description: 'Procesador',
   price: 700,
-  thumbnail: "sin foto",
-  code: "abc123",
-  stock: 160,
+  thumbnail: 'sin foto',
+  code: 'abc123',
+  stock: 160
 };
 
 const prod2 = {
-  title: "Intel Core i9-13900K",
-  description: "Procesador",
+  title: 'Intel Core i9-13900K',
+  description: 'Procesador',
   price: 850,
-  thumbnail: "sin foto",
-  code: "abc132",
-  stock: 200,
-};
+  thumbnail: 'sin foto',
+  code: 'abc132',
+  stock: 200
+}; */
 
 // pruebas
-const operations = async () => {
+/* const operations = async () => {
   try {
-    const manager = new ProductManagerFiles("./products.json");
+    const manager = new ProductManagerFiles('./products.json');
     await manager.addProduct(prod1);
     await manager.addProduct(prod2);
-    await manager.updateProduct(1, "title", "AMD Ryzen 9 7950X 3D-V Cache");
+    await manager.updateProduct(1, 'title', 'AMD Ryzen 9 7950X 3D-V Cache');
     console.log(manager.getProductById(1));
     // await manager.deleteProduct(1);
     console.log(manager.getProducts());
   } catch (error) {
     console.log(error.message);
   }
-};
+}; */
 // operations();
