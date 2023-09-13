@@ -21,6 +21,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:productId', async (req, res) => {
+  try {
+    const productId = parseInt(req.params.productId);
+    const product = await productsService.getProductById(productId);
+    res.json({ data: product });
+  } catch (error) {
+    res.json({ status: 'error', message: error.message });
+  }
+});
+
 router.post('/', async (req, res) => {
   try {
     const productInfo = req.body;
@@ -42,11 +52,11 @@ router.put('/:productId', async (req, res) => {
   }
 });
 
-router.get('/:productId', async (req, res) => {
+router.delete('/:productId', async (req, res) => {
   try {
     const productId = parseInt(req.params.productId);
-    const product = await productsService.getProductById(productId);
-    res.json({ data: product });
+    await productsService.deleteProduct(productId);
+    res.json({ message: 'Producto eliminado correctamente' });
   } catch (error) {
     res.json({ status: 'error', message: error.message });
   }
