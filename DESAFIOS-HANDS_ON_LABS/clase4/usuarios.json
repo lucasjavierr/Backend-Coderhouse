@@ -1,18 +1,18 @@
 [
 	{
-		"nombre": "Avril",
-		"age": 19
+		"age": 19,
+		"nombre": "Avril"
 	},
 	{
-		"nombre": "Lucas",
-		"age": 19
+		"age": 19,
+		"nombre": "Lucas"
 	},
 	{
-		"nombre": "Avril",
-		"age": 19
+		"age": 19,
+		"nombre": "Avril"
 	},
 	{
-		"nombre": "Lucas",
-		"age": 19
+		"age": 19,
+		"nombre": "Lucas"
 	}
 ]

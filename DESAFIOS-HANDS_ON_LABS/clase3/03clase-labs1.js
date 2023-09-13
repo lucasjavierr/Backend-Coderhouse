@@ -1,45 +1,45 @@
 const sumar = (num1, num2) => {
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     if (num1 === 0 || num2 === 0) {
-      return rej("Operacón innecesaria");
+      return reject(new Error('Operacón innecesaria'));
     }
     if (num1 < 0 || num2 < 0) {
-      return rej("La calculadora sólo debe devolver valores positivos");
+      return reject(new Error('La calculadora sólo debe devolver valores positivos'));
     }
-    res(num1 + num2);
+    resolve(num1 + num2);
   });
 };
 
 const restar = (num1, num2) => {
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     if (num1 === 0 || num2 === 0) {
-      return rej("Operacón inválida");
+      return reject(new Error('Operacón inválida'));
     }
     if (num1 < 0 || num2 < 0) {
-      return rej("La calculadora sólo debe devolver valores positivos");
+      return reject(new Error('La calculadora sólo debe devolver valores positivos'));
     }
-    res(num1 - num2);
+    resolve(num1 - num2);
   });
 };
 
 const multiplicar = (num1, num2) => {
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     if (num1 < 0 || num2 < 0) {
-      return rej("La calculadora sólo debe devolver valores positivos");
+      return reject(new Error('La calculadora sólo debe devolver valores positivos'));
     }
-    res(num1 * num2);
+    resolve(num1 * num2);
   });
 };
 
 const dividir = (num1, num2) => {
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     if (num1 === 0 || num2 === 0) {
-      return rej("Operacón inválida");
+      return reject(new Error('Operacón inválida'));
     }
     if (num1 < 0 || num2 < 0) {
-      return rej("La calculadora sólo debe devolver valores positivos");
+      return reject(new Error('La calculadora sólo debe devolver valores positivos'));
     }
-    res(num1 / num2);
+    resolve(num1 / num2);
   });
 };
 

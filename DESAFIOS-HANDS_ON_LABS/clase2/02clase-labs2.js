@@ -1,20 +1,20 @@
 class TicketManager {
   #precioBaseGanancia = 0.15;
-  constructor() {
+  constructor () {
     this.eventos = [];
   }
 
-  getEventos() {
+  getEventos () {
     console.log(this.eventos);
   }
 
-  agregarEvento(nombre, lugar, precio, capacidad = 50, fecha = new Date()) {
+  agregarEvento (nombre, lugar, precio, capacidad = 50, fecha = new Date()) {
     if (!nombre || !lugar || !precio) {
-      return console.log("Los campos deben estar completos");
+      return console.log('Los campos deben estar completos');
     }
 
     let newId;
-    if (this.eventos == 0) {
+    if (this.eventos.length === 0) {
       newId = 1;
     } else {
       newId = this.eventos[this.eventos.length - 1].id + 1;
@@ -27,27 +27,27 @@ class TicketManager {
       precio: precio * (1 + this.#precioBaseGanancia),
       capacidad,
       fecha,
-      participantes: [],
+      participantes: []
     };
 
     this.eventos.push(nuevoEvento);
   }
 
-  agregarUsuario(idEvento, idUsuario) {
+  agregarUsuario (idEvento, idUsuario) {
     const evento = this.eventos.find((evento) => evento.id === idEvento);
 
     if (!evento) {
-      console.log("El evento no existe");
+      console.log('El evento no existe');
     } else {
       evento.participantes.push(idUsuario);
     }
   }
 
-  ponerEventoEnGira(idEvento, nuevaLocalidad, nuevaFecha) {
+  ponerEventoEnGira (idEvento, nuevaLocalidad, nuevaFecha) {
     const eventoExistente = this.eventos.find((ev) => ev.id === idEvento);
 
     if (!eventoExistente) {
-      console.log("El evento ingresado no existe");
+      console.log('El evento ingresado no existe');
     } else {
       eventoExistente.lugar = nuevaLocalidad;
       eventoExistente.fecha = nuevaFecha;
@@ -58,15 +58,15 @@ class TicketManager {
 const manager1 = new TicketManager();
 console.log(manager1);
 manager1.agregarEvento(
-  "Ver segunda temporada de Loki",
-  "Disney+",
+  'Ver segunda temporada de Loki',
+  'Disney+',
   800,
   2,
-  new Date("2023-10-06")
+  new Date('2023-10-06')
 );
 manager1.agregarEvento(
-  "Cena con mi novia",
-  "Holly Posadas",
+  'Cena con mi novia',
+  'Holly Posadas',
   3000,
   2,
   new Date()

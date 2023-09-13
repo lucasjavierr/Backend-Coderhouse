@@ -1,8 +1,8 @@
-const personas = ["Lucas", "Avril", "Dani", "Juli", "Fabri"];
+const personas = ['Lucas', 'Avril', 'Dani', 'Juli', 'Fabri'];
 
-function mostrarLista(array) {
+function mostrarLista (array) {
   if (array.length <= 0) {
-    console.log("Lista vacía");
+    console.log('Lista vacía');
   } else {
     array.map((elm) => console.log(elm));
   }
