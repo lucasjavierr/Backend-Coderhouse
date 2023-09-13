@@ -1,36 +1,12 @@
 import express from 'express';
-import { ProductManagerFiles } from './persistence/ProductManagerFiles.js';
-// import { ProductManagerMemory } from "./persistence/ProductManagerMemory.js";
-
-const managerProductService = new ProductManagerFiles('./files/products.json');
+import { productsRouter } from './routes/products.routes.js';
+import { cartsRouter } from './routes/carts.routes.js';
 
 const PORT = 8080;
-
 const app = express();
 
 app.listen(PORT, () => console.log('Server working'));
 
-app.get('/products', async (req, res) => {
-  try {
-    const limit = parseInt(req.query.limit);
-    const products = await managerProductService.getProducts();
-    if (limit) {
-      const productsLimit = products.slice(0, limit);
-      res.send(productsLimit);
-    } else {
-      res.send(products);
-    }
-  } catch (error) {
-    res.send(error.message);
-  }
-});
-
-app.get('/products/:productId', async (req, res) => {
-  try {
-    const productId = parseInt(req.params.productId);
-    const product = await managerProductService.getProductById(productId);
-    res.send(product);
-  } catch (error) {
-    res.send(error.message);
-  }
-});
+app.use(express.json());
+app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter);
