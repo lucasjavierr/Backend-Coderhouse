@@ -13,21 +13,23 @@ export class ProductManagerFiles {
     return fs.existsSync(this.path);
   }
 
+  async #writeFile (infoToSave) {
+    await fs.promises.writeFile(this.path, JSON.stringify(infoToSave, null, '\t'));
+  }
+
   // metodo para obtener TODOS los archivos
   async getProducts () {
     try {
       // verifico si el archivo existe
-      if (!this.#fileExist()) throw new Error('No se pudieron obtener los productos');
+      if (!this.#fileExist()) throw new Error('No se pudieron obtener los productos.');
 
-      // leo el archivo de forma síncrona porque sino devuelve una promesa en <pending>
-      const productos = await fs.promises.readFile(this.path, 'utf-8');
-      if (!productos) throw new Error('No se pudo leer el archivo porque no existe o está vacío');
-
-      // lo convierto a JSON
-      const productosJSON = JSON.parse(productos);
+      // recupero los productos y los convierto en json
+      const productsData = await fs.promises.readFile(this.path, 'utf-8');
+      if (!productsData) throw new Error('No se pudo leer el archivo porque no existe o está vacío.');
+      const products = JSON.parse(productsData);
 
       // retorno todos los productos
-      return productosJSON;
+      return products;
     } catch (error) {
       throw error;
     }
@@ -36,15 +38,13 @@ export class ProductManagerFiles {
   // obtener un producto por ID
   async getProductById (idProduct) {
     try {
-      // verifico si el archivo existe, leo el archivo y lo convierto a JSON
-      if (!this.#fileExist()) throw new Error('No se pudo obtener el producto');
-      const productos = await fs.promises.readFile(this.path, 'utf-8');
-      const productosJSON = JSON.parse(productos);
+      // obtengo los productos formateados
+      const products = await this.getProducts();
 
       // busco en el array un producto que coincida con el ID ingresado por parámetros
-      // si no lo encuentra, devuelve un error diciendo que no existe
-      const product = productosJSON.find((prod) => prod.id === idProduct);
-      if (!product) throw new Error(`El producto con el ID "${idProduct} no existe"`);
+      // si no lo encuentra, devuelve un error
+      const product = products.find((prod) => prod.id === idProduct);
+      if (!product) throw new Error(`El producto con el ID "${idProduct}" no existe.`);
 
       // retorno el producto
       return product;
@@ -56,32 +56,30 @@ export class ProductManagerFiles {
   // metodo para añadir un producto
   async createProduct (productInfo) {
     try {
-      // verifico si el archivo existe, leo el archivo y lo convierto a JSON
-      if (!this.#fileExist()) throw new Error('No se pudieron obtener los productos');
-
-      const productos = await fs.promises.readFile(this.path, 'utf-8');
-      const productosJSON = JSON.parse(productos);
-
       // desestructuro y verifico si existen todos los campos del objeto ingresado
+      // si alguno no existe, devuevo un error
       const { title, description, price, thumbnails, code, stock, status = true } = productInfo;
       if (!title ||
         !description ||
         !price ||
         !thumbnails ||
         !code || !stock
-      ) throw new Error('Todos los campos deben estar completos');
+      ) throw new Error('Todos los campos deben estar completos.');
+
+      // obtengo los productos formateados
+      const products = await this.getProducts();
 
       // verifico si ya existe un producto con el mismo code
-      if (productosJSON.some(
+      if (products.some(
         (prod) => prod.code === code)
-      ) throw new Error(`Ya existe un producto con el código "${code}"`);
+      ) throw new Error(`Ya existe un producto con el código "${code}".`);
 
       // id incrementable, si el array no tiene ningun producto, el ID es 1
       // si ya tiene productos, busca el ID del ultimo elemento y le suma 1
-      if (productosJSON.length === 0) {
+      if (products.length === 0) {
         this.#newId = 1;
       } else {
-        this.#newId = productosJSON[productosJSON.length - 1].id + 1;
+        this.#newId = products[products.length - 1].id + 1;
       }
 
       // creo el objeto con sus propiedades y lo pusheo al array de productos
@@ -95,11 +93,11 @@ export class ProductManagerFiles {
         stock,
         status
       };
-      productosJSON.push(newProduct);
+      products.push(newProduct);
 
       // reemplazo el array antiiguo con el nuevo, que ya contiene el nuevo producto
-      await fs.promises.writeFile(this.path, JSON.stringify(productosJSON, null, '\t'));
-      console.log('Producto creado correctamente');
+      this.#writeFile(products);
+      console.log('Producto creado correctamente.');
     } catch (error) {
       throw error;
     }
@@ -108,38 +106,35 @@ export class ProductManagerFiles {
   // actualizar un producto a traves de un ID
   async updateProduct (idProduct, infoToUpdate) {
     try {
-      // verifico si el archivo existe, leo el archivo y lo convierto a JSON
-      if (!this.#fileExist()) throw new Error('No se pudieron obtener los productos');
-      const productos = await fs.promises.readFile(this.path, 'utf-8');
-      const productosJSON = JSON.parse(productos);
-
+      // verifico que el objeto con los nuevos valores contiene todas las propiedades
       const { title, description, price, thumbnails, code, stock } = infoToUpdate;
       if (!title ||
         !description ||
         !price ||
         !thumbnails ||
         !code || !stock
-      ) throw new Error('No se puede modificar el producto. Debe ingresar todas las propiedades');
+      ) throw new Error('No se puede modificar el producto. Debe ingresar todas las propiedades.');
 
       // verifico que la nueva informacion no actualice el id
-      if (infoToUpdate.id) throw new Error('No se puede actualizar el ID de un producto');
+      if (infoToUpdate.id) throw new Error('No se puede actualizar el ID de un producto.');
 
-      // busco un producto que coincida con el ID ingresado
+      // obtengo los productos formateados
+      const products = await this.getProducts();
+
+      // busco la posicion del producto que coincida con el ID ingresado
       // si no existe, retorno un error
-      const prodToUpdate = productosJSON.find((prod) => prod.id === idProduct);
-      if (!prodToUpdate) throw new Error(`El producto con el ID "${idProduct}" no existe`);
+      const productIndex = products.findIndex((prod) => prod.id === idProduct);
+      if (!productIndex) throw new Error(`No se pudo encontrar el producto con el ID "${idProduct}".`);
 
-      const productIndex = productosJSON.findIndex((prod) => prod.id === idProduct);
-      if (!productIndex) throw new Error(`No se pudo encontrar el producto con el ID ${idProduct}`);
-
-      productosJSON[productIndex] = {
-        ...productosJSON[productIndex],
+      // actualizo el producto con la nueva información
+      products[productIndex] = {
+        ...products[productIndex],
         ...infoToUpdate
       };
 
       // reescribo el array con el objeto actualizado
-      await fs.promises.writeFile(this.path, JSON.stringify(productosJSON, null, '\t'));
-      console.log('Producto actualizado correctamente');
+      this.#writeFile(products);
+      console.log('Producto actualizado correctamente.');
     } catch (error) {
       throw error;
     }
@@ -148,23 +143,21 @@ export class ProductManagerFiles {
   // eliminar un producto por ID
   async deleteProduct (idProduct) {
     try {
-      // verifico si el archivo existe, leo el archivo y lo convierto a JSON
-      if (!this.#fileExist()) throw new Error('No se pudieron obtener los productos');
-      const productos = await fs.promises.readFile(this.path, 'utf-8');
-      const productosJSON = JSON.parse(productos);
+      // obtengo los productos formateados
+      const products = await this.getProducts();
 
-      // verifico si existe un producto con el ID ingresado pro parámetros
+      // verifico si existe un producto con el ID ingresado por parámetros
       // si no existe, retorno un error
-      if (!productosJSON.some(
+      if (!products.some(
         (prod) => prod.id === idProduct)
-      ) throw new Error(`El producto con el ID "${idProduct}" no existe`);
+      ) throw new Error(`El producto con el ID "${idProduct}" no existe.`);
 
       // filtro el array de productos con todos los productos que NO coincidan con el ID ingresado
-      const productsUpdated = productosJSON.filter((prod) => prod.id !== idProduct);
+      const productsUpdated = products.filter((prod) => prod.id !== idProduct);
 
       // reescribo el array original con el actualizado
-      await fs.promises.writeFile(this.path, JSON.stringify(productsUpdated, null, '\t'));
-      console.log('Producto eliminado correctamente');
+      this.#writeFile(productsUpdated);
+      console.log('Producto eliminado correctamente.');
     } catch (error) {
       throw error;
     }
