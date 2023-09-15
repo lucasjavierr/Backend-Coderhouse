@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
     // sino, devuelvo todos los productos
     res.json({ data: products });
   } catch (error) {
-    res.json({ status: 'error', message: error.message });
+    res.status(404).json({ status: 'error', message: error.message });
   }
 });
 
@@ -27,7 +27,7 @@ router.get('/:productId', async (req, res) => {
     const product = await productsService.getProductById(productId);
     res.json({ data: product });
   } catch (error) {
-    res.json({ status: 'error', message: error.message });
+    res.status(404).json({ status: 'error', message: error.message });
   }
 });
 
@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
     await productsService.createProduct(productInfo);
     res.json({ message: 'Producto creado correctamente' });
   } catch (error) {
-    res.json({ status: 'error', message: error.message });
+    res.status(404).json({ status: 'error', message: error.message });
   }
 });
 
@@ -48,7 +48,7 @@ router.put('/:productId', async (req, res) => {
     await productsService.updateProduct(productId, productInfoToUpdate);
     res.json({ message: 'Producto actualizado correctamente' });
   } catch (error) {
-    res.json({ status: 'error', message: error.message });
+    res.status(404).json({ status: 'error', message: error.message });
   }
 });
 
@@ -58,7 +58,7 @@ router.delete('/:productId', async (req, res) => {
     await productsService.deleteProduct(productId);
     res.json({ message: 'Producto eliminado correctamente' });
   } catch (error) {
-    res.json({ status: 'error', message: error.message });
+    res.status(404).json({ status: 'error', message: error.message });
   }
 });
 
