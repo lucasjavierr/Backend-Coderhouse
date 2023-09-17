@@ -99,7 +99,6 @@ export class CartsManager {
       // reescribo el archivo y retorno el producto agregado
       this.#writeFile(carts);
       console.log('Producto agregado correctamente');
-      return carts[cartIndex].products[productIndex];
     } catch (error) {
       throw error;
     }
