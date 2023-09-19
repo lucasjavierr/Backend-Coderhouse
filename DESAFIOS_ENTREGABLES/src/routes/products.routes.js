@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { productsService } from '../persistence/index.js';
+import { productsService } from '../managers/index.js';
 
 const router = Router();
 

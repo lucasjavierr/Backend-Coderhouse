@@ -1,5 +1,5 @@
-import { ProductManagerFiles } from './files/ProductManagerFiles.js';
-import { CartsManager } from './files/CartManager.js';
+import { ProductManagerFiles } from './ProductManagerFiles.js';
+import { CartsManager } from './CartManager.js';
 import { __dirname } from '../utils.js';
 import path from 'path';
 

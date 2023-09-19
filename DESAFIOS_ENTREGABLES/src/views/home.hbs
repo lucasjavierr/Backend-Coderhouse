@@ -1,0 +1,16 @@
+<h1>Página del Home</h1>
+
+{{#each products}}
+  {{#if this.status}}
+    <div>
+      <picture>
+        <img src={{this.thumbnail}} />
+      </picture>
+      <div>
+        <h3>{{this.title}}</h3>
+        <p>${{this.price}}</p>
+        <p>{{this.description}}</p>
+      </div>
+    </div>
+  {{/if}}
+{{/each}}

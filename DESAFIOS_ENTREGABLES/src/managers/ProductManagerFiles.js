@@ -58,7 +58,7 @@ export class ProductManagerFiles {
     try {
       // desestructuro y verifico si existen todos los campos del objeto ingresado
       // si alguno no existe, devuevo un error
-      const { title, description, price, thumbnails, code, stock, status = true } = productInfo;
+      const { title, description, price, thumbnails = [], code, stock, status = true } = productInfo;
       if (!title ||
         !description ||
         !price ||
