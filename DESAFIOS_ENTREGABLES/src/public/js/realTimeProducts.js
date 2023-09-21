@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 const socketClient = io();
 
 const productsContainer = document.getElementById('productsContainer');
@@ -29,19 +31,19 @@ socketClient.on('allProducts', (dataProducts) => {
   let productsElements = '';
   dataProducts.forEach((elm) => {
     productsElements += `
-    <li>
+    <div>
       <picture>
         <img src=${elm.thumbnails[0]} />
       </picture>
-      <div>
+      <div class="infoContainer">
         <h3>${elm.title}</h3>
         <p>$${elm.price}</p>
         <p>${elm.description}</p>
       </div>
-      <div>
+      <div class="buttonContainer">
         <button onClick='deleteProduct(${elm.id})'>Eliminar producto</button>
       </div>
-    </li>
+    </div>
     `;
     productsContainer.innerHTML = productsElements;
   });

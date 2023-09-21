@@ -1,14 +1,14 @@
 [
 	{
 		"id": 1,
-		"title": "AMD Ryzen 9 7950X 3D-V Cache",
+		"title": "AMD Ryzen 9 7950X 3D-V Caché",
 		"description": "Procesador",
-		"price": 700,
+		"price": 800,
 		"thumbnails": [
-			"sin foto"
+			"https://firebasestorage.googleapis.com/v0/b/component-hardware-6c483.appspot.com/o/products-img%2Fryzen9-7950x3d.png?alt=media&token=e7d525b8-2bdc-43cb-8df0-b5d9201410c1"
 		],
 		"code": "abc123",
-		"stock": 160,
+		"stock": 100,
 		"status": true
 	},
 	{
@@ -58,6 +58,16 @@
 		],
 		"code": "abcdef",
 		"stock": 160,
+		"status": true
+	},
+	{
+		"id": 6,
+		"title": "Intel i7-13700K",
+		"description": "Procesador",
+		"price": 700,
+		"thumbnails": [],
+		"code": "jhg789",
+		"stock": 100,
 		"status": true
 	}
 ]

@@ -40,13 +40,13 @@ io.on('connection', async (socket) => {
 
   // recibir los datos del cliente para crear el producto
   socket.on('addProduct', async (productData) => {
-    const result = await productsService.createProduct(productData);
+    await productsService.createProduct(productData);
     const products = await productsService.getProducts();
     socket.emit('allProducts', products);
   });
 
   socket.on('productId', async (idProduct) => {
-    const productsUpdated = await productsService.deleteProduct(idProduct);
+    await productsService.deleteProduct(idProduct);
     const products = await productsService.getProducts();
     socket.emit('allProducts', products);
   });
