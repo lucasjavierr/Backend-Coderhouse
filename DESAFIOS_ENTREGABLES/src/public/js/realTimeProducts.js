@@ -26,7 +26,7 @@ createProductForm.addEventListener('submit', (e) => {
 
 // recibimos los productos
 socketClient.on('allProducts', (dataProducts) => {
-  console.log('products', dataProducts);
+  // console.log('products', dataProducts);
   let productsElements = '';
   dataProducts.forEach((elm) => {
     productsElements += `
