@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { cartsService } from '../managers/index.js';
+import { cartsService } from '../dao/index.js';
 
 const router = Router();
 
 router.get('/', async (req, res) => {
   try {
     const carts = await cartsService.getCarts();
-    res.json({ data: carts });
+    res.json({ status: 'success', data: carts });
   } catch (error) {
     res.json({ status: 'error', message: error.message });
   }
@@ -14,9 +14,9 @@ router.get('/', async (req, res) => {
 
 router.get('/:cartId', async (req, res) => {
   try {
-    const cartId = parseInt(req.params.cartId);
+    const cartId = req.params.cartId;
     const cart = await cartsService.getCartById(cartId);
-    res.json({ data: cart });
+    res.json({ status: 'success', data: cart });
   } catch (error) {
     res.json({ status: 'error', message: error.message });
   }
@@ -24,19 +24,29 @@ router.get('/:cartId', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    await cartsService.createCart();
-    res.json({ message: 'Carrito creado correctamente' });
+    const cartCreated = await cartsService.createCart();
+    res.json({ status: 'success', data: cartCreated });
   } catch (error) {
     res.json({ status: 'error', message: error.message });
   }
 });
 
-router.post('/:cartId/product/:productId', async (req, res) => {
+router.put('/:cartId/product/:productId', async (req, res) => {
   try {
-    const cartId = parseInt(req.params.cartId);
-    const productId = parseInt(req.params.productId);
+    const cartId = req.params.cartId;
+    const productId = req.params.productId;
     const productAdded = await cartsService.addProductToCart(cartId, productId);
-    res.json({ data: productAdded });
+    res.json({ status: 'success', data: productAdded });
+  } catch (error) {
+    res.json({ status: 'error', message: error.message });
+  }
+});
+
+router.delete('/:cartId', async (req, res) => {
+  try {
+    const cartId = req.params.cartId;
+    const productAdded = await cartsService.deleteCart(cartId);
+    res.json({ status: 'success', data: productAdded });
   } catch (error) {
     res.json({ status: 'error', message: error.message });
   }

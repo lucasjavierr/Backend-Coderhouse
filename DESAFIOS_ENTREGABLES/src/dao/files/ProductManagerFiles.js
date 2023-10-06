@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export class ProductManagerFiles {
+export class ProductsManagerFiles {
   constructor (filePath) {
     this.path = filePath;
   }
@@ -63,7 +63,8 @@ export class ProductManagerFiles {
         !description ||
         !price ||
         !thumbnails ||
-        !code || !stock
+        !code ||
+        !stock
       ) throw new Error('Todos los campos deben estar completos.');
 
       // obtengo los productos formateados
@@ -112,7 +113,8 @@ export class ProductManagerFiles {
         !description ||
         !price ||
         !thumbnails ||
-        !code || !stock
+        !code ||
+        !stock
       ) throw new Error('No se puede modificar el producto. Debe ingresar todas las propiedades.');
 
       // verifico que la nueva informacion no actualice el id

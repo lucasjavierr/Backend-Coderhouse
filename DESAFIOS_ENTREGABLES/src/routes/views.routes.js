@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { productsService } from '../managers/index.js';
+import { productsService } from '../dao/index.js';
 
 const router = Router();
 
@@ -15,6 +15,10 @@ router.get('/', async (req, res) => {
 
 router.get('/realTimeProducts', (req, res) => {
   res.render('realTime');
+});
+
+router.get('/chat', async (req, res) => {
+  res.render('chat');
 });
 
 export { router as viewsRouter };

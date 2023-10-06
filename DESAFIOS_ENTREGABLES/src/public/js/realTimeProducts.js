@@ -18,7 +18,6 @@ createProductForm.addEventListener('submit', (e) => {
   }
   jsonData.price = parseInt(jsonData.price);
   jsonData.stock = parseInt(jsonData.stock);
-  console.log(jsonData);
 
   // enviamos el objeto a servidor
   socketClient.emit('addProduct', jsonData);
@@ -31,16 +30,16 @@ socketClient.on('allProducts', (dataProducts) => {
   let productsElements = '';
   dataProducts.forEach((elm) => {
     productsElements += `
-    <div>
-      <picture>
-        <img src=${elm.thumbnails[0]} />
+    <div class='card_body'>
+      <picture class='card_image_container'>
+        <img src='${elm.thumbnail}' />
       </picture>
-      <div class="infoContainer">
+      <div class="card_info_container">
         <h3>${elm.title}</h3>
         <p>$${elm.price}</p>
         <p>${elm.description}</p>
       </div>
-      <div class="buttonContainer">
+      <div class="card_button_container">
         <button onClick='deleteProduct(${elm.id})'>Eliminar producto</button>
       </div>
     </div>

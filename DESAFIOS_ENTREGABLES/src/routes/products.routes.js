@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { productsService } from '../managers/index.js';
+import { productsService } from '../dao/index.js';
 
 const router = Router();
 
@@ -11,42 +11,43 @@ router.get('/', async (req, res) => {
     // si tiene limite, devuelvo los productos con ese limite
     if (limit) {
       const productsLimit = products.slice(0, limit);
-      return res.json({ data: productsLimit });
+      return res.json({ status: 'success', data: productsLimit });
     }
 
     // sino, devuelvo todos los productos
-    res.json({ data: products });
+    res.json({ status: 'success', data: products });
   } catch (error) {
-    res.status(404).json({ status: 'error', message: error.message });
+    res.status(500).json({ status: 'error', message: error.message });
   }
 });
 
 router.get('/:productId', async (req, res) => {
   try {
-    const productId = parseInt(req.params.productId);
+    const productId = req.params.productId;
     const product = await productsService.getProductById(productId);
-    res.json({ data: product });
+    if (!product) throw new Error(`El producto con el ID '${productId}' no existe.`);
+    res.json({ status: 'success', data: product });
   } catch (error) {
-    res.status(404).json({ status: 'error', message: error.message });
+    res.status(500).json({ status: 'error', message: error.message });
   }
 });
 
 router.post('/', async (req, res) => {
   try {
     const productInfo = req.body;
-    await productsService.createProduct(productInfo);
-    res.json({ message: 'Producto creado correctamente' });
+    const productCreated = await productsService.createProduct(productInfo);
+    res.json({ status: 'success', data: productCreated });
   } catch (error) {
-    res.status(404).json({ status: 'error', message: error.message });
+    res.status(500).json({ status: 'error', message: error.message });
   }
 });
 
 router.put('/:productId', async (req, res) => {
   try {
-    const productId = parseInt(req.params.productId);
+    const productId = req.params.productId;
     const productInfoToUpdate = req.body;
-    await productsService.updateProduct(productId, productInfoToUpdate);
-    res.json({ message: 'Producto actualizado correctamente' });
+    const productUpdated = await productsService.updateProduct(productId, productInfoToUpdate);
+    res.json({ status: 'success', data: productUpdated });
   } catch (error) {
     res.status(404).json({ status: 'error', message: error.message });
   }
@@ -54,9 +55,9 @@ router.put('/:productId', async (req, res) => {
 
 router.delete('/:productId', async (req, res) => {
   try {
-    const productId = parseInt(req.params.productId);
-    await productsService.deleteProduct(productId);
-    res.json({ message: 'Producto eliminado correctamente' });
+    const productId = req.params.productId;
+    const productDeleted = await productsService.deleteProduct(productId);
+    res.json({ status: 'succes', data: productDeleted });
   } catch (error) {
     res.status(404).json({ status: 'error', message: error.message });
   }

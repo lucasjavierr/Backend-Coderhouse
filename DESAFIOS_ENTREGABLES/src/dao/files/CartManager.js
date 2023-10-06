@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export class CartsManager {
+export class CartsManagerFiles {
   constructor (filePath) {
     this.path = filePath;
   }
@@ -79,6 +79,7 @@ export class CartsManager {
     try {
       // recupero el archivo de carritos
       const carts = await this.getCarts();
+      console.log(carts);
 
       // obtengo la posicion del carrito
       // si no existe, devuelvo error
