@@ -11,7 +11,7 @@ const chatPanel = document.getElementById('chat_panel');
 let user; // => variable para identificar al usuario
 
 // eslint-disable-next-line no-undef
-/* Swal.fire({
+Swal.fire({
   title: 'Chat con Websocket',
   text: 'Ingresa tu nombre de usuario',
   input: 'text',
@@ -24,7 +24,7 @@ let user; // => variable para identificar al usuario
   user = inputValue.value;
   userName.innerHTML = user;
   socketClient.emit('authenticated', user);
-}); */
+});
 
 socketClient.on('allMessages', (dataServer) => {
   console.log(dataServer);
