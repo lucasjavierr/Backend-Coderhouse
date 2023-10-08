@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
 
     // si tiene limite, devuelvo los productos con ese limite
     if (limit) {
-      const productsLimit = products.slice(0, limit);
+      const productsLimit = await productsService.getProducts(limit);
       return res.json({ status: 'success', data: productsLimit });
     }
 

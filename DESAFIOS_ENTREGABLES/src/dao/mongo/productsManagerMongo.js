@@ -5,8 +5,12 @@ export class ProductsManagerMongo {
     this.model = productsModel;
   }
 
-  async getProducts () {
+  async getProducts (limit) {
     try {
+      if (limit) {
+        const productsWithLimit = await this.model.find().limit(limit).lean();
+        return productsWithLimit;
+      }
       const products = await this.model.find().lean();
       return products;
     } catch (error) {
