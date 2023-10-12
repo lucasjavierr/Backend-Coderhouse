@@ -1,3 +1,5 @@
+/* MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN */
+/* ----------------------------------------------------------------------------------- */
 * {
   margin: 0;
   padding: 0;
@@ -25,6 +27,23 @@ header .navbar ul {
 
 .navbar {
   padding-right: 1rem;
+}
+/* ----------------------------------------------------------------------------------- */
+
+/* HOME - HOME - HOME - HOME - HOME - HOME - HOME - HOME - HOME - HOME - HOME - HOME */
+/* ----------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------- */
+
+/* PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS */
+/* ----------------------------------------------------------------------------------- */
+.productsContainer h1,
+.productsContainer h2,
+.productsContainer h3,
+.productsContainer h4,
+.productsContainer h5,
+.productsContainer h6 {
+  text-wrap: wrap;
+  text-align: center;
 }
 
 .productsContainer {
@@ -62,16 +81,6 @@ header .navbar ul {
   max-width: 200px;
 }
 
-.productsContainer h1,
-.productsContainer h2,
-.productsContainer h3,
-.productsContainer h4,
-.productsContainer h5,
-.productsContainer h6 {
-  text-wrap: wrap;
-  text-align: center;
-}
-
 .card_info_container {
   width: 100%;
   display: flex;
@@ -83,20 +92,6 @@ header .navbar ul {
   flex-grow: 1;
 }
 
-#createProductForm {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  max-width: 1280px;
-  margin: 0 auto;
-  gap: 1rem;
-}
-
-#createProductForm input {
-  width: 600px;
-}
-
 .card_button_container {
   width: 100%;
   display: flex;
@@ -104,7 +99,10 @@ header .navbar ul {
   align-items: end;
   cursor: pointer;
 }
+/* ----------------------------------------------------------------------------------- */
 
+/* CHAT - CHAT - CHAT - CHAT - CHAT - CHAT - CHAT - CHAT - CHAT - CHAT - CHAT - CHAT */
+/* ----------------------------------------------------------------------------------- */
 section {
   display: flex;
   justify-content: center;
@@ -127,6 +125,23 @@ section {
   justify-content: center;
 }
 
-#chat_panel p {
-  /* color: red; */
+/* #chat_panel p {} */
+/* .input_message_container {} */
+/* ----------------------------------------------------------------------------------- */
+
+/* REALTIME - REALTIME - REALTIME - REALTIME - REALTIME - REALTIME - REALTIME - REALTIME */
+/* ----------------------------------------------------------------------------------- */
+#createProductForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  gap: 1rem;
 }
+
+#createProductForm input {
+  width: 600px;
+}
+/* ----------------------------------------------------------------------------------- */

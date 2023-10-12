@@ -5,34 +5,32 @@ export class ProductsManagerMongo {
     this.model = productsModel;
   }
 
-  async getProducts (limit) {
+  async getProducts (query, options) {
     try {
-      if (limit) {
-        const productsWithLimit = await this.model.find().limit(limit).lean();
-        return productsWithLimit;
-      }
-      const products = await this.model.find().lean();
+      const products = await this.model.paginate(query, options);
+      if (products.docs.length === 0) throw new Error('Se produjo un error al obtener los productos.');
       return products;
     } catch (error) {
       console.log('getProducts:', error.message);
-      throw new Error('No se pudo obtener los productos.');
+      throw new Error('Se produjo un error al obtener los productos.');
     }
   }
 
   async getProductById (productId) {
     try {
-      const product = await this.model.findById(productId);
+      const product = await this.model.findById(productId).lean();
+      if (!product) throw new Error('Se produjo un error al obtener el producto');
       return product;
     } catch (error) {
       console.log('getProductById:', error.message);
-      throw new Error('No se pudo encontrar el producto.');
+      throw new Error('Se produjo un error al buscar el producto.');
     }
   }
 
   async createProduct (productInfo) {
     try {
-      const result = await this.model.create(productInfo);
-      return result;
+      const productCreated = await this.model.create(productInfo);
+      return productCreated;
     } catch (error) {
       console.log('createProduct:', error.message);
       throw new Error('No se pudo crear el producto.');
@@ -41,9 +39,9 @@ export class ProductsManagerMongo {
 
   async updateProduct (productId, newProductInfo) {
     try {
-      const result = await this.model.findByIdAndUpdate(productId, newProductInfo, { new: true });
-      if (!result) throw new Error('No se pudo encontrar el producto a actualizar.');
-      return result;
+      const productUpdated = await this.model.findByIdAndUpdate(productId, newProductInfo, { new: true });
+      if (!productUpdated) throw new Error('No se pudo encontrar el producto a actualizar.');
+      return productUpdated;
     } catch (error) {
       console.log('updateProduct:', error.message);
       throw new Error('No se pudo actualizar el producto.');

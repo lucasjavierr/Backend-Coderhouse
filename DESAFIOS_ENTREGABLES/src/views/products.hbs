@@ -1,0 +1,38 @@
+<h1>Listado de productos</h1>
+
+<h2>Categorías</h2>
+<ul>
+  <li><a href="/products">Todos los productos</a></li>
+  <li><a href="/products?category=processor">Procesadores</a></li>
+  <li><a href="/products?category=graphic-card">Tarjetas Gráficas</a></li>
+  <li><a href="/products?category=ram-memory">Memorias RAM</a></li>
+  <li><a href="/products?category=storage">Almacenamiento</a></li>
+</ul>
+
+<div class="productsContainer">
+  {{#each payload}}
+    <div class="card_body">
+      <picture class="card_image_container">
+        <img src={{{this.thumbnail}}} />
+      </picture>
+      <div class="card_info_container">
+        <h3>{{this.title}}</h3>
+        <p>${{this.price}}</p>
+        <p>{{this.description}}</p>
+      </div>
+      <div class="card_button_container">
+        <button class="add-to-cart-button" data-product-id="{{this._id}}">Agregar al carrito</button>
+      </div>
+    </div>
+  {{/each}}
+</div>
+
+{{#if prevLink}}
+  <a href="{{prevLink}}">Anterior</a>
+{{/if}}
+
+{{#if nextLink}}
+  <a href="{{nextLink}}">Siguiente</a>
+{{/if}}
+
+<script src="/js/products.js"></script>

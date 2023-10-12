@@ -4,7 +4,6 @@ import path from 'path';
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 import { productsService, chatService } from './dao/index.js';
-
 import { connectDB } from './config/dbConnection.js';
 
 import { productsRouter } from './routes/products.routes.js';
@@ -45,7 +44,7 @@ io.on('connection', async (socket) => {
   // obtengo los mensajes y productos y los envio cuando el cliente se conecta
   const products = await productsService.getProducts();
   const messages = await chatService.getMessages();
-  socket.emit('allProducts', products);
+  socket.emit('allProducts', { products: products.docs });
   socket.emit('allMessages', messages);
 
   // recibir los datos del cliente para crear el producto
@@ -55,6 +54,7 @@ io.on('connection', async (socket) => {
     socket.emit('allProducts', products);
   });
 
+  // recibo el ID para eliminar un producto
   socket.on('productId', async (idProduct) => {
     await productsService.deleteProduct(idProduct);
     const products = await productsService.getProducts();
@@ -66,6 +66,7 @@ io.on('connection', async (socket) => {
     socket.broadcast.emit('newUser', `El usuario '${data}' se ha conectado!`);
   });
 
+  // recibo el mensaje enviado desde el cliente y actualizo la lista de mensajes
   socket.on('msgChat', async (clientData) => {
     await chatService.addMessage(clientData);
     // y enviamos ese mensaje a todos los usuarios conectados
