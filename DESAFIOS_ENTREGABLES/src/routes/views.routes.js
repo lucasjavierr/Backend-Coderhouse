@@ -3,14 +3,16 @@ import { cartsService, productsService } from '../dao/index.js';
 
 const router = Router();
 
+// vista del home
 router.get('/', async (req, res) => {
   try {
     res.render('home');
   } catch (error) {
-    throw error;
+    res.status(500).json({ status: 'error', message: error.message });
   }
 });
 
+// vista de todos los productos y su filtrado por categorías
 router.get('/products', async (req, res) => {
   try {
     const { limit = 10, page = 1, sort, category } = req.query;
@@ -22,6 +24,11 @@ router.get('/products', async (req, res) => {
       page,
       lean: true
     };
+
+    if (typeof limit !== 'number' || typeof page !== 'number') throw new Error('Los valores de page y limit deben ser de tipo numérico');
+
+    if (limit < 1) throw new Error('El limite ingresado debe ser mayor a 1');
+    if (page < 1) throw new Error('La página ingresada debe ser mayor a 1');
 
     if (sort === 'asc') {
       options.sort = { price: 1 };
@@ -41,9 +48,11 @@ router.get('/products', async (req, res) => {
 
     const baseUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
+    const filteredProducts = result.docs.filter((prod) => prod.stock > 0);
+
     const dataProducts = {
       status: 'success',
-      payload: result.docs,
+      payload: filteredProducts,
       prevPage: result.prevPage,
       nextPage: result.nextPage,
       page: result.page,
@@ -54,7 +63,7 @@ router.get('/products', async (req, res) => {
     };
     res.render('products', dataProducts);
   } catch (error) {
-    throw error;
+    res.status(500).json({ status: 'error', message: error.message });
   }
 });
 
@@ -66,6 +75,7 @@ router.get('/chat', async (req, res) => {
   res.render('chat');
 }); */
 
+// vista del carrito
 router.get('/cart/:cartId', async (req, res) => {
   try {
     const cartId = req.params.cartId;
@@ -73,7 +83,7 @@ router.get('/cart/:cartId', async (req, res) => {
     const productsFromCart = cart.products;
     res.render('cart', { products: productsFromCart });
   } catch (error) {
-    throw error;
+    res.status(500).json({ status: 'error', message: error.message });
   }
 });
 

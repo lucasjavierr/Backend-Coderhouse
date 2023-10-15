@@ -3,17 +3,25 @@ import { productsService } from '../dao/index.js';
 
 const router = Router();
 
+// obtener todos los productos
 router.get('/', async (req, res) => {
   try {
+    // obtengo los valores de cada query
     const { limit = 10, page = 1, sort, category } = req.query;
 
+    // creo los objetos que se pasan como parámetros en la petición
     const query = {};
-
     const options = {
       limit,
       page,
       lean: true
     };
+
+    // verificaciones
+    if (typeof limit !== 'number' || typeof page !== 'number') throw new Error('Los valores de page y limit deben ser de tipo numérico');
+
+    if (limit < 1) throw new Error('El limite ingresado debe ser mayor a 1');
+    if (page < 1) throw new Error('La página ingresada debe ser mayor a 1');
 
     if (sort === 'asc') {
       options.sort = { price: 1 };
@@ -29,13 +37,18 @@ router.get('/', async (req, res) => {
       query.category = category;
     }
 
+    // una vez pasan las verificaciones, obtengo los productos y los filtro según su stock
     const result = await productsService.getProducts(query, options);
+    const filteredProducts = result.docs.filter((prod) => prod.stock > 0);
 
+    // obtengo la URL actual
     const baseUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
+    // creo el objeto de la respuesta y se lo envío al cliente
     const dataProducts = {
       status: 'success',
-      payload: result.docs,
+      payload: filteredProducts,
+      totalPages: result.totalPages,
       prevPage: result.prevPage,
       nextPage: result.nextPage,
       page: result.page,
@@ -50,6 +63,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+// obtener un producto por su ID
 router.get('/:productId', async (req, res) => {
   try {
     const productId = req.params.productId;
@@ -61,6 +75,7 @@ router.get('/:productId', async (req, res) => {
   }
 });
 
+// crear un producto con informacion del body
 router.post('/', async (req, res) => {
   try {
     const productInfo = req.body;
@@ -71,6 +86,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+// actualizar la informacion de un producto
 router.put('/:productId', async (req, res) => {
   try {
     const productId = req.params.productId;
@@ -82,6 +98,7 @@ router.put('/:productId', async (req, res) => {
   }
 });
 
+// eliminar un producto
 router.delete('/:productId', async (req, res) => {
   try {
     const productId = req.params.productId;
