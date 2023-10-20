@@ -6,6 +6,7 @@ const router = Router();
 // vista del home
 router.get('/', async (req, res) => {
   try {
+    if (!req.session.email) return res.redirect('/login');
     res.render('home');
   } catch (error) {
     res.status(500).json({ status: 'error', message: error.message });
@@ -61,7 +62,8 @@ router.get('/products', async (req, res) => {
       hasNextPage: result.hasNextPage,
       prevLink: result.hasPrevPage ? `${baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`)}` : null,
       nextLink: result.hasNextPage ? baseUrl.includes('page') ? baseUrl.replace(`&page=${result.page}`, `&page=${result.nextPage}`) : baseUrl.concat(`&page=${result.nextPage}`) : null,
-      email: req.session.email
+      userEmail: req.session.email,
+      userRole: req.session.role
     };
     res.render('products', dataProducts);
   } catch (error) {
@@ -73,6 +75,8 @@ router.get('/products', async (req, res) => {
 // vista del carrito
 router.get('/cart/:cartId', async (req, res) => {
   try {
+    if (!req.session.email) return res.redirect('/login');
+
     const cartId = req.params.cartId;
     const cart = await cartsService.getCartById(cartId);
     const productsFromCart = cart.products;

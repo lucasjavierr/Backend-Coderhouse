@@ -17,6 +17,14 @@ router.get('/logout', async (req, res) => {
 router.post('/signup', async (req, res) => {
   try {
     const signupInfo = req.body;
+
+    const userExist = await usersService.getUserByEmail(signupInfo.email);
+    if (userExist) return res.render('signup', { error: 'Ya existe un usuario registrado con este correo.' });
+
+    if (signupInfo.email === 'adminCoder@coder.com' && signupInfo.password === 'adminCod3r123') {
+      signupInfo.role = 'admin';
+    }
+
     await usersService.createUser(signupInfo);
     res.render('login', { message: 'Usuario registrado correctamente' });
   } catch (error) {
@@ -38,6 +46,7 @@ router.post('/login', async (req, res) => {
 
     // crear la sesion del usuario
     req.session.email = user[0].email;
+    req.session.role = user[0].role;
     res.redirect('/products');
   } catch (error) {
     console.log(error);
