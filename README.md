@@ -10,4 +10,3 @@ Las carpetas se ordenarán de la siguiente manera:
 
 - **DESAFIOS-HANDS_ON_LABS:** Acá se guardarán todos los desafíos extras de las diapositivas de las clases, lo dejo por si el tutor encargado quisera dar algún tipo de feedback sobre ellas.
 - **DESAFIOS_ENTREGABLES:** Acá van a estar todos los desafíos semanales y entregables de las clases, al igual que el desarrollo del proyecto final.
-
