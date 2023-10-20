@@ -15,10 +15,11 @@ router.get('/', async (req, res) => {
 // vista de todos los productos y su filtrado por categorías
 router.get('/products', async (req, res) => {
   try {
+    if (!req.session.email) return res.redirect('/login');
+
     const { limit = 10, page = 1, sort, category } = req.query;
 
     const query = {};
-
     const options = {
       limit,
       page,
@@ -59,21 +60,15 @@ router.get('/products', async (req, res) => {
       hasPrevPage: result.hasPrevPage,
       hasNextPage: result.hasNextPage,
       prevLink: result.hasPrevPage ? `${baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`)}` : null,
-      nextLink: result.hasNextPage ? baseUrl.includes('page') ? baseUrl.replace(`&page=${result.page}`, `&page=${result.nextPage}`) : baseUrl.concat(`&page=${result.nextPage}`) : null
+      nextLink: result.hasNextPage ? baseUrl.includes('page') ? baseUrl.replace(`&page=${result.page}`, `&page=${result.nextPage}`) : baseUrl.concat(`&page=${result.nextPage}`) : null,
+      email: req.session.email
     };
     res.render('products', dataProducts);
   } catch (error) {
-    res.status(500).json({ status: 'error', message: error.message });
+    // res.status(500).json({ status: 'error', message: error.message });
+    res.render('login');
   }
 });
-
-/* router.get('/realTimeProducts', (req, res) => {
-  res.render('realTime');
-});
-
-router.get('/chat', async (req, res) => {
-  res.render('chat');
-}); */
 
 // vista del carrito
 router.get('/cart/:cartId', async (req, res) => {
@@ -85,6 +80,18 @@ router.get('/cart/:cartId', async (req, res) => {
   } catch (error) {
     res.status(500).json({ status: 'error', message: error.message });
   }
+});
+
+router.get('/login', async (req, res) => {
+  try {
+    res.render('login');
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+});
+
+router.get('/signup', async (req, res) => {
+  res.render('signup');
 });
 
 export { router as viewsRouter };

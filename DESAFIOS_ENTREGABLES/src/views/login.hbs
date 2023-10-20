@@ -1,0 +1,10 @@
+<h1>Login</h1>
+
+<p style="color: #080">{{message}}</p>
+
+<form method="post" action="/api/sessions/login">
+  <input type="email" name="email" placeholder="Correo electrónico" />
+  <input type="password" name="password" placeholder="Contraseña" />
+  <button>Iniciar sesión</button>
+</form>
+<p style="color: #f00">{{error}}</p>
