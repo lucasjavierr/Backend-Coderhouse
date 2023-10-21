@@ -1,9 +1,12 @@
+import crypto from 'crypto';
 import { usersModel } from '../models/users.model.js';
 
 export class UsersManagerMongo {
   constructor () {
     this.model = usersModel;
   }
+
+  #secret = 'coder';
 
   async getUsers () {
     try {
@@ -29,11 +32,32 @@ export class UsersManagerMongo {
 
   async createUser (userInfo) {
     try {
+      userInfo.password = crypto
+        .createHmac('sha256', this.#secret)
+        .update(userInfo.password)
+        .digest('hex');
+
       const userCreated = await this.model.create(userInfo);
       return userCreated;
     } catch (error) {
       console.log('createUser', error.message);
       throw new Error('Se produjo un error al momento de crear el usuario');
+    }
+  }
+
+  async validateUser (infoLoginForm, dataUser) {
+    try {
+      infoLoginForm.password = crypto
+        .createHmac('sha256', this.#secret)
+        .update(infoLoginForm.password)
+        .digest('hex');
+
+      const userValidated = dataUser.password === infoLoginForm.password;
+
+      return userValidated;
+    } catch (error) {
+      console.log('loginUser', error.message);
+      throw new Error('Se produjo un error al momento de iniciar sesión');
     }
   }
 

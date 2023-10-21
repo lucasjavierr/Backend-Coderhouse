@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { cartsService, productsService } from '../dao/index.js';
+import { cartsService, productsService, usersService } from '../dao/index.js';
 
 const router = Router();
 
@@ -17,6 +17,9 @@ router.get('/', async (req, res) => {
 router.get('/products', async (req, res) => {
   try {
     if (!req.session.email) return res.redirect('/login');
+    const user = await usersService.getUserByEmail(req.session.email);
+    const userMasc = user[0].gender === 'masculino';
+    const userFem = user[0].gender === 'femenino';
 
     const { limit = 10, page = 1, sort, category } = req.query;
 
@@ -62,8 +65,9 @@ router.get('/products', async (req, res) => {
       hasNextPage: result.hasNextPage,
       prevLink: result.hasPrevPage ? `${baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`)}` : null,
       nextLink: result.hasNextPage ? baseUrl.includes('page') ? baseUrl.replace(`&page=${result.page}`, `&page=${result.nextPage}`) : baseUrl.concat(`&page=${result.nextPage}`) : null,
-      userEmail: req.session.email,
-      userRole: req.session.role
+      userInfo: user[0],
+      userMasc,
+      userFem
     };
     res.render('products', dataProducts);
   } catch (error) {

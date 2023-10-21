@@ -19,7 +19,7 @@ router.post('/signup', async (req, res) => {
     const signupInfo = req.body;
 
     const userExist = await usersService.getUserByEmail(signupInfo.email);
-    if (userExist) return res.render('signup', { error: 'Ya existe un usuario registrado con este correo.' });
+    if (userExist[0]) return res.render('signup', { error: 'Ya existe un usuario registrado con este correo.' });
 
     if (signupInfo.email === 'adminCoder@coder.com' && signupInfo.password === 'adminCod3r123') {
       signupInfo.role = 'admin';
@@ -35,14 +35,15 @@ router.post('/signup', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const loginForm = req.body;
-    const user = await usersService.getUserByEmail(loginForm.email);
+    const infoLoginForm = req.body;
 
     // verifico si el usuario existe
-    if (!user) return res.render('login', { error: 'Este usuario no ha sido registrado' });
+    const user = await usersService.getUserByEmail(infoLoginForm.email);
+    if (!user) return res.render('login', { error: 'Este usuario no ha sido registrado.' });
 
-    // verificar si los datos son correctos
-    if (user[0].password !== loginForm.password) return res.render('login', { error: 'Correo electrónico o contraseña incorrectos' });
+    // verificar si los datos fueron ingresados correctamente
+    const userLogin = await usersService.validateUser(infoLoginForm, user[0]);
+    if (!userLogin) return res.render('login', { error: 'Correo electrónico o contraseña incorrectos' });
 
     // crear la sesion del usuario
     req.session.email = user[0].email;

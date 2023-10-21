@@ -1,20 +1,37 @@
-<header>
-  <h1>Component Hardware</h1>
-  <nav class="navbar">
-    <ul>
-      <li><a href="/login">Iniciar sesión</a></li>
-      <li><a href="/signup">Registrarse</a></li>
-    </ul>
-  </nav>
-</header>
 
-<h1>Login</h1>
+<section class="form_container">
+  <div class="wrapper">
+    {{#if message}}
+      <p style="color: rgb(0, 255, 0)">{{message}}</p>
+    {{/if}}
+    <form method="post" action="/api/sessions/login">
 
-<p style="color: #080">{{message}}</p>
+      <h1>Login</h1>
 
-<form method="post" action="/api/sessions/login">
-  <input type="email" name="email" placeholder="Correo electrónico" />
-  <input type="password" name="password" placeholder="Contraseña" />
-  <button>Iniciar sesión</button>
-</form>
-<p style="color: #f00">{{error}}</p>
+      <div class="input-box">
+        <input type="email" name="email" placeholder="Correo electrónico" required />
+        <i class='bx bxs-user'></i>
+      </div>
+      <div class="input-box">
+        <input type="password" name="password" placeholder="Contraseña" />
+        <i class='bx bxs-lock-alt'></i>
+      </div>
+
+      <div class="remember-forgot">
+        <label><input type="checkbox">Recordar</label>
+        <a href="#">Olvidé mi contraseña</a>
+      </div>
+
+      <button type="submit" class="btn">Iniciar sesión</button>
+
+      {{#if error}}
+        <p class="error-login"><i class='bx bxs-error-circle'></i> {{error}}</p>
+      {{/if}}
+
+      <div class="register-link">
+        <p>¿No tienes una cuenta? <a href="/signup">Regístrate</a></p>
+      </div>
+    </form>
+  </div>
+</section>
+
