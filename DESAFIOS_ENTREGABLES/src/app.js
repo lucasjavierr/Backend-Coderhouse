@@ -34,7 +34,7 @@ app.set('views', path.join(__dirname, '/views'));
 app.use(session({
   store: MongoStore.create({
     ttl: 3600,
-    mongoUrl: 'mongodb+srv://lucasjavier:ClusterCoderñ@clustercoder.mj6fwlw.mongodb.net/sessionsPrueba?retryWrites=true&w=majority'
+    mongoUrl: 'mongodb+srv://lucasjavier:ClusterCoderñ@clustercoder.mj6fwlw.mongodb.net/ecommerceDB?retryWrites=true&w=majority'
   }),
   secret: 'lucao123',
   resave: true,

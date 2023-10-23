@@ -6,7 +6,7 @@ const router = Router();
 router.get('/logout', async (req, res) => {
   try {
     req.session.destroy((err) => {
-      if (err) return res.render('profileView', { error: 'No se pudo cerrar la sesión' });
+      if (err) return res.render('products', { error: 'No se pudo cerrar la sesión' });
       res.render('login');
     });
   } catch (error) {
