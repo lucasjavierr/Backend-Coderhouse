@@ -49,14 +49,14 @@ export class UsersManagerMongo {
     try {
       infoLoginForm.password = crypto
         .createHmac('sha256', this.#secret)
-        .update(infoLoginForm.password)
+        .update(infoLoginForm?.password)
         .digest('hex');
 
-      const userValidated = dataUser.password === infoLoginForm.password;
+      const userValidated = dataUser?.password === infoLoginForm?.password;
 
       return userValidated;
     } catch (error) {
-      console.log('loginUser', error.message);
+      console.log('validateUser:', error.message);
       throw new Error('Se produjo un error al momento de iniciar sesión');
     }
   }

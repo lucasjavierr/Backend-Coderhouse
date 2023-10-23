@@ -21,7 +21,7 @@ router.post('/signup', async (req, res) => {
     const userExist = await usersService.getUserByEmail(signupInfo.email);
     if (userExist[0]) return res.render('signup', { error: 'Ya existe un usuario registrado con este correo.' });
 
-    if (signupInfo.email === 'adminCoder@coder.com' && signupInfo.password === 'adminCod3r123') {
+    if (signupInfo?.email === 'adminCoder@coder.com' && signupInfo?.password === 'adminCod3r123') {
       signupInfo.role = 'admin';
     }
 
@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
 
     // verifico si el usuario existe
     const user = await usersService.getUserByEmail(infoLoginForm.email);
-    if (!user) return res.render('login', { error: 'Este usuario no ha sido registrado.' });
+    if (!user[0]) return res.render('login', { error: 'Este usuario no ha sido registrado.' });
 
     // verificar si los datos fueron ingresados correctamente
     const userLogin = await usersService.validateUser(infoLoginForm, user[0]);
