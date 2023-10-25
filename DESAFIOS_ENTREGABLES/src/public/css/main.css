@@ -284,6 +284,7 @@ button {
 
 .github button, .google button {
   font-size: 18px;
+  cursor: pointer;
 }
 
 .github i, .google i {
