@@ -11,11 +11,14 @@
 
 <section class="welcome">
   <div class="welcome-message">
-    {{#if userMasc}}
-      <h2>Bienvenido! {{userInfo.first_name}} {{userInfo.last_name}}</h2>
+    {{#if userGender.isMasc}}
+      <h2>Bienvenido! {{userInfo.firstName}} {{userInfo.lastName}}</h2>
     {{/if}}
-    {{#if userFem}}
-      <h2>Bienvenida! {{userInfo.first_name}} {{userInfo.last_name}}</h2>
+    {{#if userGender.isFem}}
+      <h2>Bienvenida! {{userInfo.firstName}} {{userInfo.lastName}}</h2>
+    {{/if}}
+    {{#if userGender.isNull}}
+      <h2>Bienvenid@! {{userInfo.firstName}}</h2>
     {{/if}}
     <p>Tu correo: {{userInfo.email}}</p>
     <p>Tu rol es de: {{userInfo.role}}</p>

@@ -12,9 +12,9 @@
 
 <form method="post" action="/api/sessions/signup">
 
-  <input type="text" name="first_name" placeholder="Nombre" />
+  <input type="text" name="firstName" placeholder="Nombre" />
 
-  <input type="text" name="last_name" placeholder="Apellido" />
+  <input type="text" name="lastName" placeholder="Apellido" />
 
   <input type="number" name="age" placeholder="Edad" />
 
@@ -31,3 +31,7 @@
   <button>Registrarse</button>
 </form>
 <p style="color: red">{{error}}</p>
+
+<a href="/api/sessions/signup-github">
+  <button>Registrarse con GitHub</button>
+</a>

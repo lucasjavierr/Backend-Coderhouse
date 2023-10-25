@@ -3,22 +3,18 @@ import mongoose from 'mongoose';
 const usersCollection = 'users';
 
 const userSchema = new mongoose.Schema({
-  first_name: {
+  firstName: {
     type: String,
     required: true
   },
-  last_name: {
+  lastName: {
     type: String,
     required: true
   },
-  age: {
-    type: Number,
-    required: true
-  },
+  age: Number,
   gender: {
     type: String,
-    required: true,
-    enum: ['masculino', 'femenino'],
+    enum: ['masculino', 'femenino', null],
     index: true
   },
   email: {

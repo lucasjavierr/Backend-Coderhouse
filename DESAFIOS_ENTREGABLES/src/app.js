@@ -1,10 +1,13 @@
 import express from 'express';
-import { __dirname } from './utils.js';
-import path from 'path';
-import { engine } from 'express-handlebars';
-import { connectDB } from './config/dbConnection.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import { engine } from 'express-handlebars';
+import { __dirname } from './utils.js';
+import path from 'path';
+import { connectDB } from './config/dbConnection.js';
+import passport from 'passport';
+import { initializePassport } from './config/passport.config.js';
+import { config } from './config/config.js';
 
 import { productsRouter } from './routes/products.routes.js';
 import { cartsRouter } from './routes/carts.routes.js';
@@ -34,12 +37,17 @@ app.set('views', path.join(__dirname, '/views'));
 app.use(session({
   store: MongoStore.create({
     ttl: 3600,
-    mongoUrl: 'mongodb+srv://lucasjavier:ClusterCoderñ@clustercoder.mj6fwlw.mongodb.net/ecommerceDB?retryWrites=true&w=majority'
+    mongoUrl: config.mongo.url
   }),
-  secret: 'lucao123',
+  secret: config.server.secretSession,
   resave: true,
   saveUninitialized: true
 }));
+
+// configurar passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // routes
 app.use(viewsRouter);

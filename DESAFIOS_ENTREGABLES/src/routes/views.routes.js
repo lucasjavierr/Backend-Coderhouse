@@ -6,20 +6,23 @@ const router = Router();
 // vista del home
 router.get('/', async (req, res) => {
   try {
-    if (!req.session.email) return res.redirect('/login');
+    if (!req.user?.email) return res.redirect('/login');
     res.render('home');
   } catch (error) {
-    res.status(500).json({ status: 'error', message: error.message });
+    console.log('Home view:', error);
+    res.render('home', { error: 'Se produjo un error al cargar la página' });
   }
 });
 
 // vista de todos los productos y su filtrado por categorías
 router.get('/products', async (req, res) => {
   try {
-    if (!req.session.email) return res.redirect('/login');
-    const user = await usersService.getUserByEmail(req.session.email);
-    const userMasc = user[0].gender === 'masculino';
-    const userFem = user[0].gender === 'femenino';
+    if (!req.user?.email) return res.redirect('/login');
+
+    const user = await usersService.getUserByEmail(req.user.email);
+    const isMasc = user.gender === 'masculino';
+    const isFem = user.gender === 'femenino';
+    const isNull = user.gender === null;
 
     const { limit = 10, page = 1, sort, category } = req.query;
 
@@ -65,13 +68,15 @@ router.get('/products', async (req, res) => {
       hasNextPage: result.hasNextPage,
       prevLink: result.hasPrevPage ? `${baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`)}` : null,
       nextLink: result.hasNextPage ? baseUrl.includes('page') ? baseUrl.replace(`&page=${result.page}`, `&page=${result.nextPage}`) : baseUrl.concat(`&page=${result.nextPage}`) : null,
-      userInfo: user[0],
-      userMasc,
-      userFem
+      userInfo: user,
+      userGender: {
+        isMasc,
+        isFem,
+        isNull
+      }
     };
     res.render('products', dataProducts);
   } catch (error) {
-    // res.status(500).json({ status: 'error', message: error.message });
     res.render('login');
   }
 });
@@ -79,7 +84,7 @@ router.get('/products', async (req, res) => {
 // vista del carrito
 router.get('/cart/:cartId', async (req, res) => {
   try {
-    if (!req.session.email) return res.redirect('/login');
+    if (!req.user?.email) return res.redirect('/login');
 
     const cartId = req.params.cartId;
     const cart = await cartsService.getCartById(cartId);
