@@ -1,5 +1,4 @@
-/* MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN - MAIN */
-/* ----------------------------------------------------------------------------------- */
+/* MAIN - MAIN - MAIN */
 * {
   margin: 0;
   padding: 0;
@@ -32,10 +31,21 @@ header .navbar ul {
 a {
   text-decoration: none;
 }
-/* ----------------------------------------------------------------------------------- */
 
-/* PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS - PRODUCTS */
-/* ----------------------------------------------------------------------------------- */
+button {
+  background: none;
+  border: none;
+  outline: none;
+}
+/* ------------------------------------------------------- */
+
+/* PRODUCTS - PRODUCTS - PRODUCTS */
+.welcome {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px;
+}
+
 .productsContainer h1,
 .productsContainer h2,
 .productsContainer h3,
@@ -99,21 +109,22 @@ a {
   align-items: end;
   cursor: pointer;
 }
-/* ----------------------------------------------------------------------------------- */
+/* ------------------------------------------------------- */
 
-/* LOGIN */
+/* LOGIN - SIGNUP - LOGIN - SIGNUP - LOGIN - SIGNUP */
 .form_container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url('data:image/jpeg;base64,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') no-repeat;
+  background-image: url('../images/background-login.jpg');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
 }
 
 .wrapper {
-  width: 420px;
+  width: 500px;
   background: transparent;
   border: 2px solid rgba(255, 255, 255, .2);
   backdrop-filter: blur(20px);
@@ -136,6 +147,7 @@ a {
   width: 100%;
   height: 50px;
   margin: 30px 0;
+  position: relative;
 }
 
 .input-box input {
@@ -156,15 +168,25 @@ a {
 }
 
 .input-box i {
-  position: relative;
-  left: 300px;
-  top: -70%;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
   font-size: 20px;
+}
+
+.input-radio-box {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.wrapper h3 {
+  text-align: center;
 }
 
 .wrapper .remember-forgot {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   font-size: 16px;
   margin: -15px 0 15px;
 }
@@ -220,31 +242,64 @@ a {
   text-decoration: underline;
 }
 
-.btn-login {
+.btn-login i {
+  font-size: 28px;
+}
+
+.line {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  margin: 36px 0;
+  background-color: #d4d4d4;
+}
+
+.media-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.btn-social {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   width: 100%;
   height: 45px;
-  background: #21262d;
-  border: none;
-  outline: none;
   border-radius: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, .1);
   cursor: pointer;
-  font-size: 18px;
+}
+
+.github {
+  background: #21252c;
+}
+
+.github button, .github i {
   color: #fff;
   font-weight: 600;
 }
 
-.btn-login i {
-  font-size: 28px;
+.github button, .google button {
+  font-size: 18px;
 }
 
-
-.welcome {
-  display: flex;
-  justify-content: space-between;
-  padding: 30px;
+.github i, .google i {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  font-size: 26px;
 }
+
+.google {
+  background: #ddd;
+}
+
+.google button, .google i {
+  color: #000;
+  font-weight: 600;
+}
+/* ------------------------------------------------------- */

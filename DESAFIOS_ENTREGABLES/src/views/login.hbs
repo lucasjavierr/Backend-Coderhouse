@@ -1,11 +1,11 @@
+<section class='form_container'>
+  <div class='wrapper'>
 
-<section class="form_container">
-  <div class="wrapper">
     {{#if message}}
       <p style="color: rgb(0, 255, 0)">{{message}}</p>
     {{/if}}
-    <form method="post" action="/api/sessions/login">
 
+    <form method="post" action="/api/sessions/login">
       <h1>Login</h1>
 
       <div class="input-box">
@@ -18,8 +18,7 @@
       </div>
 
       <div class="remember-forgot">
-        <label><input type="checkbox">Recordar</label>
-        <a href="#">Olvidé mi contraseña</a>
+        <a href="#">¿Olvidaste tu contraseña?</a>
       </div>
 
       <button type="submit" class="btn">Iniciar sesión</button>
@@ -32,8 +31,12 @@
         <p>¿No tienes una cuenta? <a href="/signup">Regístrate</a></p>
       </div>
     </form>
+
+    <div class="line"></div>
+
     <a href="/api/sessions/signup-github">
-      <button class="btn-login"><i class='bx bxl-github'></i> Continuar con GitHub</button>
+      <i class='bx bxl-github'></i>
+      <button class="btn-login">Continuar con GitHub</button>
     </a>
   </div>
 </section>

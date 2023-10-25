@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     res.render('home');
   } catch (error) {
     console.log('Home view:', error);
-    res.render('home', { error: 'Se produjo un error al cargar la página' });
+    res.render('home', { error: 'Se produjo un error al cargar la página', style: 'main.css' });
   }
 });
 
