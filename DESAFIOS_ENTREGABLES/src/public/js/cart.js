@@ -7,7 +7,7 @@ deleteToCartButtons.forEach((button) => {
   });
 });
 
-function deleteProductToCart (productId) {
+async function deleteProductToCart (productId) {
   // cartId hardcodeado
   const cartId = '6525b05f6d9f1c50835332d1';
 

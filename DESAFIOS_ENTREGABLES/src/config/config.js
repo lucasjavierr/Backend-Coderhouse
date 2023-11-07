@@ -15,5 +15,9 @@ export const config = {
   },
   jwt: {
     privateKey: process.env.PRIVATE_KEY_TOKEN
+  },
+  admin: {
+    email: process.env.USER_EMAIL_ADMIN,
+    password: process.env.USER_PASSWORD_ADMIN
   }
 };

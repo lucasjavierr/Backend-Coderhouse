@@ -5,14 +5,13 @@ export class UsersManagerMongo {
     this.model = usersModel;
   }
 
-  async getUsers () {
+  async getUserById (userId) {
     try {
-      const users = await this.model.find();
-      if (users.length === 0) throw new Error('Se produjo un error al obtener los usuarios.');
-      return users;
+      const user = await this.model.findById(userId).lean();
+      return user;
     } catch (error) {
-      console.log('getUsers:', error.message);
-      throw new Error('Se produjo un error al obtener los usuarios.');
+      console.log('getUserById:', error.message);
+      throw new Error('Se produjo un error al obtener la información del usuario.');
     }
   }
 
@@ -26,17 +25,6 @@ export class UsersManagerMongo {
     }
   }
 
-  async getUserById (userId) {
-    try {
-      const user = await this.model.findById(userId).lean();
-      if (!user) throw new Error('El usuario ingresado no existe.');
-      return user;
-    } catch (error) {
-      console.log('getUserById:', error.message);
-      throw new Error('Se produjo un error al obtener la información del usuario.');
-    }
-  }
-
   async createUser (userInfo) {
     try {
       const userCreated = await this.model.create(userInfo);
@@ -44,28 +32,6 @@ export class UsersManagerMongo {
     } catch (error) {
       console.log('createUser', error.message);
       throw new Error('Se produjo un error al momento de crear el usuario');
-    }
-  }
-
-  async updateUser (userId, newUserInfo) {
-    try {
-      const userUpdated = await this.model.findByIdAndUpdate(userId, newUserInfo, { new: true });
-      if (!userUpdated) throw new Error('Hubo un error al actualizar la información del usuario.');
-      return userUpdated;
-    } catch (error) {
-      console.log('updateUser:', error.message);
-      throw new Error('No se pudo actualizar el usuario.');
-    }
-  }
-
-  async deleteUser (userId) {
-    try {
-      const result = await this.model.findByIdAndDelete(userId);
-      if (!result) throw new Error('Hubo un error al eliminar el usuario.');
-      return result;
-    } catch (error) {
-      console.log('deleteUser:', error.message);
-      throw new Error('No se pudo eliminar el usuario.');
     }
   }
 }

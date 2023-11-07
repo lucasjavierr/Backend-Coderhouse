@@ -3,6 +3,7 @@
   <nav class="navbar">
     <ul>
       <li><a href="/">Home</a></li>
+      <li><a href="/profile">Profile</a></li>
       <li><a href="/products">Products</a></li>
       <li><a href='/cart/6525b05f6d9f1c50835332d1'>Cart</a></li>
     </ul>
@@ -11,17 +12,9 @@
 
 <section class="welcome">
   <div class="welcome-message">
-    {{#if userGender.isMasc}}
-      <h2>Bienvenido! {{userInfo.firstName}} {{userInfo.lastName}}</h2>
-    {{/if}}
-    {{#if userGender.isFem}}
-      <h2>Bienvenida! {{userInfo.firstName}} {{userInfo.lastName}}</h2>
-    {{/if}}
-    {{#if userGender.isNull}}
-      <h2>Bienvenid@! {{userInfo.firstName}}</h2>
-    {{/if}}
-    <p>Tu correo: {{userInfo.email}}</p>
-    <p>Tu rol es de: {{userInfo.role}}</p>
+    <h2 id="nameUser"></h2>
+    <p id="emailUser"></p>
+    <p id="roleUser"></p>
   </div>
   <div class="logout">
     <a href="/api/sessions/logout">Cerrar sesión</a>

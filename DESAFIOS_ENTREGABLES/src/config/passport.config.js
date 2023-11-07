@@ -4,6 +4,10 @@ import { createHash, isValidPassword } from '../utils.js';
 import { usersService } from '../dao/index.js';
 import { config } from './config.js';
 import GitHubStrategy from 'passport-github2';
+import jwt from 'passport-jwt';
+
+const JWTStrategy = jwt.Strategy;
+const ExtractJwt = jwt.ExtractJwt;
 
 // localStrategy => username y password
 export const initializePassport = () => {
@@ -12,23 +16,28 @@ export const initializePassport = () => {
     {
       passReqToCallback: true,
       usernameField: 'email'
+      // => con esto el campo username es igual al campo email
     },
     async (req, username, password, done) => {
       const { firstName, lastName, age, gender } = req.body;
       try {
         const userExist = await usersService.getUserByEmail(username);
 
-        // si el usuario ya está registrado, retorna
+        // el usuario ya está registrado
         if (userExist) return done(null, false);
 
-        // si no existe, lo crea
+        // el usuario no está registrado
         const newUser = {
           firstName,
           lastName,
           age,
           gender,
           email: username,
-          password: createHash(password)
+          password: createHash(password),
+          role: username === config.admin.email &&
+            password === config.admin.password
+            ? 'ADMIN'
+            : 'USER'
         };
 
         const userCreated = await usersService.createUser(newUser);
@@ -43,6 +52,7 @@ export const initializePassport = () => {
   passport.use('loginLocalStrategy', new LocalStrategy(
     {
       usernameField: 'email'
+      // => con esto el campo username es igual al campo email
     },
     async (username, password, done) => {
       try {
@@ -51,16 +61,19 @@ export const initializePassport = () => {
         // si el usuario no existe, no se puede loguear
         if (!user) return done(null, false);
 
+        // si los datos son incorrectos, no se puede loguear
         if (!isValidPassword(password, user)) return done(null, false);
 
+        // el correo y la contraseña son correctos
         return done(null, user);
+        // la info del usuario se guarda en req.user
       } catch (error) {
         return done(error);
       }
     }
   ));
 
-  // estrategia de registro con github
+  // estrategia de registro e inicio de sesion con github
   passport.use('signupGithubStrategy', new GitHubStrategy(
     {
       clientID: config.github.clientId,
@@ -72,7 +85,8 @@ export const initializePassport = () => {
         // console.log(profile);
         const userExist = await usersService.getUserByEmail(profile.username);
 
-        // si el usuario ya está registrado, retorna
+        // si el usuario ya está registrado
+        // envío los datos y se loguea
         if (userExist) return done(null, userExist);
 
         // si no existe, lo crea
@@ -91,15 +105,31 @@ export const initializePassport = () => {
         return done(error);
       }
     }
-
   ));
 
-  // serialize y deserialize
-  passport.serializeUser((user, done) => {
-    done(null, user._id);
-  });
-  passport.deserializeUser(async (id, done) => {
-    const user = await usersService.getUserById(id);
-    done(null, user);
-  });
+  passport.use('jwtAuth', new JWTStrategy(
+    {
+      // extraer la info del token
+      jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+      secretOrKey: config.jwt.privateKey
+    },
+    async (jwtPayload, done) => {
+      try {
+        return done(null, jwtPayload); // --> req.user
+      } catch (error) {
+        return done(error);
+      }
+    }
+  ));
+};
+
+const cookieExtractor = (req) => {
+  let token;
+  if (req?.cookies) {
+    // eslint-disable-next-line dot-notation
+    token = req.cookies['accessToken'];
+  } else {
+    token = null;
+  }
+  return token;
 };
