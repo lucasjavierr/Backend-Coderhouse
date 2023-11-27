@@ -1,13 +1,13 @@
-const loginForm = document.getElementById('loginForm');
-const errorLoginMsg = document.getElementById('errorLoginMsg');
+const loginForm = document.getElementById('loginForm')
+const errorLoginMsg = document.getElementById('errorLoginMsg')
 
 loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
+  e.preventDefault()
 
   const formValues = {
     email: e.target.email.value,
     password: e.target.password.value
-  };
+  }
 
   const response = await fetch('/api/sessions/login', {
     headers: {
@@ -15,13 +15,13 @@ loginForm.addEventListener('submit', async (e) => {
     },
     method: 'POST',
     body: JSON.stringify(formValues)
-  });
-  const result = await response.json();
-  console.log(result);
+  })
+  const result = await response.json()
+  console.log(result)
 
   if (result.status === 'success') {
-    window.location.href = '/profile';
+    window.location.href = '/profile'
   } else {
-    errorLoginMsg.innerHTML = `${result.message}`;
+    errorLoginMsg.innerHTML = `${result.message}`
   }
-});
+})

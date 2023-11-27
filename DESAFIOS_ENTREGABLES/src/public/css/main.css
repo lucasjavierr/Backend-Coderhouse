@@ -37,6 +37,7 @@ button {
   border: none;
   outline: none;
 }
+
 /* ------------------------------------------------------- */
 
 /* PRODUCTS - PRODUCTS - PRODUCTS */
@@ -109,6 +110,7 @@ button {
   align-items: end;
   cursor: pointer;
 }
+
 /* ------------------------------------------------------- */
 
 /* LOGIN - SIGNUP - LOGIN - SIGNUP - LOGIN - SIGNUP */
@@ -117,7 +119,7 @@ button {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url('../images/background-login.jpg');
+  background-image: url("../images/background-login.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -126,9 +128,9 @@ button {
 .wrapper {
   width: 500px;
   background: transparent;
-  border: 2px solid rgb(255 255 255 / .2);
+  border: 2px solid rgb(255 255 255 / 0.2);
   backdrop-filter: blur(20px);
-  box-shadow: 0 0 10px rgb(0 0 0 / .2);
+  box-shadow: 0 0 10px rgb(0 0 0 / 0.2);
   color: #fff;
   border-radius: 10px;
   padding: 30px 40px;
@@ -156,7 +158,7 @@ button {
   background: transparent;
   border: none;
   outline: none;
-  border: 2px solid rgb(255 255 255 / .2);
+  border: 2px solid rgb(255 255 255 / 0.2);
   border-radius: 40px;
   font-size: 16px;
   color: #fff;
@@ -212,7 +214,7 @@ button {
   border: none;
   outline: none;
   border-radius: 40px;
-  box-shadow: 0 0 10px rgb(0 0 0 / .1);
+  box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
   cursor: pointer;
   font-size: 18px;
   color: #333;
@@ -269,7 +271,7 @@ button {
   width: 100%;
   height: 45px;
   border-radius: 40px;
-  box-shadow: 0 0 10px rgb(0 0 0 / .1);
+  box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
   cursor: pointer;
 }
 
@@ -277,17 +279,20 @@ button {
   background: #21252c;
 }
 
-.github button, .github i {
+.github button,
+.github i {
   color: #fff;
   font-weight: 600;
 }
 
-.github button, .google button {
+.github button,
+.google button {
   font-size: 18px;
   cursor: pointer;
 }
 
-.github i, .google i {
+.github i,
+.google i {
   position: absolute;
   top: 50%;
   left: 15px;
@@ -299,8 +304,10 @@ button {
   background: #ddd;
 }
 
-.google button, .google i {
+.google button,
+.google i {
   color: #000;
   font-weight: 600;
 }
+
 /* ------------------------------------------------------- */

@@ -3,4 +3,4 @@ export const CATEGORY_TYPES = {
   graphicCard: 'graphic-card',
   ramMemory: 'ram-memory',
   storage: 'storage'
-};
+}

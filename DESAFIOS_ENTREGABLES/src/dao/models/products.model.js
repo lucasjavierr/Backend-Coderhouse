@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate-v2';
+import mongoose from 'mongoose'
+import mongoosePaginate from 'mongoose-paginate-v2'
 
-const productsCollection = 'products';
+const productsCollection = 'products'
 
 const productSchema = new mongoose.Schema({
   title: {
@@ -20,7 +20,17 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['notebook', 'processor', 'graphic-card', 'storage', 'ram-memory', 'motherboard', 'power-supply', 'cooling', 'case'],
+    enum: [
+      'notebook',
+      'processor',
+      'graphic-card',
+      'storage',
+      'ram-memory',
+      'motherboard',
+      'power-supply',
+      'cooling',
+      'case'
+    ],
     index: true
   },
   code: {
@@ -32,15 +42,13 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-
   thumbnail: String,
-
   status: {
     type: Boolean,
     default: true,
     required: true
   }
-});
-productSchema.plugin(mongoosePaginate);
+})
+productSchema.plugin(mongoosePaginate)
 
-export const productsModel = mongoose.model(productsCollection, productSchema);
+export const productsModel = mongoose.model(productsCollection, productSchema)

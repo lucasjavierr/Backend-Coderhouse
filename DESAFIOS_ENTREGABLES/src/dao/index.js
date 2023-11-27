@@ -1,12 +1,14 @@
-// import { ProductManagerFiles } from './ProductManagerFiles.js';
-// import { ProductsManagerFiles } from './files/ProductManagerFiles.js';
-// import { CartsManagerFiles } from './files/CartManager.js';
-// import { __dirname } from '../utils.js';
-// import path from 'path';
-import { ProductsManagerMongo } from './managers/productsManagerMongo.js';
-import { CartsManagerMongo } from './managers/cartsManagerMongo.js';
-import { UsersManagerMongo } from './managers/usersManagerMongo.js';
+// import { ProductsManagerFiles } from './managers/files/products.files.js'
+// import { CartsManagerFiles } from './managers/files/cart.files.js'
+// import { __dirname } from '../utils.js'
+// import path from 'node:path'
+import { ProductsManagerMongo } from './managers/mongo/products.mongo.js'
+import { CartsManagerMongo } from './managers/mongo/carts.mongo.js'
+import { UsersManagerMongo } from './managers/mongo/users.mongo.js'
 
-export const productsService = new ProductsManagerMongo();
-export const cartsService = new CartsManagerMongo();
-export const usersService = new UsersManagerMongo();
+// console.log('CAPA DE GENERACION DE INSTANCIAS')
+export const productsDao = new ProductsManagerMongo()
+export const cartsDao = new CartsManagerMongo()
+export const usersDao = new UsersManagerMongo()
+
+// 00:35:00

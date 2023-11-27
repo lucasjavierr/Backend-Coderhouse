@@ -1,74 +1,59 @@
-import { Router } from 'express';
-import passport from 'passport';
-import { config } from '../config/config.js';
-import { generateToken } from '../utils.js';
+import { Router } from 'express'
+import passport from 'passport'
+import { config } from '../config/config.js'
+import { SessionsController } from '../controllers/sessions.controller.js'
 
-const router = Router();
+const router = Router()
 
 // --> RUTAS DE SIGNUP -------------------------------------------
 // signup local
-router.post('/signup', passport.authenticate('signupLocalStrategy', {
-  session: false,
-  failureRedirect: '/api/sessions/fail-signup'
-}), (req, res) => {
-  res.redirect('/login');
-});
+router.post('/signup',
+  passport.authenticate('signupLocalStrategy', {
+    session: false,
+    failureRedirect: '/api/sessions/fail-signup'
+  }),
+  SessionsController.redirectLogin
+)
 
 // fallo signup local
-router.get('/fail-signup', (req, res) => {
-  res.render('signup', { error: 'No se pudo registrar al usuario' });
-});
+router.get('/fail-signup', SessionsController.failSignup)
 
 // signup con GitHub
-router.get('/signup-github', passport.authenticate('signupGithubStrategy'));
+router.get('/signup-github', passport.authenticate('signupGithubStrategy'))
 
 // callback para recibir la información que viene de GitHub
-router.get(config.github.callbackUrl, passport.authenticate('signupGithubStrategy', {
-  session: false,
-  failureRedirect: '/api/sessions/fail-signup'
-}), async (req, res) => {
-  // generar el token del usuario
-  const token = generateToken(req.user);
-  // enviar el token al cliente
-  res.cookie('accessToken', token).json({ status: 'success', message: 'login exitoso' });
-});
+router.get(config.github.callbackUrl,
+  passport.authenticate('signupGithubStrategy', {
+    session: false,
+    failureRedirect: '/api/sessions/fail-signup'
+  }),
+  SessionsController.generateTokenGithub
+)
 
 // --> RUTAS DE LOGIN -------------------------------------------
 // login local
-router.post('/login', passport.authenticate('loginLocalStrategy', {
-  session: false,
-  failureRedirect: '/api/sessions/fail-login'
-}), async (req, res) => {
-  // generar el token del usuario
-  const token = generateToken(req.user);
-  // enviar el token al cliente
-  res.cookie('accessToken', token).json({ status: 'success', message: 'login exitoso' });
-});
+router.post('/login',
+  passport.authenticate('loginLocalStrategy', {
+    session: false,
+    failureRedirect: '/api/sessions/fail-login'
+  }),
+  SessionsController.generateTokenLocal
+)
 
 // fallo login local
-router.get('/fail-login', (req, res) => {
-  res.json({ status: 'error', message: 'Correo electrónico o contraseña incorrectos' });
-});
+router.get('/fail-login', SessionsController.failLogin)
 
-router.post('/profile', passport.authenticate('jwtAuth', {
-  session: false,
-  failureRedirect: '/api/sessions/fail-auth'
-}), (req, res) => {
-  res.json({ status: 'success', message: 'Peticion válida', user: req.user });
-});
+router.post('/profile',
+  passport.authenticate('jwtAuth', {
+    session: false,
+    failureRedirect: '/api/sessions/fail-auth'
+  }),
+  SessionsController.sendInfoToProfile
+)
 
-router.get('/fail-auth', (req, res) => {
-  res.json({ status: 'error', message: 'Token inválido' });
-});
+router.get('/fail-auth', SessionsController.failInvalidToken)
 
 // logout local
-router.get('/logout', async (req, res) => {
-  try {
-    res.clearCookie('accessToken');
-    res.redirect('/login');
-  } catch (error) {
-    console.log(error.message);
-  }
-});
+router.get('/logout', SessionsController.logout)
 
-export { router as sessionsRouter };
+export { router as sessionsRouter }
