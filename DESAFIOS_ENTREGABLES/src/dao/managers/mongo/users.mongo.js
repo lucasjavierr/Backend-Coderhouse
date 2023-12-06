@@ -5,36 +5,36 @@ export class UsersManagerMongo {
     this.model = usersModel
   }
 
-  async getUserById (userId) {
+  async getById (userId) {
     try {
       const user = await this.model.findById(userId).lean()
       return user
     } catch (error) {
-      console.log('getUserById:', error.message)
+      console.log('DAO USERS getById:', error.message)
       throw new Error(
         'Se produjo un error al obtener la información del usuario.'
       )
     }
   }
 
-  async getUserByEmail (userEmail) {
+  async getByEmail (userEmail) {
     try {
       const user = await this.model.findOne({ email: userEmail }).lean()
       return user
     } catch (error) {
-      console.log('getUserByEmail:', error.message)
+      console.log('DAO PRODUCTS getByEmail:', error.message)
       throw new Error(
         'Se produjo un error al obtener la información del usuario.'
       )
     }
   }
 
-  async createUser (userInfo) {
+  async create (userInfo) {
     try {
       const userCreated = await this.model.create(userInfo)
       return userCreated
     } catch (error) {
-      console.log('createUser', error.message)
+      console.log('DAO USERS create', error.message)
       throw new Error('Se produjo un error al momento de crear el usuario')
     }
   }

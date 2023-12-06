@@ -4,3 +4,8 @@ export const CATEGORY_TYPES = {
   ramMemory: 'ram-memory',
   storage: 'storage'
 }
+
+export const USER_ROLE_TYPES = {
+  user: 'USER',
+  admin: 'ADMIN'
+}

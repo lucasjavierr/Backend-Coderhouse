@@ -1,15 +1,15 @@
-import { usersDao } from '../dao/index.js'
+import { usersDao } from '../dao/factory.js'
 
 export class UsersService {
   static getUserById = async (userId) => {
-    return usersDao.getUserById(userId)
+    return usersDao.getById(userId)
   }
 
   static getUserByEmail = async (userEmail) => {
-    return usersDao.getUserByEmail(userEmail)
+    return usersDao.getByEmail(userEmail)
   }
 
   static createUser = async (userInfo) => {
-    return usersDao.createUser(userInfo)
+    return usersDao.create(userInfo)
   }
 }

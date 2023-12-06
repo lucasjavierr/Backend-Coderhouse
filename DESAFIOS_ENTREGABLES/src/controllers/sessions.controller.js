@@ -1,43 +1,36 @@
-import { generateToken } from '../utils.js'
+import { UsersDto } from '../DTOs/users.dto.js'
 
 export class SessionsController {
   static redirectLogin = (req, res) => {
-    res.redirect('/login')
+    res.json({ message: 'Usuario registrado de forma exitosa' })
   }
 
   static failSignup = (req, res) => {
-    res.render('signup', { error: 'No se pudo registrar al usuario' })
+    res.status(500).json({ error: 'No se pudo registrar al usuario' })
   }
 
   static failLogin = (req, res) => {
-    res.json({
-      status: 'error',
-      message: 'Correo electrónico o contraseña incorrectos'
-    })
+    res.status(401).json({ message: 'Correo electrónico o contraseña incorrectos' })
   }
 
-  static failInvalidToken = (req, res) => {
-    res.json({ status: 'error', message: 'Token inválido' })
+  static getProfile = (req, res) => {
+    console.log(req.user)
+    const userDto = new UsersDto(req.user)
+    res.json({ status: 'success', user: userDto })
   }
 
-  static generateTokenLocal = async (req, res) => {
-    const token = generateToken(req.user)
-    res.cookie('accessToken', token)
-      .json({ status: 'success', message: 'login exitoso' })
+  static login = (req, res) => {
+    res.json({ message: 'logueado' })
   }
 
-  static generateTokenGithub = async (req, res) => {
-    const token = generateToken(req.user)
-    res.cookie('accessToken', token)
-      .redirect('/profile')
-  }
+  static logout = async (req, res) => {
+    try {
+      req.session.destroy((err) => {
+        if (err) return res.status(500).json({ message: 'No se pudo cerrar la sesión' })
+        res.status(200).json({ message: 'Sesion cerrada' })
+      })
+    } catch (error) {
 
-  static sendInfoToProfile = (req, res) => {
-    res.json({ status: 'success', user: req.user })
-  }
-
-  static logout = (req, res) => {
-    res.clearCookie('accessToken')
-    res.redirect('/login')
+    }
   }
 }

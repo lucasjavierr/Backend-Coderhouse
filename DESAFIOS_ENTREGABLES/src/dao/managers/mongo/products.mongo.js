@@ -1,12 +1,11 @@
 import { productsModel } from '../../models/products.model.js'
 
-// console.log('CAPA DE ACCESO A DATOS')
 export class ProductsManagerMongo {
   constructor () {
     this.model = productsModel
   }
 
-  async getProducts (query, options) {
+  async get (query, options) {
     try {
       const products = await this.model.paginate(query, options)
       if (products.docs.length === 0) {
@@ -14,12 +13,12 @@ export class ProductsManagerMongo {
       }
       return products
     } catch (error) {
-      console.log('getProducts:', error.message)
+      console.log('DAO PRODUCTS get:', error.message)
       throw new Error('Se produjo un error al obtener los productos.')
     }
   }
 
-  async getProductById (productId) {
+  async getById (productId) {
     try {
       const product = await this.model.findById(productId).lean()
       if (!product) {
@@ -27,22 +26,22 @@ export class ProductsManagerMongo {
       }
       return product
     } catch (error) {
-      console.log('getProductById:', error.message)
+      console.log('DAO PRODUCTS getById:', error.message)
       throw new Error('Se produjo un error al buscar el producto.')
     }
   }
 
-  async createProduct (productInfo) {
+  async create (productInfo) {
     try {
       const productCreated = await this.model.create(productInfo)
       return productCreated
     } catch (error) {
-      console.log('createProduct:', error.message)
+      console.log('DAO PRODUCTS create:', error.message)
       throw new Error('No se pudo crear el producto.')
     }
   }
 
-  async updateProduct (productId, newProductInfo) {
+  async update (productId, newProductInfo) {
     try {
       const productUpdated = await this.model.findByIdAndUpdate(
         productId,
@@ -54,12 +53,12 @@ export class ProductsManagerMongo {
       }
       return productUpdated
     } catch (error) {
-      console.log('updateProduct:', error.message)
+      console.log('DAO PRODUCTS update:', error.message)
       throw new Error('No se pudo actualizar el producto.')
     }
   }
 
-  async deleteProduct (productId) {
+  async delete (productId) {
     try {
       const result = await this.model.findByIdAndDelete(productId)
       if (!result) {
@@ -67,7 +66,7 @@ export class ProductsManagerMongo {
       }
       return result
     } catch (error) {
-      console.log('deletProduct:', error.message)
+      console.log('DAO PRODUCTS delete:', error.message)
       throw new Error('No se pudo eliminar el producto.')
     }
   }

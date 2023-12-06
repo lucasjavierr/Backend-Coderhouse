@@ -6,47 +6,51 @@ export class CartsManagerMongo {
   }
 
   // obtiene todos los carritos
-  async getCarts () {
+  async get () {
     try {
       const carts = await this.model
         .find()
         .populate('products.productId')
         .lean()
+
       if (carts.length === 0) {
         throw new Error('No hay carritos creados hasta el momento.')
       }
+
       return carts
     } catch (error) {
-      console.log('getCarts:', error.message)
+      console.log('DAO CARTS get:', error.message)
       throw new Error('No se pudieron obtener los carritos.')
     }
   }
 
   // obtener un carrito por un ID
-  async getCartById (cartId) {
+  async getById (cartId) {
     try {
       const cart = await this.model
         .findById(cartId)
         .populate('products.productId')
         .lean()
+
       if (!cart) {
         throw new Error(`El carrito con el ID: '${cartId}' no existe.`)
       }
+
       return cart
     } catch (error) {
-      console.log('getCartById:', error.message)
+      console.log('DAO CARTS getById:', error.message)
       throw new Error('No se pudo encontrar el carrito.')
     }
   }
 
   // crear un carrito
-  async createCart () {
+  async create () {
     try {
       const newCart = {}
       const cart = await this.model.create(newCart)
       return cart
     } catch (error) {
-      console.log('createCart:', error.message)
+      console.log('DAO CARTS create:', error.message)
       throw new Error('No se pudo crear el carrito.')
     }
   }
@@ -54,7 +58,7 @@ export class CartsManagerMongo {
   // añadir un producto a un carrito
   async addProduct (cartId, productId) {
     try {
-      const cart = await this.getCartById(cartId)
+      const cart = await this.getById(cartId)
       if (!cart) {
         throw new Error(`El carrito con el ID: '${cartId}' no existe.`)
       }
@@ -64,6 +68,7 @@ export class CartsManagerMongo {
       )
 
       // si el producto no existe en el carrito, lo agrega
+      // si existe, actualiza la cantidad
       if (productIndex === -1) {
         cart.products.push({ productId, quantity: 1 })
       } else {
@@ -76,15 +81,15 @@ export class CartsManagerMongo {
 
       return updateCart
     } catch (error) {
-      console.log('addProduct:', error.message)
+      console.log('DAO CARTS addProduct:', error.message)
       throw new Error('No se pudo agregar el producto al carrito.')
     }
   }
 
   // actualiza la informacion del carrito, con lo que le pasemos por el body
-  async updateCart (cartId, newCartInfo) {
+  async update (cartId, newCartInfo) {
     try {
-      const cart = await this.getCartById(cartId)
+      const cart = await this.getById(cartId)
       if (!cart) {
         throw new Error(`El carrito con el ID: '${cartId}' no existe.`)
       }
@@ -95,15 +100,15 @@ export class CartsManagerMongo {
 
       return updatedCart
     } catch (error) {
-      console.log('updateCart:', error.message)
+      console.log('DAO CARTS update', error.message)
       throw new Error('No se pudo agregar el producto al carrito.')
     }
   }
 
-  // actualiza solo la cantidad de un producto del carrito, con el número que le pasemos por el body
-  async updateProductQuantity (cartId, productId, newQuantity) {
+  // actualiza la cantidad de un producto en el carrito, con el número que le pasemos por el body
+  async updateQty (cartId, productId, newQuantity) {
     try {
-      const cart = await this.getCartById(cartId)
+      const cart = await this.getById(cartId)
       if (!cart) {
         throw new Error(`El carrito con el ID: '${cartId}' no existe.`)
       }
@@ -112,19 +117,14 @@ export class CartsManagerMongo {
         (prod) => prod.productId._id.toString() === productId
       )
 
-      // si el producto no existe en el carrito, lanzo un error
       if (productIndex === -1) {
-        throw new Error(
-          'No se puede actualizar la cantidad porque el producto no se agregó al carrito'
-        )
+        throw new Error('El producto ingresado no fue agregado al carrito')
       }
 
-      // luego verifico si el dato ingresado es de tipo numérico
       if (typeof newQuantity !== 'number') {
         throw new Error('La cantidad ingresada debe ser de tipo numérico.')
       }
 
-      // si es asi, actualizo la cantidad del producto
       cart.products[productIndex].quantity = newQuantity
 
       const updateCart = await this.model
@@ -133,7 +133,7 @@ export class CartsManagerMongo {
 
       return updateCart
     } catch (error) {
-      console.log('updateProductQuantity', error.message)
+      console.log('DAO CARTS updateQty', error.message)
       throw new Error('No se pudo actualizar la cantidad del producto.')
     }
   }
@@ -141,58 +141,57 @@ export class CartsManagerMongo {
   // eliminar solo un producto del carrito
   async deleteProduct (cartId, productId) {
     try {
-      const cart = await this.getCartById(cartId)
+      // carrito existe
+      const cart = await this.getById(cartId)
       if (!cart) {
         throw new Error(`El carrito con el ID: '${cartId}' no existe.`)
       }
 
+      // producto dentro del carrito existe
       const productExist = cart.products.some(
         (prod) => prod.productId._id.toString() === productId
       )
       if (!productExist) {
-        throw new Error(
-          'El producto que quiere eliminar no se encuentra en el carrito.'
-        )
+        throw new Error('El producto que quiere eliminar no se encuentra en el carrito.')
       }
 
-      const newProducts = cart.products.filter(
-        (prod) => prod.productId._id.toString() !== productId
+      const productIndex = cart.products.findIndex(
+        (prod) => prod.productId._id.toString() === productId
       )
 
+      cart.products.splice(productIndex, 1)
+
       const updateCart = await this.model
-        .findByIdAndUpdate(cartId, { products: newProducts }, { new: true })
+        .findByIdAndUpdate(cartId, { products: cart.products }, { new: true })
         .populate('products.productId')
 
       return updateCart
     } catch (error) {
-      console.log('deleteProduct:', error.message)
+      console.log('DAO CARTS deleteProduct', error.message)
       throw new Error('No se pudo eliminar el producto del carrito.')
     }
   }
 
   // elimina los elementos de cart.products, pero el carrito sigue existiendo
-  async clearCart (cartId) {
+  async clear (cartId) {
     try {
-      const cart = await this.getCartById(cartId)
+      const cart = await this.getById(cartId)
       if (!cart) {
         throw new Error(`El carrito con el ID: '${cartId}' no existe.`)
       }
 
-      const newProducts = []
+      const cartClean = await this.model
+        .findByIdAndUpdate(cartId, { products: [] }, { new: true })
 
-      const updateCart = await this.model
-        .findByIdAndUpdate(cartId, { products: newProducts }, { new: true })
-        .populate('products.productId')
-
-      return updateCart
+      return cartClean
     } catch (error) {
-      console.log('clearCart:', error.message)
+      console.log('DAO CARTS clear:', error.message)
       throw new Error('No se pudo eliminar el carrito.')
     }
   }
 
   // elimina todo el carrito
-  async deleteCart (cartId) {
+  async deleteAll (cartId) {
     try {
       const cartDeleted = await this.model.findByIdAndDelete(cartId)
       if (!cartDeleted) {
@@ -200,7 +199,7 @@ export class CartsManagerMongo {
       }
       return cartDeleted
     } catch (error) {
-      console.log('deleteCart:', error.message)
+      console.log('DAO CARTS deleteCart:', error.message)
       throw new Error('No se pudo eliminar el carrito.')
     }
   }

@@ -1,16 +1,16 @@
-import { cartsDao } from '../dao/index.js'
+import { cartsDao } from '../dao/factory.js'
 
 export class CartsService {
-  static getCarts = async () => {
-    return cartsDao.getCarts()
+  static getAllCarts = async () => {
+    return cartsDao.get()
   }
 
-  static getCart = async (cartId) => {
-    return cartsDao.getCartById(cartId)
+  static getOneCart = async (cartId) => {
+    return cartsDao.getById(cartId)
   }
 
   static createCart = async () => {
-    return cartsDao.createCart()
+    return cartsDao.create()
   }
 
   static addProductToCart = async (cartId, productId) => {
@@ -18,11 +18,11 @@ export class CartsService {
   }
 
   static updateCartInfo = async (cartId, newCartInfo) => {
-    return cartsDao.updateCart(cartId, newCartInfo)
+    return cartsDao.update(cartId, newCartInfo)
   }
 
   static updateProductQuantity = async (cartId, productId, newQuantity) => {
-    return cartsDao.updateProductQuantity(cartId, productId, newQuantity)
+    return cartsDao.updateQty(cartId, productId, newQuantity)
   }
 
   static deleteProductFromCart = async (cartId, productId) => {
@@ -30,10 +30,10 @@ export class CartsService {
   }
 
   static clearCart = async (cartId) => {
-    return cartsDao.clearCart(cartId)
+    return cartsDao.clear(cartId)
   }
 
   static deleteCart = async (cartId) => {
-    return cartsDao.deleteCart(cartId)
+    return cartsDao.deleteAll(cartId)
   }
 }

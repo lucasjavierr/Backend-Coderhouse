@@ -1,24 +1,23 @@
-import { productsDao } from '../dao/index.js'
+import { productsDao } from '../dao/factory.js'
 
-// console.log('CAPA DE SERVICIO')
 export class ProductsService {
-  static getProducts = async (query, options) => {
-    return productsDao.getProducts(query, options)
+  static getAllProducts = async (query, options) => {
+    return productsDao.get(query, options)
   }
 
-  static getProduct = async (productId) => {
-    return productsDao.getProductById(productId)
+  static getOneProduct = async (productId) => {
+    return productsDao.getById(productId)
   }
 
   static createProduct = async (productInfo) => {
-    return productsDao.createProduct(productInfo)
+    return productsDao.create(productInfo)
   }
 
-  static updateProduct = async (productId, newProductInfo) => {
-    return productsDao.updateProduct(productId, newProductInfo)
+  static updateProductInfo = async (productId, newProductInfo) => {
+    return productsDao.update(productId, newProductInfo)
   }
 
   static deleteProduct = async (productId) => {
-    return productsDao.deleteProduct(productId)
+    return productsDao.delete(productId)
   }
 }

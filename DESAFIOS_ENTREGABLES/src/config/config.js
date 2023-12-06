@@ -1,17 +1,24 @@
 import dotenv from 'dotenv'
+import { Command } from 'commander'
+
 dotenv.config()
 
+const serve = new Command()
+
+serve
+  .option('-p, --persistence <persistence>', 'Tipo de persistencia de datos que utiliza la aplicación')
+
+serve.parse()
+const options = serve.opts()
+
 export const config = {
+  server: {
+    port: process.env.PORT,
+    secretSession: process.env.SECRET_SESSION,
+    persistence: options.persistence
+  },
   mongo: {
     url: process.env.MONGO_URL
-  },
-  github: {
-    callbackUrl: process.env.GITHUB_CALLBACK_URL,
-    clientId: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET
-  },
-  jwt: {
-    privateKey: process.env.PRIVATE_KEY_TOKEN
   },
   admin: {
     email: process.env.USER_EMAIL_ADMIN,
