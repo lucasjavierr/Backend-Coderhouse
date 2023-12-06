@@ -6,7 +6,7 @@ const router = Router()
 
 router.post('/signup', passport.authenticate('signupLS',
   { failureRedirect: '/api/sessions/fail-signup' }
-), SessionsController.redirectLogin)
+), SessionsController.signup)
 
 router.get('/fail-signup', SessionsController.failSignup)
 
@@ -17,11 +17,7 @@ router.post('/login', passport.authenticate('loginLS',
 
 router.get('/fail-login', SessionsController.failLogin)
 
-router.post('/profile', passport.authenticate('jwtAuth',
-  { failureRedirect: '/api/sessions/fail-auth' }
-), SessionsController.getProfile)
-
-// router.get('/fail-auth', SessionsController.failInvalidToken)
+router.post('/current', SessionsController.currentUser)
 
 router.get('/logout', SessionsController.logout)
 

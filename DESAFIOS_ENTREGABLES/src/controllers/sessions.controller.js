@@ -1,7 +1,7 @@
 import { UsersDto } from '../DTOs/users.dto.js'
 
 export class SessionsController {
-  static redirectLogin = (req, res) => {
+  static signup = (req, res) => {
     res.json({ message: 'Usuario registrado de forma exitosa' })
   }
 
@@ -13,14 +13,14 @@ export class SessionsController {
     res.status(401).json({ message: 'Correo electrónico o contraseña incorrectos' })
   }
 
-  static getProfile = (req, res) => {
+  static currentUser = (req, res) => {
     console.log(req.user)
     const userDto = new UsersDto(req.user)
     res.json({ status: 'success', user: userDto })
   }
 
   static login = (req, res) => {
-    res.json({ message: 'logueado' })
+    res.json({ message: 'Iniciaste sesión correctamente!' })
   }
 
   static logout = async (req, res) => {
