@@ -1,5 +1,6 @@
 import { CATEGORY_TYPES } from '../constants.js'
 import { ProductsService } from '../services/products.service.js'
+import { v4 as uuidv4 } from 'uuid'
 
 export class ProductsController {
   static getProducts = async (req, res) => {
@@ -77,6 +78,7 @@ export class ProductsController {
   static createProduct = async (req, res) => {
     try {
       const productInfo = req.body
+      productInfo.code = uuidv4()
       const productCreated = await ProductsService.createProduct(productInfo)
       res.json({ status: 'success', data: productCreated })
     } catch (error) {

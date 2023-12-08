@@ -8,7 +8,7 @@ const router = Router()
 // http://localhost:8080/api/products
 router.get('/', ProductsController.getProducts)
 router.get('/:productId', ProductsController.getProduct)
-router.post('/', checkRole([USER_ROLE_TYPES.user]), ProductsController.createProduct)
+router.post('/', checkRole([USER_ROLE_TYPES.admin]), ProductsController.createProduct)
 router.put('/:productId', checkRole([USER_ROLE_TYPES.admin]), ProductsController.updateProduct)
 router.delete('/:productId', checkRole([USER_ROLE_TYPES.admin]), ProductsController.deleteProduct)
 
