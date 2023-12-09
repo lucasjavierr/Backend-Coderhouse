@@ -44,6 +44,7 @@ export const initializePassport = () => {
     { usernameField: 'email' },
     async (username, password, done) => {
       try {
+        if (!username || !password) return done(null, false)
         const user = await UsersService.getUserByEmail(username)
 
         // usuario no existe, no puede loguear

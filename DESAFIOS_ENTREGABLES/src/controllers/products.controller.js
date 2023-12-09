@@ -1,4 +1,4 @@
-import { CATEGORY_TYPES } from '../constants.js'
+import { CATEGORY_TYPES } from '../enums/constants.js'
 import { ProductsService } from '../services/products.service.js'
 import { v4 as uuidv4 } from 'uuid'
 

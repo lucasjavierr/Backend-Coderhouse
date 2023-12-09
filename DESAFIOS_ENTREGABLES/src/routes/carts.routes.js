@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { checkRole } from '../middlewares/auth.js'
 import { CartsController } from '../controllers/carts.controller.js'
-import { USER_ROLE_TYPES } from '../constants.js'
+import { USER_ROLE_TYPES } from '../enums/constants.js'
 
 const router = Router()
 
@@ -9,7 +9,7 @@ const router = Router()
 router.get('/', CartsController.getCarts)
 router.get('/:cartId', CartsController.getCart)
 router.post('/', CartsController.createCart)
-router.post('/:cartId/product/:productId', checkRole([USER_ROLE_TYPES.user]), CartsController.addProductToCart)
+router.post('/:cartId/product/:productId', checkRole([USER_ROLE_TYPES.USER]), CartsController.addProductToCart)
 router.post('/:cartId/purchase', CartsController.purchaseCart)
 router.put('/:cartId', CartsController.updateInfoToCart)
 router.put('/:cartId/product/:productId', CartsController.updateProductQuantity)

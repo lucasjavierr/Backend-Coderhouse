@@ -4,10 +4,12 @@ import { config } from './config/config.js'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import { initializePassport } from './config/passport.config.js'
+import { errorHandler } from './middlewares/errorHandler.js'
 
 import { cartsRouter } from './routes/carts.routes.js'
 import { productsRouter } from './routes/products.routes.js'
 import { sessionsRouter } from './routes/sessions.routes.js'
+import { usersRouter } from './routes/users.routes.js'
 
 const port = config.server.port
 const app = express()
@@ -38,3 +40,8 @@ app.use(passport.session())
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
 app.use('/api/sessions', sessionsRouter)
+app.use('/api/users', usersRouter)
+
+app.use(errorHandler)
+
+// INVESTIGAR PM2

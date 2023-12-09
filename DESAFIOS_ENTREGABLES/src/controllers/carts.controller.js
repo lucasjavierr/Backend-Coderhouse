@@ -136,8 +136,6 @@ export class CartsController {
           rejectedProducts.push(productInCart)
         }
       }
-      // console.log('ticketProducts', ticketProducts)
-      // console.log('rejectedProducts', rejectedProducts)
 
       const newTicket = {
         code: uuidv4(),

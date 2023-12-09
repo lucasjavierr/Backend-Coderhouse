@@ -1,8 +1,10 @@
 import { Router } from 'express'
 import { TicketController } from '../controllers/tickets.controller.js'
 
-export const TicketsRouter = Router()
+const router = Router()
 
-TicketsRouter.get('/', TicketController.getTickets)
-TicketsRouter.get('/:ticketId', TicketController.getTicket)
-TicketsRouter.post('/', TicketController.createTicket)
+router.get('/', TicketController.getTickets)
+router.get('/:ticketId', TicketController.getTicket)
+router.post('/', TicketController.createTicket)
+
+export { router as ticketsRouter }
