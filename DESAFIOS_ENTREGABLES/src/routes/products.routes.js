@@ -12,4 +12,7 @@ router.post('/', checkRole([USER_ROLE_TYPES.ADMIN]), ProductsController.createPr
 router.put('/:productId', checkRole([USER_ROLE_TYPES.ADMIN]), ProductsController.updateProduct)
 router.delete('/:productId', checkRole([USER_ROLE_TYPES.ADMIN]), ProductsController.deleteProduct)
 
+// mocking
+router.post('/mockingproducts/', ProductsController.mockingProducts)
+
 export { router as productsRouter }

@@ -1,6 +1,9 @@
 import { CATEGORY_TYPES } from '../enums/constants.js'
 import { ProductsService } from '../services/products.service.js'
 import { v4 as uuidv4 } from 'uuid'
+import { generateProduct } from '../helpers/mock.js'
+
+const products = []
 
 export class ProductsController {
   static getProducts = async (req, res) => {
@@ -22,10 +25,10 @@ export class ProductsController {
         options.sort = { price: -1 }
       }
       if (
-        category === CATEGORY_TYPES.processor ||
-        category === CATEGORY_TYPES.graphicCard ||
-        category === CATEGORY_TYPES.ramMemory ||
-        category === CATEGORY_TYPES.storage
+        category === CATEGORY_TYPES.PROCESSOR ||
+        category === CATEGORY_TYPES.GRAPHIC_CARD ||
+        category === CATEGORY_TYPES.RAM_MEMORY ||
+        category === CATEGORY_TYPES.STORAGE
       ) {
         query.category = category
       }
@@ -108,6 +111,20 @@ export class ProductsController {
       res.json({ status: 'succes', data: productDeleted })
     } catch (error) {
       console.log('CONTROLLER PRODUCTS deleteProduct:', error)
+      res.json({ status: 'error', message: error.message })
+    }
+  }
+
+  static mockingProducts = async (req, res) => {
+    try {
+      const { qtyProducts = 100 } = req.body
+      for (let i = 0; i < qtyProducts; i++) {
+        const newProduct = generateProduct()
+        products.push(newProduct)
+      }
+      res.json({ status: 'success', products })
+    } catch (error) {
+      console.log('CONTROLLER PRODUCTS mockingProducts:', error)
       res.json({ status: 'error', message: error.message })
     }
   }
