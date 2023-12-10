@@ -2,6 +2,9 @@ import { CATEGORY_TYPES } from '../enums/constants.js'
 import { ProductsService } from '../services/products.service.js'
 import { v4 as uuidv4 } from 'uuid'
 import { generateProduct } from '../helpers/mock.js'
+import { CustomError } from '../services/customError.service.js'
+import { EError } from '../enums/EError.js'
+import { createProductError } from '../services/errors/createProductError.service.js'
 
 const products = []
 
@@ -81,6 +84,16 @@ export class ProductsController {
   static createProduct = async (req, res) => {
     try {
       const productInfo = req.body
+
+      if (!productInfo) {
+        CustomError.createError({
+          name: 'Create product error',
+          cause: createProductError(productInfo),
+          message: 'Todos los campos deben estar completos',
+          errorCode: EError.DATABASE_ERROR
+        })
+      }
+
       productInfo.code = uuidv4()
       const productCreated = await ProductsService.createProduct(productInfo)
       res.json({ status: 'success', data: productCreated })

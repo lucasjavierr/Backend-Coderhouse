@@ -2,6 +2,9 @@ import { CartsService } from '../services/carts.service.js'
 import { ProductsService } from '../services/products.service.js'
 import { TicketsService } from '../services/tickets.service.js'
 import { v4 as uuidv4 } from 'uuid'
+import { CustomError } from '../services/customError.service.js'
+import { EError } from '../enums/EError.js'
+import { addProductError } from '../services/errors/addProductError.service.js'
 
 export class CartsController {
   static getCarts = async (req, res) => {
@@ -41,7 +44,16 @@ export class CartsController {
 
       // verifico si producto y carrito existen
       await CartsService.getOneCart(cartId)
-      await ProductsService.getOneProduct(productId)
+      const product = await ProductsService.getOneProduct(productId)
+
+      if (!product) {
+        CustomError.createError({
+          name: 'Create product error',
+          cause: addProductError(productId),
+          message: 'Producto no encontrado',
+          errorCode: EError.INVALID_PARAM
+        })
+      }
 
       const productAdded = await CartsService.addProductToCart(cartId, productId)
       res.json({ status: 'success', data: productAdded })
