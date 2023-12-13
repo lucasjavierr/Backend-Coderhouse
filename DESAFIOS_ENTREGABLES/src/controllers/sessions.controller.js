@@ -1,7 +1,8 @@
 import { UsersDto } from '../DTOs/users.dto.js'
-import { CustomError } from '../services/customError.service.js'
+import { CustomError } from '../services/errors/customError.service.js'
 import { EError } from '../enums/EError.js'
 import { authError } from '../services/errors/authError.service.js'
+import { logger } from '../helpers/logger.js'
 
 export class SessionsController {
   static signup = (req, res) => {
@@ -28,17 +29,15 @@ export class SessionsController {
   }
 
   static login = (req, res) => {
-    res.json({ message: 'Iniciaste sesión correctamente!' })
+    res.json({ status: 'success', message: 'Iniciaste sesión correctamente!' })
+    // res.render('profile')
   }
 
-  static logout = async (req, res) => {
-    try {
-      req.session.destroy((err) => {
-        if (err) return res.status(500).json({ message: 'No se pudo cerrar la sesión' })
-        res.status(200).json({ message: 'Sesion cerrada' })
-      })
-    } catch (error) {
-
-    }
+  static logout = (req, res) => {
+    req.session.destroy((err) => {
+      if (err) return res.status(500).json({ message: 'No se pudo cerrar la sesión' })
+      logger.info(req.user)
+      res.status(200).json({ message: 'Sesion cerrada' })
+    })
   }
 }

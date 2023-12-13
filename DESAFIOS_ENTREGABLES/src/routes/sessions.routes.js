@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import passport from 'passport'
 import { SessionsController } from '../controllers/sessions.controller.js'
+import { isAuth } from '../middlewares/auth.js'
 
 const router = Router()
 
@@ -17,8 +18,8 @@ router.post('/login', passport.authenticate('loginLS',
 
 router.get('/fail-login', SessionsController.failLogin)
 
-router.post('/current', SessionsController.currentUser)
+router.post('/current', isAuth, SessionsController.currentUser)
 
-router.get('/logout', SessionsController.logout)
+router.get('/logout', isAuth, SessionsController.logout)
 
 export { router as sessionsRouter }

@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-catch */
 import fs from 'node:fs'
+import { logger } from '../../../helpers/logger.js'
 
 export class CartsManagerFiles {
   constructor (filePath) {
@@ -81,7 +82,7 @@ export class CartsManagerFiles {
       // pusheo el nuevo carrito al array de carritos y reescribo el archivo
       carts.push(newCart)
       this.#writeFile(carts)
-      console.log('Producto creado correctamente')
+      logger.info('Producto creado correctamente')
     } catch (error) {
       throw error
     }
@@ -91,7 +92,6 @@ export class CartsManagerFiles {
     try {
       // recupero el archivo de carritos
       const carts = await this.getCarts()
-      console.log(carts)
 
       // obtengo la posicion del carrito
       // si no existe, devuelvo error
@@ -115,7 +115,7 @@ export class CartsManagerFiles {
 
       // reescribo el archivo y retorno el producto agregado
       this.#writeFile(carts)
-      console.log('Producto agregado correctamente')
+      logger.info('Producto agregado correctamente')
     } catch (error) {
       throw error
     }

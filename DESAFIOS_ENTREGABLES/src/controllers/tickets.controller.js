@@ -6,7 +6,7 @@ export class TicketController {
       const result = await TicketsService.getAllTickets()
       res.json({ status: 'success', data: result })
     } catch (error) {
-      console.log('TICKETS CONTROLLER getTickets:', error)
+      // console.log('TICKETS CONTROLLER getTickets:', error)
       res.status(500).json({ error: error.message })
     }
   }
@@ -18,7 +18,7 @@ export class TicketController {
       const ticket = await TicketsService.getOneTicket(ticketId)
       res.json({ status: 'success', data: ticket })
     } catch (error) {
-      console.log('TICKETS CONTROLLER getTicket:', error)
+      // console.log('TICKETS CONTROLLER getTicket:', error)
       res.status(500).json({ error: error.message })
     }
   }
@@ -30,7 +30,7 @@ export class TicketController {
       const result = await TicketsService.createTicket(ticketInfo)
       res.json({ status: 'success', data: result })
     } catch (error) {
-      console.log('TICKETS CONTROLLER createTicket:', error)
+      // console.log('TICKETS CONTROLLER createTicket:', error)
       res.status(500).json({ error: error.message })
     };
   }

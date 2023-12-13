@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-catch */
 import fs from 'node:fs'
+import { logger } from '../../../helpers/logger.js'
 
 export class ProductsManagerFiles {
   constructor (filePath) {
@@ -115,7 +116,7 @@ export class ProductsManagerFiles {
 
       // reemplazo el array antiiguo con el nuevo, que ya contiene el nuevo producto
       this.#writeFile(products)
-      console.log('Producto creado correctamente.')
+      logger.info('Producto creado correctamente.')
     } catch (error) {
       throw error
     }
@@ -158,7 +159,7 @@ export class ProductsManagerFiles {
 
       // reescribo el array con el objeto actualizado
       this.#writeFile(products)
-      console.log('Producto actualizado correctamente.')
+      logger.info('Producto actualizado correctamente.')
     } catch (error) {
       throw error
     }
@@ -181,7 +182,7 @@ export class ProductsManagerFiles {
 
       // reescribo el array original con el actualizado
       this.#writeFile(productsUpdated)
-      console.log('Producto eliminado correctamente.')
+      logger.info('Producto eliminado correctamente.')
     } catch (error) {
       throw error
     }

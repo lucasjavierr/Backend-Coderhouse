@@ -2,9 +2,10 @@ import { CartsService } from '../services/carts.service.js'
 import { ProductsService } from '../services/products.service.js'
 import { TicketsService } from '../services/tickets.service.js'
 import { v4 as uuidv4 } from 'uuid'
-import { CustomError } from '../services/customError.service.js'
+import { CustomError } from '../services/errors/customError.service.js'
 import { EError } from '../enums/EError.js'
 import { addProductError } from '../services/errors/addProductError.service.js'
+import { logger } from '../helpers/logger.js'
 
 export class CartsController {
   static getCarts = async (req, res) => {
@@ -12,7 +13,7 @@ export class CartsController {
       const carts = await CartsService.getAllCarts()
       res.json({ status: 'success', data: carts })
     } catch (error) {
-      console.log('CONTROLLER CARTS getCarts:', error)
+      // console.log('CONTROLLER CARTS getCarts:', error)
       res.status(500).json({ error: error.message })
     }
   }
@@ -23,7 +24,7 @@ export class CartsController {
       const cart = await CartsService.getOneCart(cartId)
       res.json({ status: 'success', data: cart })
     } catch (error) {
-      console.log('CONTROLLER CARTS getCart:', error)
+      // console.log('CONTROLLER CARTS getCart:', error)
       res.status(500).json({ error: error.message })
     }
   }
@@ -33,7 +34,7 @@ export class CartsController {
       const cartCreated = await CartsService.createCart()
       res.json({ status: 'success', data: cartCreated })
     } catch (error) {
-      console.log('CONTROLLER CARTS createCart:', error)
+      // console.log('CONTROLLER CARTS createCart:', error)
       res.status(500).json({ error: error.message })
     }
   }
@@ -58,21 +59,21 @@ export class CartsController {
       const productAdded = await CartsService.addProductToCart(cartId, productId)
       res.json({ status: 'success', data: productAdded })
     } catch (error) {
-      console.log('CONTROLLER CARTS addProductToCart:', error)
+      // console.log('CONTROLLER CARTS addProductToCart:', error)
       res.status(500).json({ error: error.message })
     }
   }
 
   static updateInfoToCart = async (req, res) => {
     try {
-      const cartId = req.params.cartId
+      const { cartId } = req.params
       const newCartInfo = req.body
 
       await CartsService.getOneCart(cartId)
       const newCart = await CartsService.updateCartInfo(cartId, newCartInfo)
       res.json({ status: 'success', data: newCart })
     } catch (error) {
-      console.log('CONTROLLER CARTS updateInfoToCart:', error)
+      // console.log('CONTROLLER CARTS updateInfoToCart:', error)
       res.status(500).json({ error: error.message })
     }
   }
@@ -92,7 +93,7 @@ export class CartsController {
 
       res.json({ status: 'success', data: productUpdated })
     } catch (error) {
-      console.log('CONTROLLER CARTS updateProductQuantity:', error)
+      // console.log('CONTROLLER CARTS updateProductQuantity:', error)
       res.status(500).json({ error: error.message })
     }
   }
@@ -103,7 +104,7 @@ export class CartsController {
       const cartDeleted = await CartsService.clearCart(cartId)
       res.json({ status: 'success', data: cartDeleted })
     } catch (error) {
-      console.log('CONTROLLER CARTS clearCart:', error)
+      // console.log('CONTROLLER CARTS clearCart:', error)
       res.status(500).json({ error: error.message })
     }
   }
@@ -117,7 +118,7 @@ export class CartsController {
       const newProducts = await CartsService.deleteProductFromCart(cartId, productId)
       res.json({ status: 'success', data: newProducts })
     } catch (error) {
-      console.log('CONTROLLER CARTS deleteProductFromCart:', error)
+      // console.log('CONTROLLER CARTS deleteProductFromCart:', error)
       res.status(500).json({ error: error.message })
     }
   }
@@ -158,8 +159,8 @@ export class CartsController {
       }
       // crear el ticket en la DB
       const ticket = await TicketsService.createTicket(newTicket)
-      console.log(newTicket)
-      console.log('ticket DB', ticket)
+      logger.info(newTicket)
+      logger.info('ticket DB', ticket)
 
       // actualizar el carrito con los productos rechazados
       // si es un array vacío, significa que todos los productos se compraron
@@ -171,7 +172,7 @@ export class CartsController {
       }
       res.json({ status: 'success', message: 'Compra realizada de forma exitosa' })
     } catch (error) {
-      console.log('CONTROLLER CARTS purchaseCart:', error)
+      // console.log('CONTROLLER CARTS purchaseCart:', error)
       res.status(500).json({ status: 'error', message: error.message })
     }
   }

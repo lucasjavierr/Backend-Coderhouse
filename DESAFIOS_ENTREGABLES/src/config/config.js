@@ -7,6 +7,7 @@ const serve = new Command()
 
 serve
   .option('-p, --persistence <persistence>', 'Tipo de persistencia de datos que utiliza la aplicación')
+  .option('--env, <environment>', 'Entorno en el cual se ejecuta la aplicación')
 
 serve.parse()
 const options = serve.opts()
@@ -15,7 +16,8 @@ export const config = {
   server: {
     port: process.env.PORT,
     secretSession: process.env.SECRET_SESSION,
-    persistence: options.persistence
+    persistence: options.persistence,
+    env: options.env
   },
   mongo: {
     url: process.env.MONGO_URL

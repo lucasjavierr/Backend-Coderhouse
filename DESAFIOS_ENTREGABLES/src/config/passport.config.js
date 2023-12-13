@@ -3,6 +3,7 @@ import LocalStrategy from 'passport-local'
 import { createHash, isValidPassword } from '../utils.js'
 import { config } from './config.js'
 import { UsersService } from '../services/users.service.js'
+import { logger } from '../helpers/logger.js'
 
 export const initializePassport = () => {
   passport.use('signupLS', new LocalStrategy(
@@ -31,7 +32,7 @@ export const initializePassport = () => {
                 : 'USER'
         }
 
-        console.log(newUser)
+        logger.info(newUser)
         const userCreated = await UsersService.createUser(newUser)
         return done(null, userCreated)
       } catch (error) {

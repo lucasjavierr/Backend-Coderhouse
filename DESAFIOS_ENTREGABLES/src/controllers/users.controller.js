@@ -1,4 +1,4 @@
-import { CustomError } from '../services/customError.service.js'
+import { CustomError } from '../services/errors/customError.service.js'
 import { EError } from '../enums/EError.js'
 import { UsersService } from '../services/users.service.js'
 import { userIdParamError } from '../services/errors/invalidParamError.service.js'

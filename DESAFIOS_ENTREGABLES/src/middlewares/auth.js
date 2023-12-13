@@ -1,9 +1,18 @@
+export const isAuth = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ status: 'error', message: 'Debes iniciar sesión para acceder a esta ruta' })
+  }
+  next()
+}
+
 export const checkRole = (roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      res.status(403).json({ message: 'No tienes acceso' })
-    } else {
-      next()
+    if (!req.user) {
+      return res.status(401).json({ status: 'error', message: 'Debes iniciar sesión para acceder a esta ruta' })
     }
+    if (!roles.includes(req.user?.role)) {
+      return res.status(403).json({ status: 'error', message: 'No tienes acceso' })
+    }
+    next()
   }
 }

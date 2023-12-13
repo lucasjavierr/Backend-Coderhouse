@@ -5,6 +5,7 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import { initializePassport } from './config/passport.config.js'
 import { errorHandler } from './middlewares/errorHandler.js'
+import { logger } from './helpers/logger.js'
 
 import { cartsRouter } from './routes/carts.routes.js'
 import { productsRouter } from './routes/products.routes.js'
@@ -19,7 +20,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // servidor HTTP con express
-app.listen(port, () => console.log(`Server listening on port: ${port}`))
+app.listen(port, () => logger.info(`Server listening on port: ${port}`))
 
 app.use(session({
   store: MongoStore.create({
@@ -41,6 +42,16 @@ app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
 app.use('/api/sessions', sessionsRouter)
 app.use('/api/users', usersRouter)
+
+app.use('/testLogger', (req, res) => {
+  logger.fatal('log fatal')
+  logger.error('log error')
+  logger.warning('log warning')
+  logger.info('log info')
+  logger.http('log http')
+  logger.debug('log debug')
+  res.send('Prueba de logger')
+})
 
 app.use(errorHandler)
 

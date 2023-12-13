@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js -p mongo"
+    "start": "nodemon src/app.js -p mongo --env development"
   },
   "dependencies": {
     "@faker-js/faker": "^8.3.1",
@@ -22,7 +22,8 @@
     "mongoose-paginate-v2": "^1.7.4",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0"
   },
   "keywords": [],
   "author": "",
