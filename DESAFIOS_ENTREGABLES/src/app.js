@@ -12,6 +12,8 @@ import { productsRouter } from './routes/products.routes.js'
 import { sessionsRouter } from './routes/sessions.routes.js'
 import { usersRouter } from './routes/users.routes.js'
 
+import './config/console.js'
+
 const port = config.server.port
 const app = express()
 
