@@ -1,5 +1,8 @@
 import express from 'express'
 import passport from 'passport'
+import { engine } from 'express-handlebars'
+import { __dirname } from './utils.js'
+import path from 'node:path'
 import { config } from './config/config.js'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
@@ -7,6 +10,7 @@ import { initializePassport } from './config/passport.config.js'
 import { errorHandler } from './middlewares/errorHandler.js'
 import { logger } from './helpers/logger.js'
 
+import { viewsRouter } from './routes/views.routes.js'
 import { cartsRouter } from './routes/carts.routes.js'
 import { productsRouter } from './routes/products.routes.js'
 import { sessionsRouter } from './routes/sessions.routes.js'
@@ -19,6 +23,7 @@ const app = express()
 
 // middlewares
 app.use(express.json())
+app.use(express.static(path.join(__dirname, '/public')))
 app.use(express.urlencoded({ extended: true }))
 
 // servidor HTTP con express
@@ -34,12 +39,18 @@ app.use(session({
   saveUninitialized: true
 }))
 
+// configuracion handlebars
+app.engine('.hbs', engine({ extname: '.hbs' }))
+app.set('view engine', '.hbs')
+app.set('views', path.join(__dirname, '/views'))
+
 // configurar passport
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
 // routes
+app.use(viewsRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
 app.use('/api/sessions', sessionsRouter)
@@ -55,6 +66,6 @@ app.use('/testLogger', (req, res) => {
   res.send('Prueba de logger')
 })
 
-app.use(errorHandler)
+// app.use(errorHandler)
 
 // INVESTIGAR PM2

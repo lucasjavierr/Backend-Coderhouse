@@ -11,19 +11,26 @@ serve
 
 serve.parse()
 const options = serve.opts()
+process.env.NODE_ENVIRONMENT = options.env
+process.env.PERSISTENCE = options.persistence
 
 export const config = {
   server: {
     port: process.env.PORT,
     secretSession: process.env.SECRET_SESSION,
-    persistence: options.persistence,
-    env: options.env
+    persistence: process.env.PERSISTENCE,
+    env: process.env.NODE_ENVIRONMENT
   },
   mongo: {
     url: process.env.MONGO_URL
   },
   admin: {
-    email: process.env.USER_EMAIL_ADMIN,
-    password: process.env.USER_PASSWORD_ADMIN
+    email: process.env.APP_EMAIL_ADMIN,
+    password: process.env.APP_PASSWORD_ADMIN
+  },
+  gmail: {
+    account: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASS,
+    secretToken: process.env.TOKEN_EMAIL
   }
 }
