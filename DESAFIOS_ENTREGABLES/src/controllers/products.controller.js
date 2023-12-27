@@ -1,6 +1,5 @@
 import { CATEGORY_TYPES } from '../enums/constants.js'
 import { ProductsService } from '../services/products.service.js'
-import { v4 as uuidv4 } from 'uuid'
 import { generateProduct } from '../helpers/mock.js'
 import { EError } from '../enums/EError.js'
 import { CustomError } from '../services/errors/customError.service.js'
@@ -92,7 +91,6 @@ export class ProductsController {
         })
       }
 
-      productInfo.code = uuidv4()
       const productCreated = await ProductsService.createProduct(productInfo)
       res.json({ status: 'success', data: productCreated })
     } catch (error) {

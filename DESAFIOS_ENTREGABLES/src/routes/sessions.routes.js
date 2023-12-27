@@ -22,4 +22,6 @@ router.post('/current', isAuth, SessionsController.currentUser)
 
 router.get('/logout', isAuth, SessionsController.logout)
 
+router.post('/forgot-password', SessionsController.forgotPassword)
+
 export { router as sessionsRouter }

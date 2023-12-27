@@ -17,7 +17,6 @@ loginForm.addEventListener('submit', async (e) => {
     body: JSON.stringify(formValues)
   })
   const result = await response.json()
-  console.log(result)
 
   if (result.status === 'success') {
     window.location.href = '/profile'

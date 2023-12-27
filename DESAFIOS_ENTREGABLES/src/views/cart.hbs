@@ -5,6 +5,7 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/profile">Profile</a></li>
+        <li><a href="/realTime">RealTime</a></li>
         <li><a href="/products">Products</a></li>
         <li><a href='/cart/6525b05f6d9f1c50835332d1'>Cart</a></li>
       </ul>
@@ -13,8 +14,8 @@
 
   <h1>Pagina del carrito</h1>
 
-  <div class="productsContainer">
-    {{#each products}}
+  <section id="cartProductsContainer" class="productsContainer">
+    {{!-- {{#each products}}
       <div class="card_body">
         <picture class="card_image_container">
           <img src={{this.productId.thumbnail}} />
@@ -28,8 +29,9 @@
           <button class="delete-to-cart-button" data-product-id="{{this.productId._id}}">Eliminar del carrito</button>
         </div>
       </div>
-    {{/each}}
-  </div>
+    {{/each}} --}}
+  </section>
 </div>
 
-{{!-- <script src="/js/cart.js"></script> --}}
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/cart.js"></script>

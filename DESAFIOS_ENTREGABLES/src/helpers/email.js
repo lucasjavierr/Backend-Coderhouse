@@ -1,6 +1,7 @@
 import { config } from '../config/config.js'
 import jwt from 'jsonwebtoken'
 import { transporter } from '../config/email.js'
+
 export const generateEmailToken = (email, expireTime) => {
   const token = jwt.sign({ email }, config.gmail.secretToken, { expiresIn: expireTime })
   return token
@@ -14,7 +15,7 @@ export const sendChangePasswordEmail = async (req, userEmail, token) => {
   await transporter.sendMail({
     from: 'Component Hardware',
     to: userEmail,
-    subject: 'Restablecer contraseña',
+    subject: 'Restablecer contraseña (mor toi haciendo pruebas con tu correo sorry xd)',
     html: `
       <div>
         <h2>Hola!!</h2>

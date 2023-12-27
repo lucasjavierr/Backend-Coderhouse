@@ -59,6 +59,14 @@ export class ViewsController {
     }
   }
 
+  static realTime = (req, res) => {
+    res.render('realTime')
+  }
+
+  static cartVieww = async (req, res) => {
+    res.render('cart')
+  }
+
   static cartView = async (req, res) => {
     try {
       const cartId = req.params.cartId

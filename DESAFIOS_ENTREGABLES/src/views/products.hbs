@@ -5,6 +5,7 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/profile">Profile</a></li>
+        <li><a href="/realTime">RealTime</a></li>
         <li><a href="/products">Products</a></li>
         <li><a href='/cart/6525b05f6d9f1c50835332d1'>Cart</a></li>
       </ul>
@@ -32,9 +33,9 @@
     <li><a href="/products?category=storage">Almacenamiento</a></li>
   </ul>
 
-  <div class="productsContainer">
+  <section class="productsContainer">
     {{#each dataProducts.payload}}
-      <div class="card_body">
+      <article class="card_body">
         <picture class="card_image_container">
           <img src={{this.thumbnail}} />
         </picture>
@@ -46,9 +47,9 @@
         <div class="card_button_container">
           <button class="add-to-cart-button" data-product-id="{{this._id}}">Agregar al carrito</button>
         </div>
-      </div>
+      </article>
     {{/each}}
-  </div>
+  </>
 
   {{#if prevLink}}
     <a href="{{prevLink}}">Anterior</a>
@@ -58,4 +59,6 @@
     <a href="{{nextLink}}">Siguiente</a>
   {{/if}}
 </div>
+
+<script src="/js/products.js" ></script>
 

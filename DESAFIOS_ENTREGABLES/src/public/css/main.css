@@ -38,9 +38,7 @@ a {
 }
 
 button {
-  background: none;
-  border: none;
-  outline: none;
+  cursor: pointer;
 }
 
 /* ------------------------------------------------------- */
@@ -303,6 +301,9 @@ button {
 .google button {
   font-size: 18px;
   cursor: pointer;
+  border: none;
+  outline: none;
+  background: transparent;
 }
 
 .github i,
@@ -325,3 +326,9 @@ button {
 }
 
 /* ------------------------------------------------------- */
+
+@media (min-width: 0) and (max-width: 1280px) {
+  .app-view {
+    padding: 20px;
+  }
+}

@@ -1,4 +1,7 @@
 import express from 'express'
+import { Server } from 'socket.io'
+import { ProductsService } from './services/products.service.js'
+import { CartsService } from './services/carts.service.js'
 import passport from 'passport'
 import { engine } from 'express-handlebars'
 import { __dirname } from './utils.js'
@@ -27,7 +30,10 @@ app.use(express.static(path.join(__dirname, '/public')))
 app.use(express.urlencoded({ extended: true }))
 
 // servidor HTTP con express
-app.listen(port, () => logger.info(`Server listening on port: ${port}`))
+const httpServer = app.listen(port, () => logger.info(`Server listening on port: ${port}`))
+
+// servidor con websocket
+const io = new Server(httpServer)
 
 app.use(session({
   store: MongoStore.create({
@@ -43,6 +49,36 @@ app.use(session({
 app.engine('.hbs', engine({ extname: '.hbs' }))
 app.set('view engine', '.hbs')
 app.set('views', path.join(__dirname, '/views'))
+
+io.on('connection', async (socket) => {
+  console.log('cliente conectado')
+
+  const products = await ProductsService.getAllProducts()
+  socket.emit('allProducts', products.docs)
+
+  const cartId = '6525b05f6d9f1c50835332d1'
+  const cart = await CartsService.getOneCart(cartId)
+  socket.emit('cartProducts', cart.products)
+
+  // recibir los datos del cliente para crear el producto
+  socket.on('addProduct', async (productData) => {
+    await ProductsService.createProduct(productData)
+    const products = await ProductsService.getAllProducts()
+    socket.emit('allProducts', products.docs)
+  })
+
+  socket.on('deleteProduct', async (idProduct) => {
+    await ProductsService.deleteProduct(idProduct)
+    const products = await ProductsService.getAllProducts()
+    socket.emit('allProducts', products)
+  })
+
+  socket.on('deleteProductFromCart', async (info) => {
+    await CartsService.deleteProductFromCart(info.cartId, info.productId)
+    const cart = await CartsService.getOneCart(info.cartId)
+    socket.emit('cartProducts', cart.products)
+  })
+})
 
 // configurar passport
 initializePassport()
@@ -66,6 +102,6 @@ app.use('/testLogger', (req, res) => {
   res.send('Prueba de logger')
 })
 
-// app.use(errorHandler)
+app.use(errorHandler)
 
 // INVESTIGAR PM2
