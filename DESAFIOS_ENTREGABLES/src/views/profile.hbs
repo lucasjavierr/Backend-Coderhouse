@@ -5,16 +5,27 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/profile">Profile</a></li>
-        <li><a href="/realTime">RealTime</a></li>
+        {{#if user.isAdmin}}
+          <li><a href="/realTime">RealTime</a></li>
+        {{/if}}
         <li><a href="/products">Products</a></li>
-        <li><a href='/cart/6525b05f6d9f1c50835332d1'>Cart</a></li>
+        <li><a href="/cart/{{user.cart}}" id="cartLink">Cart <span id="cartCounter" class="cartCounter"></span></a></li>
       </ul>
     </nav>
   </header>
 
+  <section class="welcome">
+    <div class="welcome-message">
+      <h2>{{user.firstName}}</h2>
+      <p>{{user.email}}</p>
+      <p>{{user.role}}</p>
+    </div>
+    <div class="logout">
+      <a href="/api/sessions/logout">Cerrar sesión</a>
+    </div>
+  </section>
+
   <h2>Perfil</h2>
 
-  <p>{{user.firstName}}</p>
-  <p>Tu email: {{user.email}}</p>
-  <p>Tu rol: {{user.role}}</p>
-</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/cartCounter.js"></script>

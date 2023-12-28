@@ -7,7 +7,7 @@ const router = Router()
 
 router.get('/', ViewsController.homeView)
 router.get('/products', ViewsController.productsView)
-router.get('/realTime', isAuth, checkRole([USER_ROLE_TYPES.ADMIN]), ViewsController.realTime)
+router.get('/realTime', isAuth, ViewsController.realTime)
 router.get('/cart/:cartId', ViewsController.cartView)
 router.get('/login', ViewsController.loginView)
 router.get('/signup', ViewsController.signupView)

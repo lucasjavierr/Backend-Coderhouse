@@ -1,11 +1,11 @@
 import { CATEGORY_TYPES } from '../enums/constants.js'
 import { ProductsService } from '../services/products.service.js'
-import { CartsService } from '../services/carts.service.js'
 import { UsersDto } from '../DTOs/users.dto.js'
 
 export class ViewsController {
   static homeView = (req, res) => {
-    res.render('home')
+    const userDto = new UsersDto(req.user)
+    res.render('home', { user: userDto })
   }
 
   static productsView = async (req, res) => {
@@ -60,21 +60,13 @@ export class ViewsController {
   }
 
   static realTime = (req, res) => {
-    res.render('realTime')
-  }
-
-  static cartVieww = async (req, res) => {
-    res.render('cart')
+    const userDto = new UsersDto(req.user)
+    res.render('realTime', { user: userDto })
   }
 
   static cartView = async (req, res) => {
-    try {
-      const cartId = req.params.cartId
-      const cart = await CartsService.getOneCart(cartId)
-      res.render('cart', { products: cart.products })
-    } catch (error) {
-      res.json({ status: 'error', message: error.message })
-    }
+    const userDto = new UsersDto(req.user)
+    res.render('cart', { user: userDto })
   }
 
   static loginView = (req, res) => {

@@ -1,9 +1,18 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-undef */
-const socketClient = io()
-
 const cartProductsContainer = document.getElementById('cartProductsContainer')
 
-socketClient.on('cartProducts', (dataProducts) => {
+socketClient.on('cartData', (dataProducts) => {
+  if (dataProducts.length === 0) {
+    const cartClean = document.getElementById('cartClean')
+    const titleCart = `
+      <h2>Tu carrito está vacío :(</h2>
+      <p>Añade mas productos para poder visualizarlos aquí</p>
+    `
+    cartClean.innerHTML = titleCart
+    return
+  }
+
   let productsElements = ''
   dataProducts.forEach((elm) => {
     productsElements += `
@@ -15,6 +24,7 @@ socketClient.on('cartProducts', (dataProducts) => {
         <h3>${elm.productId.title}</h3>
         <p>$${elm.productId.price}</p>
         <p>${elm.productId.description}</p>
+        <p>CANTIDAD: ${elm.quantity}</p>
       </div>
       <div class="card_button_container">
         <button class="delete-to-cart-button" data-product-id="${elm.productId._id}">Eliminar del carrito</button>
@@ -25,11 +35,9 @@ socketClient.on('cartProducts', (dataProducts) => {
   })
 
   const deleteToCartButtons = document.querySelectorAll('.delete-to-cart-button')
-
   deleteToCartButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const productId = button.getAttribute('data-product-id')
-      const cartId = '6525b05f6d9f1c50835332d1'
 
       const info = { productId, cartId }
       socketClient.emit('deleteProductFromCart', info)

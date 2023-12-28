@@ -3,6 +3,7 @@ import LocalStrategy from 'passport-local'
 import { createHash, isValidPassword } from '../utils.js'
 import { config } from './config.js'
 import { UsersService } from '../services/users.service.js'
+import { CartsService } from '../services/carts.service.js'
 import { logger } from '../helpers/logger.js'
 
 export const initializePassport = () => {
@@ -17,6 +18,9 @@ export const initializePassport = () => {
         // usuario registrado
         if (user) return done(null, false)
 
+        // creo el carrito asociado al usuario creado
+        const newCart = await CartsService.createCart()
+
         // usuario no registrado
         const newUser = {
           firstName,
@@ -25,6 +29,7 @@ export const initializePassport = () => {
           gender,
           email: username,
           password: createHash(password),
+          cart: newCart._id,
           role:
               username === config.admin.email &&
               password === config.admin.password

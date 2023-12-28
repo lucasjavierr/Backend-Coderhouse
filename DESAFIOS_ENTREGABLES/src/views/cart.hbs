@@ -5,33 +5,32 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/profile">Profile</a></li>
-        <li><a href="/realTime">RealTime</a></li>
+        {{#if user.isAdmin}}
+          <li><a href="/realTime">RealTime</a></li>
+        {{/if}}
         <li><a href="/products">Products</a></li>
-        <li><a href='/cart/6525b05f6d9f1c50835332d1'>Cart</a></li>
+        <li><a href='/cart/{{user.cart}}' id="cartLink">Cart <span id="cartCounter" class="cartCounter"></span></a></li>
       </ul>
     </nav>
   </header>
 
-  <h1>Pagina del carrito</h1>
-
-  <section id="cartProductsContainer" class="productsContainer">
-    {{!-- {{#each products}}
-      <div class="card_body">
-        <picture class="card_image_container">
-          <img src={{this.productId.thumbnail}} />
-        </picture>
-        <div class="card_info_container">
-          <h3>{{this.productId.title}}</h3>
-          <p>${{this.productId.price}}</p>
-          <p>Cantidad: {{quantity}}</p>
-        </div>
-        <div class="card_button_container">
-          <button class="delete-to-cart-button" data-product-id="{{this.productId._id}}">Eliminar del carrito</button>
-        </div>
-      </div>
-    {{/each}} --}}
+  <section class="welcome">
+    <div class="welcome-message">
+      <h2>{{user.firstName}}</h2>
+      <p>{{user.email}}</p>
+      <p>{{user.role}}</p>
+    </div>
+    <div class="logout">
+      <a href="/api/sessions/logout">Cerrar sesión</a>
+    </div>
   </section>
+
+  <h1>Pagina del carrito</h1>
+  <div id="cartClean"></div>
+
+  <section id="cartProductsContainer" class="productsContainer"></section>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/js/cartCounter.js"></script>
 <script src="/js/cart.js"></script>

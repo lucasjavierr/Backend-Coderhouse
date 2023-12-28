@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-const socketClient = io()
 
 const productsContainer = document.getElementById('productsContainer')
 const createProductForm = document.getElementById('createProductForm')

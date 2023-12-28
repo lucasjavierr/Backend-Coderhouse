@@ -53,12 +53,13 @@ app.set('views', path.join(__dirname, '/views'))
 io.on('connection', async (socket) => {
   console.log('cliente conectado')
 
-  const products = await ProductsService.getAllProducts()
-  socket.emit('allProducts', products.docs)
+  /* const products = await ProductsService.getAllProducts()
+  socket.emit('allProducts', products.docs) */
 
-  const cartId = '6525b05f6d9f1c50835332d1'
-  const cart = await CartsService.getOneCart(cartId)
-  socket.emit('cartProducts', cart.products)
+  socket.on('cartInfo', async (cartId) => {
+    const cart = await CartsService.getOneCart(cartId)
+    socket.emit('cartData', cart.products)
+  })
 
   // recibir los datos del cliente para crear el producto
   socket.on('addProduct', async (productData) => {
@@ -73,10 +74,16 @@ io.on('connection', async (socket) => {
     socket.emit('allProducts', products)
   })
 
+  socket.on('addProductToCart', async (info) => {
+    await CartsService.addProductToCart(info.cartId, info.productId)
+    const cart = await CartsService.getOneCart(info.cartId)
+    socket.emit('cartData', cart.products)
+  })
+
   socket.on('deleteProductFromCart', async (info) => {
     await CartsService.deleteProductFromCart(info.cartId, info.productId)
     const cart = await CartsService.getOneCart(info.cartId)
-    socket.emit('cartProducts', cart.products)
+    socket.emit('cartData', cart.products)
   })
 })
 

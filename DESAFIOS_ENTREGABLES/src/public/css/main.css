@@ -327,6 +327,27 @@ button {
 
 /* ------------------------------------------------------- */
 
+.cartCounter {
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  background-color: rgb(0, 255, 60);
+  color: #000;
+  display: inline-block;
+  font-size: 18px;
+  height: 25px;
+  width: 25px;
+  text-align: center;
+}
+
+#cartClean h2,
+#cartClean p {
+  text-align: center;
+  width: 100%;
+}
+
 @media (min-width: 0) and (max-width: 1280px) {
   .app-view {
     padding: 20px;
