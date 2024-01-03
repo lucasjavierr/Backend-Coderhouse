@@ -12,7 +12,7 @@ router.get( '/mockingProducts', ProductsController.mockingProducts )
 router.get( '/', ProductsController.getProducts )
 router.get( '/:productId', ProductsController.getProduct )
 router.post( '/', isAuth, checkRole( [ USER_ROLE_TYPES.ADMIN, USER_ROLE_TYPES.PREMIUM ] ), ProductsController.createProduct )
-router.put( '/:productId', isAuth, checkRole( [ USER_ROLE_TYPES.ADMIN ] ), ProductsController.updateProduct )
-router.delete( '/:productId', isAuth, checkRole( [ USER_ROLE_TYPES.ADMIN ] ), ProductsController.deleteProduct )
+router.put( '/:productId', isAuth, checkRole( [ USER_ROLE_TYPES.ADMIN, USER_ROLE_TYPES.PREMIUM ] ), ProductsController.updateProduct )
+router.delete( '/:productId', isAuth, checkRole( [ USER_ROLE_TYPES.ADMIN, USER_ROLE_TYPES.PREMIUM ] ), ProductsController.deleteProduct )
 
 export { router as productsRouter }

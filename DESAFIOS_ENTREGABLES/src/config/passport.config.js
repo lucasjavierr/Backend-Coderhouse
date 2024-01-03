@@ -30,11 +30,7 @@ export const initializePassport = () => {
           email: username,
           password: createHash( password ),
           cart: newCart._id,
-          role:
-            username === config.admin.email &&
-              password === config.admin.password
-              ? 'ADMIN'
-              : 'USER'
+          role: email.endsWith( '@coder.com' ) ? 'ADMIN' : 'USER'
         }
 
         logger.info( newUser )

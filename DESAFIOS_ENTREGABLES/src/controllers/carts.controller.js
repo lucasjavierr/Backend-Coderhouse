@@ -1,6 +1,7 @@
 import { CartsService } from '../services/carts.service.js'
 import { ProductsService } from '../services/products.service.js'
 import { TicketsService } from '../services/tickets.service.js'
+import { USER_ROLE_TYPES } from '../enums/constants.js'
 import { v4 as uuidv4 } from 'uuid'
 import { CustomError } from '../services/errors/customError.service.js'
 import { EError } from '../enums/EError.js'
@@ -56,8 +57,14 @@ export class CartsController {
         } )
       }
 
-      const productAdded = await CartsService.addProductToCart( cartId, productId )
-      res.json( { status: 'success', data: productAdded } )
+      if (
+        req.user.role === USER_ROLE_TYPES.PREMIUM &&
+        product.owner.toString() !== req.user._id.toString()
+      ) {
+        const productAdded = await CartsService.addProductToCart( cartId, productId )
+        return res.json( { status: 'success', data: productAdded } )
+      }
+      res.json( { status: 'error', message: 'No puedes agregar tus propios productos a tu carrito' } )
     } catch ( error ) {
       // console.log('CONTROLLER CARTS addProductToCart:', error)
       res.status( 500 ).json( { error: error.message } )

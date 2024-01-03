@@ -52,7 +52,7 @@ export class SessionsController {
       res.send( `
           <h3>Se ha enviado un mensaje a tu correo para restablecer la contraseña.</h3>
           <p>Ten en cuenta que el enlace solo estará disponible durante 10 minutos</p>
-          <a href="/login">Volver</a>
+          <a href="https://mail.google.com">Ir a Gmail</a>
         `)
     } catch ( error ) {
       res.json( { status: 'error', error: error.message } )

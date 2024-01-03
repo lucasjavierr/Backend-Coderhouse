@@ -16,7 +16,8 @@ const productSchema = new mongoose.Schema( {
   code: { type: String, required: true, unique: true },
   stock: { type: Number, required: true },
   thumbnail: String,
-  status: { type: Boolean, default: true, required: true }
+  status: { type: Boolean, default: true, required: true },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true }
 } )
 productSchema.plugin( mongoosePaginate )
 

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js -p mongo --env development"
+    "start": "node --watch src/app.js -p mongo --env development"
   },
   "dependencies": {
     "@faker-js/faker": "^8.3.1",
@@ -31,6 +31,6 @@
     "winston": "^3.11.0"
   },
   "keywords": [],
-  "author": "",
+  "author": "Lucas Javier",
   "license": "ISC"
 }

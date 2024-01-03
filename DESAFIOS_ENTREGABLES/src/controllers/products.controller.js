@@ -4,6 +4,7 @@ import { generateProduct } from '../helpers/mock.js'
 import { EError } from '../enums/EError.js'
 import { CustomError } from '../services/errors/customError.service.js'
 import { createProductError } from '../services/errors/createProductError.service.js'
+import { USER_ROLE_TYPES } from '../enums/constants.js'
 
 export class ProductsController {
   static getProducts = async ( req, res ) => {
@@ -87,6 +88,7 @@ export class ProductsController {
           errorCode: EError.DATABASE_ERROR
         } )
       }
+      productInfo.owner = req.user._id
 
       const productCreated = await ProductsService.createProduct( productInfo )
       res.json( { status: 'success', data: productCreated } )
@@ -112,8 +114,18 @@ export class ProductsController {
   static deleteProduct = async ( req, res ) => {
     try {
       const { productId } = req.params
-      const productDeleted = await ProductsService.deleteProduct( productId )
-      res.json( { status: 'succes', data: productDeleted } )
+      const prod = await ProductsService.getOneProduct( productId )
+
+      if (
+        ( req.user.role === USER_ROLE_TYPES.PREMIUM &&
+          prod.owner.toString() === req.user._id.toString() ) ||
+        req.user.role === USER_ROLE_TYPES.ADMIN
+      ) {
+        const productDeleted = await ProductsService.deleteProduct( productId )
+        return res.json( { status: 'success', data: productDeleted } )
+      }
+
+      req.status( 403 ).json( { status: 'error', message: 'No tienes permisos para realizar esta operacion' } )
     } catch ( error ) {
       // console.log('CONTROLLER PRODUCTS deleteProduct:', error)
       res.json( { status: 'error', message: error.message } )
