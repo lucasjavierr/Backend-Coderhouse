@@ -6,14 +6,14 @@ let usersDao
 let ticketsDao
 const persistence = config.server.persistence
 
-switch (persistence) {
-  case 'mongo':{
-    const { connectDB } = await import('../config/dbConnection.js')
+switch ( persistence ) {
+  case 'mongo': {
+    const { connectDB } = await import( '../config/dbConnection.js' )
     connectDB()
-    const { ProductsManagerMongo } = await import('./managers/mongo/products.mongo.js')
-    const { CartsManagerMongo } = await import('./managers/mongo/carts.mongo.js')
-    const { UsersManagerMongo } = await import('./managers/mongo/users.mongo.js')
-    const { TicketsManagerMongo } = await import('./managers/mongo/tickets.mongo.js')
+    const { ProductsManagerMongo } = await import( './managers/mongo/products.mongo.js' )
+    const { CartsManagerMongo } = await import( './managers/mongo/carts.mongo.js' )
+    const { UsersManagerMongo } = await import( './managers/mongo/users.mongo.js' )
+    const { TicketsManagerMongo } = await import( './managers/mongo/tickets.mongo.js' )
     productsDao = new ProductsManagerMongo()
     cartsDao = new CartsManagerMongo()
     usersDao = new UsersManagerMongo()
@@ -22,8 +22,8 @@ switch (persistence) {
   }
 
   case 'memory': {
-    const { ProductsManagerFiles } = await import('./managers/files/products.files.js')
-    const { CartsManagerFiles } = await import('./managers/files/carts.files.js')
+    const { ProductsManagerFiles } = await import( './managers/files/products.files.js' )
+    const { CartsManagerFiles } = await import( './managers/files/carts.files.js' )
     productsDao = new ProductsManagerFiles()
     cartsDao = new CartsManagerFiles()
     break

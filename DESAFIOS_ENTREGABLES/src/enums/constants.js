@@ -7,5 +7,6 @@ export const CATEGORY_TYPES = {
 
 export const USER_ROLE_TYPES = {
   USER: 'USER',
-  ADMIN: 'ADMIN'
+  ADMIN: 'ADMIN',
+  PREMIUM: 'PREMIUM'
 }

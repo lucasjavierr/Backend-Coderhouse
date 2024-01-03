@@ -4,8 +4,8 @@ import { isAuth } from '../middlewares/auth.js'
 
 const router = Router()
 
-router.get('/', isAuth, TicketController.getTickets)
-router.get('/:ticketId', isAuth, TicketController.getTicket)
-router.post('/', isAuth, TicketController.createTicket)
+router.get( '/', isAuth, TicketController.getTickets )
+router.get( '/:ticketId', isAuth, TicketController.getTicket )
+router.post( '/', isAuth, TicketController.createTicket )
 
 export { router as ticketsRouter }

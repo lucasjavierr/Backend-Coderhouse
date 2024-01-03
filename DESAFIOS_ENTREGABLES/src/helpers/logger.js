@@ -26,22 +26,22 @@ const customLevels = {
 
 let logger
 
-winston.addColors(customLevels.colors)
-const devLogger = winston.createLogger({
+winston.addColors( customLevels.colors )
+const devLogger = winston.createLogger( {
   levels: customLevels.levels,
   transports: [
-    new winston.transports.Console({ level: 'debug' })
+    new winston.transports.Console( { level: 'debug' } )
   ]
-})
+} )
 
-const prodLogger = winston.createLogger({
+const prodLogger = winston.createLogger( {
   levels: customLevels.levels,
   transports: [
-    new winston.transports.File({ filename: path.join(__dirname, '/logs/errors.log'), level: 'info' })
+    new winston.transports.File( { filename: path.join( __dirname, '/logs/errors.log' ), level: 'info' } )
   ]
-})
+} )
 
-if (currentEnv !== 'production') {
+if ( currentEnv !== 'production' ) {
   logger = devLogger
 } else {
   logger = prodLogger

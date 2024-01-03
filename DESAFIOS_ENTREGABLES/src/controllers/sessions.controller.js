@@ -1,59 +1,87 @@
 import { UsersDto } from '../DTOs/users.dto.js'
 import { UsersService } from '../services/users.service.js'
-import { generateEmailToken, sendChangePasswordEmail } from '../helpers/email.js'
+import { generateEmailToken, sendChangePasswordEmail, verifyEmailToken } from '../helpers/email.js'
+import { createHash, isValidPassword } from '../utils.js'
 // import { CustomError } from '../services/errors/customError.service.js'
 // import { EError } from '../enums/EError.js'
 // import { authError } from '../services/errors/authError.service.js'
 
 export class SessionsController {
-  static signup = (req, res) => {
-    res.render('login', { message: 'Usuario registrado correctamente' })
+  static signup = ( req, res ) => {
+    res.render( 'login', { message: 'Usuario registrado correctamente' } )
   }
 
-  static failSignup = (req, res) => {
-    res.json({ status: 'error', message: 'No se pudo registrar al usuario' })
+  static failSignup = ( req, res ) => {
+    res.json( { status: 'error', message: 'No se pudo registrar al usuario' } )
   }
 
-  static login = (req, res) => {
-    res.json({ status: 'success', message: 'Iniciaste sesión correctamente' })
+  static login = ( req, res ) => {
+    res.json( { status: 'success', message: 'Iniciaste sesión correctamente' } )
   }
 
-  static failLogin = (req, res) => {
+  static failLogin = ( req, res ) => {
     /* CustomError.createError({
       name: 'Auth error',
       cause: authError(),
       message: 'Credenciales inválidas',
       errorCode: EError.AUTH_ERROR
     }) */
-    res.json({ status: 'error', message: 'Correo electrónico o contraseña incorrectos' })
+    res.json( { status: 'error', message: 'Correo electrónico o contraseña incorrectos' } )
   }
 
-  static currentUser = (req, res) => {
-    const userDto = new UsersDto(req.user)
-    res.json({ status: 'success', user: userDto })
+  static currentUser = ( req, res ) => {
+    const userDto = new UsersDto( req.user )
+    res.json( { status: 'success', user: userDto } )
   }
 
-  static logout = (req, res) => {
-    req.session.destroy((err) => {
-      if (err) return res.status(500).json({ message: 'No se pudo cerrar la sesión' })
-      res.redirect('/login')
-    })
+  static logout = ( req, res ) => {
+    req.session.destroy( ( err ) => {
+      if ( err ) return res.status( 500 ).json( { message: 'No se pudo cerrar la sesión' } )
+      res.redirect( '/login' )
+    } )
   }
 
-  static forgotPassword = async (req, res) => {
+  static forgotPassword = async ( req, res ) => {
     try {
       const { email } = req.body
       // verifico que el usuario exista
-      await UsersService.getUserByEmail(email)
+      await UsersService.getUserByEmail( email )
 
-      const emailToken = generateEmailToken(email, 5 * 60)
-      await sendChangePasswordEmail(req, email, emailToken)
-      res.send(`
-        Se envió un mensaje a su correo para restablecer la contraseña
-        <a href="/login">Volver a la página de inicio</a>
+      const emailToken = generateEmailToken( email, 10 * 60 )
+      await sendChangePasswordEmail( req, email, emailToken )
+      res.send( `
+          <h3>Se ha enviado un mensaje a tu correo para restablecer la contraseña.</h3>
+          <p>Ten en cuenta que el enlace solo estará disponible durante 10 minutos</p>
+          <a href="/login">Volver</a>
         `)
-    } catch (error) {
-      res.json({ status: 'error', error: error.message })
+    } catch ( error ) {
+      res.json( { status: 'error', error: error.message } )
+    }
+  }
+
+  static resetPassword = async ( req, res ) => {
+    try {
+      const token = req.query.token
+      const { newPassword } = req.body
+      const validEmail = verifyEmailToken( token )
+      if ( !validEmail ) {
+        return res.send( `
+          <h2>El enlace para restablecer su contraseña ha caducado</h2>
+          <a href="/forgot-password">Vuelve a crear el enlace</a>
+        `)
+      }
+      const user = await UsersService.getUserByEmail( validEmail )
+      if ( !user ) return res.send( `<h2>No se pudo realizar la operación</h2>` )
+
+      if ( isValidPassword( newPassword, user ) ) res.render( 'resetPassword', { error: 'Contraseña inválida', token } )
+
+      const userData = { ...user, password: createHash( newPassword ) }
+
+      await UsersService.updateUser( user._id, userData )
+
+      res.render( 'login', { message: 'Contraseña actualizada' } )
+    } catch ( error ) {
+      res.json( { status: 'error', error: error.message } )
     }
   }
 }

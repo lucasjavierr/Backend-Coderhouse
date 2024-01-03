@@ -5,11 +5,11 @@ export class TicketsService {
     return ticketsDao.get()
   }
 
-  static getOneTicket = async (ticketId) => {
-    return ticketsDao.getById(ticketId)
+  static getOneTicket = async ( ticketId ) => {
+    return ticketsDao.getById( ticketId )
   }
 
-  static createTicket = async (ticketInfo) => {
-    return ticketsDao.create(ticketInfo)
+  static createTicket = async ( ticketInfo ) => {
+    return ticketsDao.create( ticketInfo )
   }
 }

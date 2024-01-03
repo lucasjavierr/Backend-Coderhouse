@@ -6,8 +6,8 @@ dotenv.config()
 const serve = new Command()
 
 serve
-  .option('-p, --persistence <persistence>', 'Tipo de persistencia de datos que utiliza la aplicación')
-  .option('--env, <environment>', 'Entorno en el cual se ejecuta la aplicación')
+  .option( '-p, --persistence <persistence>', 'Tipo de persistencia de datos que utiliza la aplicación' )
+  .option( '--env, <environment>', 'Entorno en el cual se ejecuta la aplicación' )
 
 serve.parse()
 const options = serve.opts()

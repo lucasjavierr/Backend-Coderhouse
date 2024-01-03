@@ -6,7 +6,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="/profile">Profile</a></li>
         {{#if user.isAdmin}}
-          <li><a href="/realTime">RealTime</a></li>
+        <li><a href="/realTime">RealTime</a></li>
         {{/if}}
         <li><a href="/products">Products</a></li>
         <li><a href="/cart/{{user.cart}}" id="cartLink">Cart <span id="cartCounter" class="cartCounter"></span></a></li>
@@ -25,6 +25,19 @@
     </div>
   </section>
 
+  {{#if user.isAdmin}}
+  <h2>Formulario para crear el productos</h2>
+  <form id="createProductForm">
+    <input type="text" placeholder="Título" name="title" />
+    <input type="text" placeholder="Descripción" name="description" />
+    <input type="text" placeholder="Categoría" name="category" />
+    <input type="text" placeholder="Imagen" name="thumbnail" />
+    <input type="number" placeholder="Precio" name="price" />
+    <input type="number" placeholder="Stock" name="stock" />
+    <button type="submit">Agregar producto</button>
+  </form>
+  {{/if}}
+
   <h1>Listado de productos</h1>
   <h2>Categorías</h2>
   <ul class="categories-list">
@@ -35,34 +48,34 @@
     <li><a href="/products?category=storage">Almacenamiento</a></li>
   </ul>
 
-  <section class="productsContainer">
+  <section id="productsContainer" class="productsContainer">
     {{#each dataProducts.payload}}
-      <article class="card_body">
-        <picture class="card_image_container">
-          <img src={{this.thumbnail}} />
-        </picture>
-        <div class="card_info_container">
-          <h3>{{this.title}}</h3>
-          <p>${{this.price}}</p>
-          <p>{{this.description}}</p>
-        </div>
-        <div class="card_button_container">
-          <button class="add-to-cart-button" data-product-id="{{this._id}}">Agregar al carrito</button>
-        </div>
-      </article>
+    <article class="card_body">
+      <picture class="card_image_container">
+        <img src={{ this.thumbnail }} />
+      </picture>
+      <div class="card_info_container">
+        <h3>{{ this.title }}</h3>
+        <p>${{ this.price }}</p>
+        <p>{{ this.description }}</p>
+      </div>
+      <div class="card_button_container">
+        <button class="add-to-cart-button" data-product-id="{{ this._id }}">Añadir al carrito</button>
+      </div>
+    </article>
     {{/each}}
-  </>
+  </section>
 
-  {{#if prevLink}}
-    <a href="{{prevLink}}">Anterior</a>
-  {{/if}}
-
-  {{#if nextLink}}
-    <a href="{{nextLink}}">Siguiente</a>
-  {{/if}}
+  <div class="controls_paginate">
+    {{#if dataProducts.hasPrevPage}}
+    <a class="controls_prev" href={{dataProducts.prevLink}}>Anterior</a>
+    {{/if}}
+    {{#if dataProducts.hasNextPage}}
+    <a class="controls_next" href={{dataProducts.nextLink}}>Siguiente</a>
+    {{/if}}
+  </div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/cartCounter.js"></script>
-<script src="/js/products.js" ></script>
-
+<script src="/js/products.js"></script>

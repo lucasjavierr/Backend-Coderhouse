@@ -1,5 +1,5 @@
 export class UsersDto {
-  constructor (userInfo) {
+  constructor ( userInfo ) {
     this.firstName = userInfo.firstName
     this.email = userInfo.email
     this.cart = userInfo.cart
