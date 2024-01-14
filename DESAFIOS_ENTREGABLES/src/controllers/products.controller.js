@@ -7,7 +7,7 @@ import { createProductError } from '../services/errors/createProductError.servic
 import { USER_ROLE_TYPES } from '../enums/constants.js'
 
 export class ProductsController {
-  static getProducts = async ( req, res ) => {
+  static getProducts = async ( req, res, next ) => {
     try {
       const { limit = 10, page = 1, sort, category } = req.query
       const query = {}
@@ -56,12 +56,11 @@ export class ProductsController {
       }
       return res.json( { status: 'success', dataProducts } )
     } catch ( error ) {
-      // console.log('CONTROLLER PRODUCTS getProducts:', error)
-      res.json( { status: 'error', message: error.message } )
+      next( error )
     }
   }
 
-  static getProduct = async ( req, res ) => {
+  static getProduct = async ( req, res, next ) => {
     try {
       const { productId } = req.params
       const product = await ProductsService.getOneProduct( productId )
@@ -70,8 +69,7 @@ export class ProductsController {
       }
       res.json( { status: 'success', data: product } )
     } catch ( error ) {
-      // console.log('CONTROLLER PRODUCTS getProduct:', error)
-      res.json( { status: 'error', message: error.message } )
+      next( error )
     }
   }
 
@@ -90,6 +88,10 @@ export class ProductsController {
       }
       productInfo.owner = req.user._id
 
+      if ( stock < 0 ) {
+        return res.json( { status: 'error', message: 'Un producto no puede tener stock negativo' } )
+      }
+
       const productCreated = await ProductsService.createProduct( productInfo )
       res.json( { status: 'success', data: productCreated } )
     } catch ( error ) {
@@ -97,7 +99,7 @@ export class ProductsController {
     }
   }
 
-  static updateProduct = async ( req, res ) => {
+  static updateProduct = async ( req, res, next ) => {
     try {
       const { productId } = req.params
       const newInfoProduct = req.body
@@ -106,19 +108,18 @@ export class ProductsController {
 
       res.json( { status: 'success', data: productUpdated } )
     } catch ( error ) {
-      // console.log('CONTROLLER PRODUCTS updateProduct:', error)
-      res.json( { status: 'error', message: error.message } )
+      next( error )
     }
   }
 
-  static deleteProduct = async ( req, res ) => {
+  static deleteProduct = async ( req, res, next ) => {
     try {
       const { productId } = req.params
       const prod = await ProductsService.getOneProduct( productId )
 
       if (
-        ( req.user.role === USER_ROLE_TYPES.PREMIUM &&
-          prod.owner.toString() === req.user._id.toString() ) ||
+        req.user.role === USER_ROLE_TYPES.PREMIUM &&
+        prod.owner.toString() === req.user._id.toString() ||
         req.user.role === USER_ROLE_TYPES.ADMIN
       ) {
         const productDeleted = await ProductsService.deleteProduct( productId )
@@ -127,12 +128,11 @@ export class ProductsController {
 
       req.status( 403 ).json( { status: 'error', message: 'No tienes permisos para realizar esta operacion' } )
     } catch ( error ) {
-      // console.log('CONTROLLER PRODUCTS deleteProduct:', error)
-      res.json( { status: 'error', message: error.message } )
+      next( error )
     }
   }
 
-  static mockingProducts = ( req, res ) => {
+  static mockingProducts = ( req, res, next ) => {
     const { qtyProducts = 100 } = req.body
     const productsMock = []
     for ( let i = 0; i < qtyProducts; i++ ) {

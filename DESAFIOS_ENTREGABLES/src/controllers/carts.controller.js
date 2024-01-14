@@ -9,38 +9,35 @@ import { addProductError } from '../services/errors/addProductError.service.js'
 import { logger } from '../helpers/logger.js'
 
 export class CartsController {
-  static getCarts = async ( req, res ) => {
+  static getCarts = async ( req, res, next ) => {
     try {
       const carts = await CartsService.getAllCarts()
       res.json( { status: 'success', data: carts } )
     } catch ( error ) {
-      // console.log('CONTROLLER CARTS getCarts:', error)
-      res.status( 500 ).json( { error: error.message } )
+      next( error )
     }
   }
 
-  static getCart = async ( req, res ) => {
+  static getCart = async ( req, res, next ) => {
     try {
       const { cartId } = req.params
       const cart = await CartsService.getOneCart( cartId )
       res.json( { status: 'success', data: cart } )
     } catch ( error ) {
-      // console.log('CONTROLLER CARTS getCart:', error)
-      res.status( 500 ).json( { error: error.message } )
+      next( error )
     }
   }
 
-  static createCart = async ( req, res ) => {
+  static createCart = async ( req, res, next ) => {
     try {
       const cartCreated = await CartsService.createCart()
       res.json( { status: 'success', data: cartCreated } )
     } catch ( error ) {
-      // console.log('CONTROLLER CARTS createCart:', error)
-      res.status( 500 ).json( { error: error.message } )
+      next( error )
     }
   }
 
-  static addProductToCart = async ( req, res ) => {
+  static addProductToCart = async ( req, res, next ) => {
     try {
       const { cartId, productId } = req.params
 
@@ -59,19 +56,18 @@ export class CartsController {
 
       if (
         req.user.role === USER_ROLE_TYPES.PREMIUM &&
-        product.owner.toString() !== req.user._id.toString()
+        product.owner.toString() === req.user._id.toString()
       ) {
-        const productAdded = await CartsService.addProductToCart( cartId, productId )
-        return res.json( { status: 'success', data: productAdded } )
+        return res.json( { status: 'error', message: 'No puedes agregar tus propios productos a tu carrito' } )
       }
-      res.json( { status: 'error', message: 'No puedes agregar tus propios productos a tu carrito' } )
+      const productAdded = await CartsService.addProductToCart( cartId, productId )
+      res.json( { status: 'success', data: productAdded } )
     } catch ( error ) {
-      // console.log('CONTROLLER CARTS addProductToCart:', error)
-      res.status( 500 ).json( { error: error.message } )
+      next( error )
     }
   }
 
-  static updateInfoToCart = async ( req, res ) => {
+  static updateInfoToCart = async ( req, res, next ) => {
     try {
       const { cartId } = req.params
       const newCartInfo = req.body
@@ -80,12 +76,11 @@ export class CartsController {
       const newCart = await CartsService.updateCartInfo( cartId, newCartInfo )
       res.json( { status: 'success', data: newCart } )
     } catch ( error ) {
-      // console.log('CONTROLLER CARTS updateInfoToCart:', error)
-      res.status( 500 ).json( { error: error.message } )
+      next( error )
     }
   }
 
-  static updateProductQuantity = async ( req, res ) => {
+  static updateProductQuantity = async ( req, res, next ) => {
     try {
       const { cartId, productId } = req.params
       const { newQuantity } = req.body
@@ -100,23 +95,21 @@ export class CartsController {
 
       res.json( { status: 'success', data: productUpdated } )
     } catch ( error ) {
-      // console.log('CONTROLLER CARTS updateProductQuantity:', error)
-      res.status( 500 ).json( { error: error.message } )
+      next( error )
     }
   }
 
-  static clearCart = async ( req, res ) => {
+  static clearCart = async ( req, res, next ) => {
     try {
       const { cartId } = req.params
       const cartDeleted = await CartsService.clearCart( cartId )
       res.json( { status: 'success', data: cartDeleted } )
     } catch ( error ) {
-      // console.log('CONTROLLER CARTS clearCart:', error)
-      res.status( 500 ).json( { error: error.message } )
+      next( error )
     }
   }
 
-  static deleteProductFromCart = async ( req, res ) => {
+  static deleteProductFromCart = async ( req, res, next ) => {
     try {
       const { cartId, productId } = req.params
       await CartsService.getOneCart( cartId )
@@ -125,12 +118,11 @@ export class CartsController {
       const newProducts = await CartsService.deleteProductFromCart( cartId, productId )
       res.json( { status: 'success', data: newProducts } )
     } catch ( error ) {
-      // console.log('CONTROLLER CARTS deleteProductFromCart:', error)
-      res.status( 500 ).json( { error: error.message } )
+      next( error )
     }
   }
 
-  static purchaseCart = async ( req, res ) => {
+  static purchaseCart = async ( req, res, next ) => {
     try {
       const { cartId } = req.params
       const cart = await CartsService.getOneCart( cartId )
@@ -179,8 +171,7 @@ export class CartsController {
       }
       res.json( { status: 'success', message: 'Compra realizada de forma exitosa' } )
     } catch ( error ) {
-      // console.log('CONTROLLER CARTS purchaseCart:', error)
-      res.status( 500 ).json( { status: 'error', message: error.message } )
+      next( error )
     }
   }
 }

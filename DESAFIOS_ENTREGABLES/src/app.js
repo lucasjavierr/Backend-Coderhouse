@@ -50,6 +50,30 @@ app.engine( '.hbs', engine( { extname: '.hbs' } ) )
 app.set( 'view engine', '.hbs' )
 app.set( 'views', path.join( __dirname, '/views' ) )
 
+// configurar passport
+initializePassport()
+app.use( passport.initialize() )
+app.use( passport.session() )
+
+// routes
+app.use( viewsRouter )
+app.use( '/api/products', productsRouter )
+app.use( '/api/carts', cartsRouter )
+app.use( '/api/sessions', sessionsRouter )
+app.use( '/api/users', usersRouter )
+
+app.use( '/testLogger', ( req, res ) => {
+  logger.fatal( 'log fatal' )
+  logger.error( 'log error' )
+  logger.warning( 'log warning' )
+  logger.info( 'log info' )
+  logger.http( 'log http' )
+  logger.debug( 'log debug' )
+  res.send( 'Prueba de logger' )
+} )
+
+app.use( errorHandler )
+
 io.on( 'connection', async ( socket ) => {
   console.log( 'cliente conectado' )
 
@@ -89,29 +113,5 @@ io.on( 'connection', async ( socket ) => {
     socket.emit( 'cartData', cart.products )
   } )
 } )
-
-// configurar passport
-initializePassport()
-app.use( passport.initialize() )
-app.use( passport.session() )
-
-// routes
-app.use( viewsRouter )
-app.use( '/api/products', productsRouter )
-app.use( '/api/carts', cartsRouter )
-app.use( '/api/sessions', sessionsRouter )
-app.use( '/api/users', usersRouter )
-
-app.use( '/testLogger', ( req, res ) => {
-  logger.fatal( 'log fatal' )
-  logger.error( 'log error' )
-  logger.warning( 'log warning' )
-  logger.info( 'log info' )
-  logger.http( 'log http' )
-  logger.debug( 'log debug' )
-  res.send( 'Prueba de logger' )
-} )
-
-app.use( errorHandler )
 
 // INVESTIGAR PM2

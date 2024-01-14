@@ -12,7 +12,7 @@ export class SessionsController {
   }
 
   static failSignup = ( req, res ) => {
-    res.json( { status: 'error', message: 'No se pudo registrar al usuario' } )
+    res.render( 'signup', { error: 'No se pudo registrar al usuario' } )
   }
 
   static login = ( req, res ) => {
@@ -20,12 +20,6 @@ export class SessionsController {
   }
 
   static failLogin = ( req, res ) => {
-    /* CustomError.createError({
-      name: 'Auth error',
-      cause: authError(),
-      message: 'Credenciales inválidas',
-      errorCode: EError.AUTH_ERROR
-    }) */
     res.json( { status: 'error', message: 'Correo electrónico o contraseña incorrectos' } )
   }
 
@@ -55,14 +49,15 @@ export class SessionsController {
           <a href="https://mail.google.com">Ir a Gmail</a>
         `)
     } catch ( error ) {
-      res.json( { status: 'error', error: error.message } )
+      res.render( 'forgotPassword', { error: 'Se produjo un error al realizar la operación, vuelve a intentarlo en unos minutos' } )
     }
   }
 
-  static resetPassword = async ( req, res ) => {
+  static resetPassword = async ( req, res, next ) => {
     try {
       const token = req.query.token
       const { newPassword } = req.body
+
       const validEmail = verifyEmailToken( token )
       if ( !validEmail ) {
         return res.send( `
@@ -76,12 +71,11 @@ export class SessionsController {
       if ( isValidPassword( newPassword, user ) ) res.render( 'resetPassword', { error: 'Contraseña inválida', token } )
 
       const userData = { ...user, password: createHash( newPassword ) }
-
       await UsersService.updateUser( user._id, userData )
 
       res.render( 'login', { message: 'Contraseña actualizada' } )
     } catch ( error ) {
-      res.json( { status: 'error', error: error.message } )
+      res.render( 'resetPassword', { error: 'Se produjo un error al realizar la operación, vuelve a intentarlo en unos minutos', token } )
     }
   }
 }

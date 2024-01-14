@@ -18,8 +18,13 @@ header {
   padding: 20px 0;
 }
 
-header h1 {
+.title_page {
   font-size: 36px;
+  color: #373737;
+}
+
+.title_page span {
+  color: #91c612;
 }
 
 header .navbar ul {
@@ -35,7 +40,7 @@ header .navbar ul {
 
 a {
   text-decoration: none;
-  color: #000;
+  color: #373737;
 }
 
 button {
@@ -48,7 +53,18 @@ button {
 .welcome {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 20px 5px;
+}
+
+.logout a {
+  background-color: rgb(255, 96, 96);
+  padding: 10px;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
 }
 
 .categories-list {
@@ -78,7 +94,7 @@ button {
 }
 
 .card_body {
-  background: #999;
+  background: #ccc;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -145,7 +161,7 @@ button {
 }
 
 .controls_next {
-  background-color: #66cdaa;
+  background-color: #91c612;
   color: #fff;
 }
 
@@ -160,18 +176,19 @@ button {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url("../images/background-login.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: rgb(66, 89, 10);
+  background: -moz-linear-gradient(120deg, rgba(66 89 10 / 1) 5%, rgba(145 198 18 / 1) 50%, rgba(66 89 10 / 1) 90%);
+  background: -webkit-linear-gradient(120deg, rgba(66 89 10 / 1) 5%, rgba(145 198 18 / 1) 50%, rgba(66 89 10 / 1) 90%);
+  background: linear-gradient(120deg, rgba(66 89 10 / 1) 5%, rgba(145 198 18 / 1) 50%, rgba(66 89 10 / 1) 90%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#42590a", endColorstr="#42590a", GradientType=1);
 }
 
 .wrapper {
   width: 500px;
   background: transparent;
   border: 2px solid rgb(255 255 255 / 0.2);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 10px rgb(0 0 0 / 0.2);
+  backdrop-filter: blur(400px);
+  box-shadow: 0 0 20px rgb(0 0 0 / 0.2);
   color: #fff;
   border-radius: 10px;
   padding: 30px 40px;
@@ -264,7 +281,7 @@ button {
 
 .wrapper .error-login {
   font-size: 16px;
-  color: rgb(255, 0, 0);
+  color: rgb(255 0 0);
   margin-top: 5px;
   text-align: center;
 }
@@ -362,7 +379,7 @@ button {
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
-  background-color: rgb(0, 255, 60);
+  background-color: #abea16;
   color: #000;
   display: inline-block;
   font-size: 18px;
@@ -380,5 +397,15 @@ button {
 @media (min-width: 0) and (max-width: 1280px) {
   .app-view {
     padding: 20px;
+  }
+
+  header {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  header .title_page {
+    width: 100%;
+    padding-bottom: 40px;
   }
 }

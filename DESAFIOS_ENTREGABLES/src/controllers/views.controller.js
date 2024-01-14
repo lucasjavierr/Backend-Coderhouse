@@ -53,7 +53,6 @@ export class ViewsController {
 
       res.render( 'products', { dataProducts, user: userDto } )
     } catch ( error ) {
-      // logger.error('CONTROLLER VIEWS productsView:', error)
       res.render( 'login' )
     }
   }
