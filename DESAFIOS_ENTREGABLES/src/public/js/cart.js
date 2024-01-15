@@ -23,7 +23,6 @@ socketClient.on( 'cartData', ( dataProducts ) => {
       <div class="card_info_container">
         <h3>${ elm.productId.title }</h3>
         <p>$${ elm.productId.price }</p>
-        <p>${ elm.productId.description }</p>
         <p>CANTIDAD: ${ elm.quantity }</p>
       </div>
       <div class="card_button_container">

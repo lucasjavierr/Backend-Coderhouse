@@ -6,6 +6,22 @@
   font-family: system-ui, sans-serif;
 }
 
+body {
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+  text-align: center;
+}
+
 .app-view {
   max-width: 1280px;
   margin: 0 auto;
@@ -126,10 +142,18 @@ button {
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding: 5px;
 }
 
 .card_info_container h3 {
   flex-grow: 1;
+  font-weight: bold;
+}
+
+.card_info_container p {
+  font-size: 20px;
+  color: #373737;
+  text-align: start;
 }
 
 .card_button_container {
@@ -138,6 +162,50 @@ button {
   justify-content: center;
   align-items: end;
   cursor: pointer;
+}
+
+.add-to-cart-button {
+  padding: 5px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  font-size: 16px;
+  background-color: #6f990e;
+  transition: all 300;
+  -webkit-transition: all 200ms;
+  -moz-transition: all 300;
+  -ms-transition: all 300;
+  -o-transition: all 300;
+  border: none;
+  outline: none;
+}
+
+.add-to-cart-button:hover {
+  background-color: #91c612;
+}
+
+.delete-to-cart-button {
+  padding: 5px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  font-size: 16px;
+  background-color: rgb(253, 108, 108);
+  transition: all 300;
+  -webkit-transition: all 200ms;
+  -moz-transition: all 300;
+  -ms-transition: all 300;
+  -o-transition: all 300;
+  border: none;
+  outline: none;
+}
+
+.delete-to-cart-button:hover {
+  background-color: #f00;
 }
 
 .controls_paginate {

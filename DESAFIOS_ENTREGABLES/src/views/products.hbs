@@ -5,6 +5,7 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/profile">Profile</a></li>
+        <li><a href="/api/docs">Docs</a></li>
         {{#if user.isAdmin}}
         <li><a href="/realTime">RealTime</a></li>
         {{/if}}
@@ -57,7 +58,6 @@
       <div class="card_info_container">
         <h3>{{ this.title }}</h3>
         <p>${{ this.price }}</p>
-        <p>{{ this.description }}</p>
       </div>
       <div class="card_button_container">
         <button class="add-to-cart-button" data-product-id="{{ this._id }}">Añadir al carrito</button>

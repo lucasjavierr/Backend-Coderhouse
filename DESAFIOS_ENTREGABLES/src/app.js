@@ -12,6 +12,8 @@ import MongoStore from 'connect-mongo'
 import { initializePassport } from './config/passport.config.js'
 import { errorHandler } from './middlewares/errorHandler.js'
 import { logger } from './helpers/logger.js'
+import { swaggerSpecs } from './config/swagger.config.js'
+import swaggerUI from 'swagger-ui-express'
 
 import { viewsRouter } from './routes/views.routes.js'
 import { cartsRouter } from './routes/carts.routes.js'
@@ -61,6 +63,7 @@ app.use( '/api/products', productsRouter )
 app.use( '/api/carts', cartsRouter )
 app.use( '/api/sessions', sessionsRouter )
 app.use( '/api/users', usersRouter )
+app.use( '/api/docs', swaggerUI.serve, swaggerUI.setup( swaggerSpecs ) )
 
 app.use( '/testLogger', ( req, res ) => {
   logger.fatal( 'log fatal' )
