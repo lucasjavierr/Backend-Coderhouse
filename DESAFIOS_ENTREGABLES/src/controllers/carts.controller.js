@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { CustomError } from '../services/errors/customError.service.js'
 import { EError } from '../enums/EError.js'
 import { addProductError } from '../services/errors/addProductError.service.js'
-import { logger } from '../helpers/logger.js'
 
 export class CartsController {
   static getCarts = async ( req, res, next ) => {
@@ -158,8 +157,6 @@ export class CartsController {
       }
       // crear el ticket en la DB
       const ticket = await TicketsService.createTicket( newTicket )
-      logger.info( newTicket )
-      logger.info( 'ticket DB', ticket )
 
       // actualizar el carrito con los productos rechazados
       // si es un array vacío, significa que todos los productos se compraron
@@ -169,7 +166,7 @@ export class CartsController {
       if ( rejectedProducts.length >= 1 ) {
         return res.json( { status: 'success', message: 'Compra realizada, algunos productos no se pudieron comprar por falta de stock', rejectedProducts } )
       }
-      res.json( { status: 'success', message: 'Compra realizada de forma exitosa' } )
+      res.json( { status: 'success', message: 'Compra realizada de forma exitosa', cart } )
     } catch ( error ) {
       next( error )
     }
