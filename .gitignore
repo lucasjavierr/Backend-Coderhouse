@@ -4,3 +4,4 @@ clases_after
 package-lock.json
 .vscode
 .env
+bun.lockb
