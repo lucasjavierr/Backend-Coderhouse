@@ -1,11 +1,7 @@
 <section class="form_container">
   <div class="wrapper">
-    {{#if message}}
-      <p style="color: rgb(0, 255, 0)">{{message}}</p>
-    {{/if}}
 
-    <form method="post" action="/api/sessions/signup">
-
+    <form id="signupForm">
       <h1>Sign Up</h1>
 
       <div class="input-box">
@@ -23,10 +19,10 @@
       <h3>Sexo</h3>
       <div class="input-radio-box">
         <label for="masculino">Masculino
-          <input type="radio" name="gender" value="masculino" id="masculino"/>
+          <input type="radio" name="gender" value="masculino" id="masculino" />
         </label>
         <label for="femenino" class="input-label">Femenino
-          <input type="radio" name="gender" value="femenino" id="femenino"/>
+          <input type="radio" name="gender" value="femenino" id="femenino" />
         </label>
       </div>
 
@@ -41,9 +37,7 @@
 
       <button class="btn">Registrarse</button>
 
-      {{#if error}}
-        <p class="error-login"><i class='bx bxs-error-circle'></i> {{error}}</p>
-      {{/if}}
+      <p id="errorSignupMsg" class="error-login"></p>
 
       <div class="register-link">
         <p>¿Ya tienes una cuenta? <a href="/login">Iniciar sesión</a></p>
@@ -51,17 +45,7 @@
     </form>
 
     <div class="line"></div>
-
-    {{!-- <div class="media-options">
-      <a href="/api/sessions/signup-github" class="btn-social github">
-        <i class='bx bxl-github'></i>
-        <button>Continuar con GitHub</button>
-      </a>
-
-      <a href="/api/sessions/signup-github" class="btn-social google">
-        <i class='bx bxl-google'></i>
-        <button>Continuar con Google</button>
-      </a>
-    </div> --}}
   </div>
 </section>
+
+<script src="/js/signup.js"></script>

@@ -21,6 +21,11 @@ switch ( persistence ) {
     break
   }
 
+  // para aplicar en un futuro(?)
+  case 'sql': {
+    break
+  }
+
   case 'memory': {
     const { ProductsManagerFiles } = await import( './managers/files/products.files.js' )
     const { CartsManagerFiles } = await import( './managers/files/carts.files.js' )

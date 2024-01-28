@@ -18,7 +18,7 @@ export const checkRole = ( roles ) => {
       return res.status( 401 ).json( { status: 'error', message: 'Debes iniciar sesión para acceder a esta ruta' } )
     }
     if ( !roles.includes( req.user?.role ) ) {
-      return res.status( 403 ).json( { status: 'error', message: 'No tienes acceso' } )
+      return res.status( 403 ).json( { status: 'error', message: 'Acceso no autorizado' } )
     }
     next()
   }

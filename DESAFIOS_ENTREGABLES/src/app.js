@@ -22,6 +22,7 @@ import { sessionsRouter } from './routes/sessions.routes.js'
 import { usersRouter } from './routes/users.routes.js'
 
 import './config/console.js'
+import cookieParser from 'cookie-parser'
 
 const port = config.server.port
 const app = express()
@@ -30,21 +31,25 @@ const app = express()
 app.use( express.json() )
 app.use( express.static( path.join( __dirname, '/public' ) ) )
 app.use( express.urlencoded( { extended: true } ) )
+app.use( cookieParser() )
 
 // servidor HTTP con express
-const httpServer = app.listen( port, () => logger.info( `Server listening on port: ${ port }` ) )
+const httpServer = app.listen( port/* , () => logger.info( `Server listening on port: ${ port }` ) */ )
 
 // servidor con websocket
 const io = new Server( httpServer )
 
 app.use( session( {
   store: MongoStore.create( {
-    ttl: 60 * 1440, // 1m * 1440m = (24hs)
+    ttl: 60 * 60 * 24, // en segundos. 24hs
     mongoUrl: config.mongo.url
   } ),
   secret: config.server.secretSession,
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 // en milisegundos. 24hs
+  }
 } ) )
 
 // configuracion handlebars
@@ -117,4 +122,4 @@ io.on( 'connection', async ( socket ) => {
   } )
 } )
 
-// INVESTIGAR PM2
+export { app }

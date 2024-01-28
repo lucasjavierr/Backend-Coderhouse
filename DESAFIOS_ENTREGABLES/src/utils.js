@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 // exporto la constante __dirname que hace referencia a la carpeta src
 export const __dirname = path.dirname( fileURLToPath( import.meta.url ) )
 
-export const createHash = ( password ) => {
+export const createHash = async ( password ) => {
   return bcrypt.hashSync( password, bcrypt.genSaltSync() )
 }
 

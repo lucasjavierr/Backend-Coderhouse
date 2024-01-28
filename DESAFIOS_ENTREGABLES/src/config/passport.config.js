@@ -1,18 +1,17 @@
 import passport from 'passport'
 import LocalStrategy from 'passport-local'
 import { createHash, isValidPassword } from '../utils.js'
-import { config } from './config.js'
 import { UsersService } from '../services/users.service.js'
 import { CartsService } from '../services/carts.service.js'
-import { logger } from '../helpers/logger.js'
+import { USER_ROLE_TYPES } from '../enums/constants.js'
 
 export const initializePassport = () => {
   passport.use( 'signupLS', new LocalStrategy(
     { passReqToCallback: true, usernameField: 'email' },
 
     async ( req, username, password, done ) => {
-      if ( !username || !password ) return done( null, false )
       const { firstName, lastName, age, gender } = req.body
+      if ( !firstName || !lastName || !age || !gender || !username ) return done( null, false )
       try {
         const user = await UsersService.getUserByEmail( username )
 
@@ -29,12 +28,11 @@ export const initializePassport = () => {
           age,
           gender,
           email: username,
-          password: createHash( password ),
+          password: await createHash( password ),
           cart: newCart._id,
-          role: email.endsWith( '@coder.com' ) ? 'ADMIN' : 'USER'
+          role: username.endsWith( '@coder.com' ) ? USER_ROLE_TYPES.ADMIN : USER_ROLE_TYPES.USER
         }
 
-        logger.info( newUser )
         const userCreated = await UsersService.createUser( newUser )
         return done( null, userCreated )
       } catch ( error ) {
@@ -46,8 +44,8 @@ export const initializePassport = () => {
   passport.use( 'loginLS', new LocalStrategy(
     { usernameField: 'email' },
     async ( username, password, done ) => {
+      if ( !username || !password ) return done( null, false )
       try {
-        // if ( !username || !password ) return done( null, false )
         const user = await UsersService.getUserByEmail( username )
 
         // usuario no existe, no puede loguear

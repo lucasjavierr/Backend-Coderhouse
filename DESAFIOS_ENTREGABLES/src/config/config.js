@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
-import { Command } from 'commander'
+// import { Command } from 'commander'
 
 dotenv.config()
 
-const serve = new Command()
+/* const serve = new Command()
 
 serve
   .option( '-p, --persistence <persistence>', 'Tipo de persistencia de datos que utiliza la aplicación' )
@@ -12,21 +12,17 @@ serve
 serve.parse()
 const options = serve.opts()
 process.env.NODE_ENVIRONMENT = options.env
-process.env.PERSISTENCE = options.persistence
+process.env.PERSISTENCE = options.persistence */
 
 export const config = {
   server: {
     port: process.env.PORT,
     secretSession: process.env.SECRET_SESSION,
     persistence: process.env.PERSISTENCE,
-    env: process.env.NODE_ENVIRONMENT
+    env: process.env.NODE_ENV
   },
   mongo: {
-    url: process.env.MONGO_URL
-  },
-  admin: {
-    email: process.env.APP_EMAIL_ADMIN,
-    password: process.env.APP_PASSWORD_ADMIN
+    url: /* process.env.NODE_ENV === 'development' ?  */process.env.MONGO_URL_TEST/*  : process.env.MONGO_URL */
   },
   gmail: {
     account: process.env.ADMIN_EMAIL,

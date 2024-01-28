@@ -21,6 +21,6 @@ loginForm.addEventListener( 'submit', async ( e ) => {
   if ( result.status === 'success' ) {
     window.location.href = '/profile'
   } else {
-    errorLoginMsg.innerHTML = `${ result.message }`
+    errorLoginMsg.innerText = `${ result.message }`
   }
 } )

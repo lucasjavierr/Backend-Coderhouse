@@ -76,9 +76,9 @@ export class ProductsController {
   static createProduct = async ( req, res, next ) => {
     try {
       const productInfo = req.body
-      const { title, description, price, category, stock, status } = productInfo
+      const { title, description, price, category, stock } = productInfo
 
-      if ( !title || !description || !price || !category || !stock || !status ) {
+      if ( !title || !description || !price || !category || !stock ) {
         CustomError.createError( {
           name: 'Create product error',
           cause: createProductError( productInfo ),
@@ -86,7 +86,9 @@ export class ProductsController {
           errorCode: EError.DATABASE_ERROR
         } )
       }
-      productInfo.owner = req.user._id
+      if ( !productInfo.owner ) {
+        productInfo.owner = req.user._id
+      }
 
       if ( stock < 0 ) {
         return res.json( { status: 'error', message: 'Un producto no puede tener stock negativo' } )

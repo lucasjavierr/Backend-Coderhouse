@@ -8,9 +8,6 @@ export class ProductsManagerMongo {
   async get( query, options ) {
     try {
       const products = await this.model.paginate( query, options )
-      if ( products.docs.length === 0 ) {
-        throw new Error( 'Se produjo un error al obtener los productos.' )
-      }
       return products
     } catch ( error ) {
       console.log( 'DAO PRODUCTS get:', error.message )
@@ -21,9 +18,6 @@ export class ProductsManagerMongo {
   async getById( productId ) {
     try {
       const product = await this.model.findById( productId ).lean()
-      if ( !product ) {
-        throw new Error( 'Se produjo un error al obtener el producto' )
-      }
       return product
     } catch ( error ) {
       console.log( 'DAO PRODUCTS getById:', error.message )
@@ -48,9 +42,6 @@ export class ProductsManagerMongo {
         newProductInfo,
         { new: true }
       )
-      if ( !productUpdated ) {
-        throw new Error( 'No se pudo encontrar el producto a actualizar.' )
-      }
       return productUpdated
     } catch ( error ) {
       console.log( 'DAO PRODUCTS update:', error.message )
@@ -61,9 +52,6 @@ export class ProductsManagerMongo {
   async delete( productId ) {
     try {
       const result = await this.model.findByIdAndDelete( productId )
-      if ( !result ) {
-        throw new Error( 'No se pudo encontrar el producto a eliminar.' )
-      }
       return result
     } catch ( error ) {
       console.log( 'DAO PRODUCTS delete:', error.message )

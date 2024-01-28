@@ -20,7 +20,7 @@ router.get( '/fail-login', SessionsController.failLogin )
 
 router.post( '/current', isAuth, SessionsController.currentUser )
 
-router.get( '/logout', isAuth, SessionsController.logout )
+router.get( '/logout', SessionsController.logout )
 
 router.post( '/forgot-password', SessionsController.forgotPassword )
 

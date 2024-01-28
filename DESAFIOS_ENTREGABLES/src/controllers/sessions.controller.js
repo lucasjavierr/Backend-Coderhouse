@@ -8,11 +8,11 @@ import { createHash, isValidPassword } from '../utils.js'
 
 export class SessionsController {
   static signup = ( req, res ) => {
-    res.render( 'login', { message: 'Usuario registrado correctamente' } )
+    res.json( { status: 'success', message: 'Usuario registrado correctamente' } )
   }
 
   static failSignup = ( req, res ) => {
-    res.render( 'signup', { error: 'No se pudo registrar al usuario' } )
+    res.json( { status: 'error', message: 'No se pudo registrar al usuario' } )
   }
 
   static login = ( req, res ) => {
@@ -70,7 +70,7 @@ export class SessionsController {
 
       if ( isValidPassword( newPassword, user ) ) res.render( 'resetPassword', { error: 'Contraseña inválida', token } )
 
-      const userData = { ...user, password: createHash( newPassword ) }
+      const userData = { ...user, password: await createHash( newPassword ) }
       await UsersService.updateUser( user._id, userData )
 
       res.render( 'login', { message: 'Contraseña actualizada' } )
